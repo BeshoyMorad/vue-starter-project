@@ -1,7 +1,7 @@
-import { toTypedSchema } from "@vee-validate/yup";
-import { useForm } from "vee-validate";
-import { schema, type LoginForm } from "../schemas/login.schema";
-import { useLoginMutation } from "./useLoginMutation";
+import { toTypedSchema } from '@vee-validate/yup';
+import { useForm } from 'vee-validate';
+import { schema, type LoginForm } from '../schemas/login.schema';
+import { useLoginMutation } from './useLoginMutation';
 
 export default function useLogin() {
   const validationSchema = toTypedSchema(schema);
@@ -9,8 +9,8 @@ export default function useLogin() {
   const { handleSubmit } = useForm<LoginForm>({
     validationSchema,
     initialValues: {
-      identifier: "",
-      password: "",
+      identifier: '',
+      password: '',
       remember: false,
     },
   });

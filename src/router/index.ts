@@ -1,32 +1,32 @@
-import { createRouter, createWebHistory } from "vue-router";
-import { paths } from "./paths";
-import authGuard from "./guards/authGuard";
-import guestGuard from "./guards/guestGuard";
+import { createRouter, createWebHistory } from 'vue-router';
+import { paths } from './paths';
+import authGuard from './guards/authGuard';
+import guestGuard from './guards/guestGuard';
 
 export const routes = [
   {
-    path: "/auth",
-    component: () => import("@/layouts/AuthLayout.vue"),
+    path: '/auth',
+    component: () => import('@/layouts/AuthLayout.vue'),
     beforeEnter: [guestGuard],
     children: [
       {
-        path: "login",
+        path: 'login',
         name: paths.auth.login,
-        component: () => import("@/pages/auth/Login.vue"),
-        meta: { title: "Sign In" },
+        component: () => import('@/pages/auth/Login.vue'),
+        meta: { title: 'Sign In' },
       },
     ],
   },
   {
-    path: "/",
-    component: () => import("@/layouts/AppLayout.vue"),
+    path: '/',
+    component: () => import('@/layouts/AppLayout.vue'),
     beforeEnter: [authGuard],
     children: [
       {
-        path: "",
+        path: '',
         name: paths.dashboard.root,
-        component: () => import("@/pages/dashboard/pages/Index.vue"),
-        meta: { title: "Dashboard" },
+        component: () => import('@/pages/dashboard/pages/Index.vue'),
+        meta: { title: 'Dashboard' },
       },
     ],
   },

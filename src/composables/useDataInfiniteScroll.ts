@@ -1,11 +1,7 @@
-import { computed, toValue, type MaybeRefOrGetter } from "vue";
-import {
-  keepPreviousData,
-  useInfiniteQuery,
-  type QueryKey,
-} from "@tanstack/vue-query";
-import { fetchTableData } from "@/lib/api/table";
-import { useTableState, type BaseTableOptions } from "./useTableState";
+import { computed, toValue, type MaybeRefOrGetter } from 'vue';
+import { keepPreviousData, useInfiniteQuery, type QueryKey } from '@tanstack/vue-query';
+import { fetchTableData } from '@/lib/api/table';
+import { useTableState, type BaseTableOptions } from './useTableState';
 
 export interface UseDataInfiniteScrollOptions<
   TFilters extends object = object,
@@ -15,16 +11,12 @@ export interface UseDataInfiniteScrollOptions<
   queryOptions?: object;
 }
 
-export function useDataInfiniteScroll<
-  TData = unknown,
-  TFilters extends object = object,
->(options: UseDataInfiniteScrollOptions<TFilters>) {
+export function useDataInfiniteScroll<TData = unknown, TFilters extends object = object>(
+  options: UseDataInfiniteScrollOptions<TFilters>
+) {
   const state = useTableState<TFilters>(options);
 
-  const dynamicQueryKey = computed(() => [
-    ...toValue(options.queryKey),
-    state.baseParams.value,
-  ]);
+  const dynamicQueryKey = computed(() => [...toValue(options.queryKey), state.baseParams.value]);
 
   const {
     data: rawPages,
@@ -45,9 +37,7 @@ export function useDataInfiniteScroll<
     ...(options.queryOptions ?? {}),
   });
 
-  const data = computed<TData[]>(
-    () => rawPages.value?.pages.flatMap((p) => p.data) ?? [],
-  );
+  const data = computed<TData[]>(() => rawPages.value?.pages.flatMap((p) => p.data) ?? []);
 
   const meta = computed(() => rawPages.value?.pages.at(0)?.meta);
 

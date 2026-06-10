@@ -1,15 +1,15 @@
 <script setup lang="ts">
-import type { HTMLAttributes, HtmlHTMLAttributes } from 'vue';
-import { cn } from '@/utils';
-import { iconVariants, type IconVariants } from '.';
+  import type { HTMLAttributes, HtmlHTMLAttributes } from 'vue';
+  import { cn } from '@/utils';
+  import { iconVariants, type IconVariants } from '.';
 
-const props = defineProps<{
-  testId: string;
-  icon: HtmlHTMLAttributes['class'];
-  colored?: IconVariants['colored'];
-  size?: IconVariants['size'];
-  class?: HTMLAttributes['class'];
-}>();
+  const props = defineProps<{
+    testId: string;
+    icon: HtmlHTMLAttributes['class'];
+    colored?: IconVariants['colored'];
+    size?: IconVariants['size'];
+    class?: HTMLAttributes['class'];
+  }>();
 </script>
 
 <template>

@@ -1,18 +1,18 @@
-@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap");
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
 
-@import "tailwindcss";
-@import "./colors.css";
-@import "./token.css";
-@import "./dark-token.css";
-@import "./utilities.css";
-@import "tw-animate-css";
+@import 'tailwindcss';
+@import './colors.css';
+@import './token.css';
+@import './dark-token.css';
+@import './utilities.css';
+@import 'tw-animate-css';
 
 @custom-variant dark (&:is(.dark *));
 
 @plugin "@iconify/tailwind4" {
-  prefixes: "hugeicons", "custom";
+  prefixes: 'hugeicons', 'custom';
   scale: 1.5;
-  icon-sets: from-folder("custom", "./src/assets/icons");
+  icon-sets: from-folder('custom', './src/assets/icons');
 }
 
 @theme inline {

@@ -1,7 +1,7 @@
-import { ref, computed, watch } from "vue";
-import { keepPreviousData, useQuery, type QueryKey } from "@tanstack/vue-query";
-import { fetchTableData } from "@/lib/api/table";
-import { useTableState, type BaseTableOptions } from "./useTableState";
+import { ref, computed, watch } from 'vue';
+import { keepPreviousData, useQuery, type QueryKey } from '@tanstack/vue-query';
+import { fetchTableData } from '@/lib/api/table';
+import { useTableState, type BaseTableOptions } from './useTableState';
 
 export interface UseTableOptions<
   TFilters extends object = object,
@@ -12,7 +12,7 @@ export interface UseTableOptions<
 }
 
 export function useDataTable<TData = unknown, TFilters extends object = object>(
-  options: UseTableOptions<TFilters>,
+  options: UseTableOptions<TFilters>
 ) {
   const state = useTableState<TFilters>(options);
   const cursor = ref<string | null>(null);
@@ -23,7 +23,7 @@ export function useDataTable<TData = unknown, TFilters extends object = object>(
     () => {
       cursor.value = null;
     },
-    { deep: true },
+    { deep: true }
   );
 
   const params = computed(() => ({

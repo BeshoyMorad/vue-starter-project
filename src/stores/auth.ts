@@ -6,11 +6,15 @@ import { ACCESS_TOKEN_STORAGE_KEY, REFRESH_TOKEN_STORAGE_KEY } from '@/lib/api/t
 export const useAuthStore = defineStore('auth', () => {
   const accessToken = useLocalStorage<string>(ACCESS_TOKEN_STORAGE_KEY, '');
   const refreshToken = useLocalStorage<string>(REFRESH_TOKEN_STORAGE_KEY, '');
-  const authEmployee = ref<any>(null); // Replace with your exact User/Employee type
+  const authEmployee = ref<unknown>(null); // Replace with your exact User/Employee type
 
   const isAuthenticated = computed(() => !!accessToken.value);
 
-  const login = async (payload: { access_token: string; refresh_token: string; employee: any }) => {
+  const login = async (payload: {
+    access_token: string;
+    refresh_token: string;
+    employee: unknown;
+  }) => {
     accessToken.value = payload.access_token;
     refreshToken.value = payload.refresh_token;
     authEmployee.value = payload.employee;
@@ -28,7 +32,7 @@ export const useAuthStore = defineStore('auth', () => {
       // const res = await api.post('/refresh-token', { refresh_token: refreshToken.value });
       // accessToken.value = res.data.access_token;
       // refreshToken.value = res.data.refresh_token;
-    } catch (error) {
+    } catch {
       clearAuth();
     }
   };

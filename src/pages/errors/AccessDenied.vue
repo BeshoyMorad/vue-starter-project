@@ -1,10 +1,10 @@
 <script setup lang="ts">
-import ExceptionState from '@/components/ExceptionState.vue';
-import { useRouter } from 'vue-router';
-import { paths } from '@/router/paths';
+  import ExceptionState from '@/components/ExceptionState.vue';
+  import { useRouter } from 'vue-router';
+  import { paths } from '@/router/paths';
 
-const router = useRouter();
-const goHome = () => router.push({ name: paths.dashboard.root });
+  const router = useRouter();
+  const goHome = () => router.push({ name: paths.dashboard.root });
 </script>
 
 <template>

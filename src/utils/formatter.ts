@@ -1,7 +1,7 @@
-import dayjs from "dayjs";
+import dayjs from 'dayjs';
 
-const DEFAULT_LOCALE = "en-US";
-const DEFAULT_CURRENCY = "USD";
+const DEFAULT_LOCALE = 'en-US';
+const DEFAULT_CURRENCY = 'USD';
 
 export type FormatCurrencyOptions = {
   locale?: string;
@@ -12,9 +12,9 @@ export type FormatCurrencyOptions = {
 
 export function formatCurrency(
   value: number | null | undefined,
-  options?: FormatCurrencyOptions,
+  options?: FormatCurrencyOptions
 ): string {
-  if (value == null || Number.isNaN(value)) return "—";
+  if (value == null || Number.isNaN(value)) return '—';
   const {
     locale = DEFAULT_LOCALE,
     currency = DEFAULT_CURRENCY,
@@ -22,55 +22,55 @@ export function formatCurrency(
     maximumFractionDigits,
   } = options ?? {};
   return new Intl.NumberFormat(locale, {
-    style: "currency",
+    style: 'currency',
     currency,
     ...(minimumFractionDigits !== undefined && { minimumFractionDigits }),
     ...(maximumFractionDigits !== undefined && { maximumFractionDigits }),
   }).format(value);
 }
 
-export type FormatDateMode = "date" | "datetime" | "month";
+export type FormatDateMode = 'date' | 'datetime' | 'month';
 
 export type FormatDateOptions = {
   mode?: FormatDateMode;
 };
 
 const DATE_FORMAT_MAP: Record<FormatDateMode, string> = {
-  date: "DD MMM, YYYY",
-  month: "MMM, YYYY",
-  datetime: "DD MMM YYYY, hh:mm a",
+  date: 'DD MMM, YYYY',
+  month: 'MMM, YYYY',
+  datetime: 'DD MMM YYYY, hh:mm a',
 };
 
 export function formatDate(
   dateStr: string | Date | null | undefined,
-  options?: FormatDateOptions,
+  options?: FormatDateOptions
 ): string {
-  if (dateStr == null || dateStr === "") return "—";
+  if (dateStr == null || dateStr === '') return '—';
   const date = dayjs(dateStr);
-  if (!date.isValid()) return "—";
-  const { mode = "date" } = options ?? {};
+  if (!date.isValid()) return '—';
+  const { mode = 'date' } = options ?? {};
   return date.format(DATE_FORMAT_MAP[mode]);
 }
 
 export type FormatTimeOptions = {
   locale?: string;
-  hour?: "numeric" | "2-digit";
-  minute?: "numeric" | "2-digit";
-  second?: "numeric" | "2-digit";
+  hour?: 'numeric' | '2-digit';
+  minute?: 'numeric' | '2-digit';
+  second?: 'numeric' | '2-digit';
   hour12?: boolean;
 };
 
 export function formatTime(
   dateStr: string | Date | null | undefined,
-  options?: FormatTimeOptions,
+  options?: FormatTimeOptions
 ): string {
-  if (dateStr == null || dateStr === "") return "—";
-  const date = typeof dateStr === "string" ? new Date(dateStr) : dateStr;
-  if (Number.isNaN(date.getTime())) return "—";
+  if (dateStr == null || dateStr === '') return '—';
+  const date = typeof dateStr === 'string' ? new Date(dateStr) : dateStr;
+  if (Number.isNaN(date.getTime())) return '—';
   const {
     locale = DEFAULT_LOCALE,
-    hour = "2-digit",
-    minute = "2-digit",
+    hour = '2-digit',
+    minute = '2-digit',
     second,
     hour12 = true,
   } = options ?? {};
@@ -90,16 +90,16 @@ export type FormatPercentageOptions = {
 
 export function formatPercentage(
   value: number | null | undefined,
-  options?: FormatPercentageOptions,
+  options?: FormatPercentageOptions
 ): string {
-  if (value == null || Number.isNaN(value)) return "—";
+  if (value == null || Number.isNaN(value)) return '—';
   const {
     locale = DEFAULT_LOCALE,
     minimumFractionDigits,
     maximumFractionDigits = 2,
   } = options ?? {};
   return new Intl.NumberFormat(locale, {
-    style: "percent",
+    style: 'percent',
     minimumFractionDigits,
     maximumFractionDigits,
   }).format(value / 100);
@@ -114,14 +114,10 @@ export type FormatNumberOptions = {
 /** Plain number with locale-aware grouping (e.g. thousands separators every 3 digits). */
 export function formatNumber(
   value: number | null | undefined,
-  options?: FormatNumberOptions,
+  options?: FormatNumberOptions
 ): string {
-  if (value == null || Number.isNaN(value)) return "—";
-  const {
-    locale = DEFAULT_LOCALE,
-    minimumFractionDigits,
-    maximumFractionDigits,
-  } = options ?? {};
+  if (value == null || Number.isNaN(value)) return '—';
+  const { locale = DEFAULT_LOCALE, minimumFractionDigits, maximumFractionDigits } = options ?? {};
   return new Intl.NumberFormat(locale, {
     useGrouping: true,
     minimumFractionDigits,
@@ -137,16 +133,12 @@ export type FormatListOptions = {
 
 export function formatList(
   items: readonly string[] | null | undefined,
-  options?: FormatListOptions,
+  options?: FormatListOptions
 ): string {
-  if (items == null) return "—";
+  if (items == null) return '—';
   const list = items.map((s) => s.trim()).filter(Boolean);
-  if (list.length === 0) return "—";
-  const {
-    locale = DEFAULT_LOCALE,
-    type = "conjunction",
-    style = "long",
-  } = options ?? {};
+  if (list.length === 0) return '—';
+  const { locale = DEFAULT_LOCALE, type = 'conjunction', style = 'long' } = options ?? {};
   return new Intl.ListFormat(locale, { type, style }).format(list);
 }
 
@@ -155,28 +147,23 @@ export function formatFileSize(
   options?: {
     decimals?: number;
     binary?: boolean;
-  },
+  }
 ): string {
   if (!Number.isFinite(bytes) || bytes < 0) {
-    return "0 B";
+    return '0 B';
   }
 
   if (bytes === 0) {
-    return "0 B";
+    return '0 B';
   }
 
   const { decimals = 2, binary = false } = options ?? {};
 
   const base = binary ? 1024 : 1000;
 
-  const units = binary
-    ? ["B", "KiB", "MiB", "GiB", "TiB"]
-    : ["B", "KB", "MB", "GB", "TB"];
+  const units = binary ? ['B', 'KiB', 'MiB', 'GiB', 'TiB'] : ['B', 'KB', 'MB', 'GB', 'TB'];
 
-  const exponent = Math.min(
-    Math.floor(Math.log(bytes) / Math.log(base)),
-    units.length - 1,
-  );
+  const exponent = Math.min(Math.floor(Math.log(bytes) / Math.log(base)), units.length - 1);
 
   const value = bytes / Math.pow(base, exponent);
 

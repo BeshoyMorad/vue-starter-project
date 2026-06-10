@@ -1,11 +1,6 @@
 export {};
 declare global {
-  type DefaultPermissions =
-    | "list"
-    | "detailed_view"
-    | "create"
-    | "update"
-    | "delete";
+  type DefaultPermissions = 'list' | 'detailed_view' | 'create' | 'update' | 'delete';
 
   interface AppPermissions {
     admins: DefaultPermissions;
@@ -15,8 +10,6 @@ declare global {
   type Models = keyof AppPermissions;
 
   type CanPermission<Model> = Model extends Models
-    ?
-        | `${Model}.${AppPermissions[Model]}`
-        | `${Model}.${AppPermissions[Model]}`[]
+    ? `${Model}.${AppPermissions[Model]}` | `${Model}.${AppPermissions[Model]}`[]
     : never;
 }

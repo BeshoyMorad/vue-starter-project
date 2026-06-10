@@ -1,9 +1,8 @@
-import axios, { type AxiosError, type InternalAxiosRequestConfig } from "axios";
-import { useAuthStore } from "@/stores/auth";
-import router from "@/router";
-import { paths } from "@/router/paths";
-
-export const apiBaseUrl = import.meta.env.VITE_API_BASE_URL || "";
+import axios, { type AxiosError, type InternalAxiosRequestConfig } from 'axios';
+import { useAuthStore } from '@/stores/auth';
+import router from '@/router';
+import { paths } from '@/router/paths';
+import { config } from '@/config/env';
 
 interface ExtendedAxiosRequestConfig extends InternalAxiosRequestConfig {
   _retry?: boolean;
@@ -21,15 +20,13 @@ const onTokenRefreshed = (newToken: string) => {
   refreshSubscribers = [];
 };
 
-function onRequest(
-  config: InternalAxiosRequestConfig,
-): InternalAxiosRequestConfig {
+function onRequest(config: InternalAxiosRequestConfig): InternalAxiosRequestConfig {
   const authStore = useAuthStore();
-  config.headers.set("Accept", "application/json");
-  config.headers.set("Content-Type", "application/json");
+  config.headers.set('Accept', 'application/json');
+  config.headers.set('Content-Type', 'application/json');
 
   if (authStore.accessToken) {
-    config.headers.set("Authorization", `Bearer ${authStore.accessToken}`);
+    config.headers.set('Authorization', `Bearer ${authStore.accessToken}`);
   }
   return config;
 }
@@ -59,7 +56,7 @@ async function onResponseError(error: AxiosError) {
     if (isRefreshing) {
       return new Promise((resolve) => {
         subscribeTokenRefresh((newToken: string) => {
-          originalRequest.headers.set("Authorization", `Bearer ${newToken}`);
+          originalRequest.headers.set('Authorization', `Bearer ${newToken}`);
           resolve(api(originalRequest));
         });
       });
@@ -72,11 +69,11 @@ async function onResponseError(error: AxiosError) {
       await authStore.getRefreshToken();
       const newToken = authStore.accessToken;
       if (!newToken) {
-        throw new Error("Refresh failed - no valid token");
+        throw new Error('Refresh failed - no valid token');
       }
 
       onTokenRefreshed(newToken);
-      originalRequest.headers.set("Authorization", `Bearer ${newToken}`);
+      originalRequest.headers.set('Authorization', `Bearer ${newToken}`);
       return api(originalRequest);
     } catch (refreshError) {
       refreshSubscribers = [];
@@ -91,10 +88,10 @@ async function onResponseError(error: AxiosError) {
 }
 
 export const api = axios.create({
-  baseURL: apiBaseUrl,
+  baseURL: config.apiBaseUrl,
   timeout: 10000,
   headers: {
-    "X-Requested-With": "XMLHttpRequest",
+    'X-Requested-With': 'XMLHttpRequest',
   },
 });
 

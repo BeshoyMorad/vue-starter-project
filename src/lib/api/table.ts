@@ -1,5 +1,5 @@
-import type { TableParams } from "@/composables";
-import { api } from "./client";
+import type { TableParams } from '@/composables';
+import { api } from './client';
 
 /**
  * Service function to fetch paginated table data.
@@ -10,12 +10,12 @@ import { api } from "./client";
  */
 export const fetchTableData = async <TData>(
   endpoint: string,
-  params: TableParams,
+  params: TableParams
 ): Promise<CursorPaginatedResponse<TData>> => {
   const cleanParams: Record<string, unknown> = {};
   // Merge general filters at the root level, ignoring empties/nulls
   Object.entries(params).forEach(([key, value]) => {
-    if (value !== undefined && value !== "") {
+    if (value !== undefined && value !== '') {
       cleanParams[key] = value;
     }
   });

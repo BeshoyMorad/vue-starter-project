@@ -1,9 +1,9 @@
-import { isAxiosError } from "axios";
-import { useMutation } from "@tanstack/vue-query";
-import { authServices } from "../services";
-import type { SubmissionContext } from "vee-validate";
-import type { LoginForm } from "../schemas/login.schema";
-import type { LoginRequest } from "../types";
+import { isAxiosError } from 'axios';
+import { useMutation } from '@tanstack/vue-query';
+import { authServices } from '../services';
+import type { SubmissionContext } from 'vee-validate';
+import type { LoginForm } from '../schemas/login.schema';
+import type { LoginRequest } from '../types';
 
 export const useLoginMutation = () => {
   return useMutation<

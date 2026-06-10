@@ -1,4 +1,4 @@
-[data-theme="dark"] {
+[data-theme='dark'] {
   /* Background Colors */
   --color-bg-surface: #000;
   --color-bg-disabled: var(--color-neutral-800);

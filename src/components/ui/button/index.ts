@@ -48,8 +48,6 @@ export const buttonVariants = cva(
                 [--color-accent-soft:var(--color-bg-danger-hovered-invert)]
                 [--color-accent-contrast:var(--color-text-base)]
                 [--color-accent-pressed:var(--color-bg-danger-pressed)]
-
-               
                 `,
       },
       variant: {

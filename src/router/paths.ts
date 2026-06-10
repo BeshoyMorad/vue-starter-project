@@ -1,13 +1,13 @@
 export const paths = {
   auth: {
-    login: "login",
+    login: 'login',
   },
   dashboard: {
-    root: "dashboard",
+    root: 'dashboard',
   },
   errors: {
-    notFound: "404",
-    accessDenied: "403",
-    serverError: "500",
+    notFound: '404',
+    accessDenied: '403',
+    serverError: '500',
   },
 };

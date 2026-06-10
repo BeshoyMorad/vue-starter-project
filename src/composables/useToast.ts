@@ -1,4 +1,4 @@
-import { toast } from "vue-sonner";
+import { toast } from 'vue-sonner';
 
 export const TOAST_LIFE = 5000;
 

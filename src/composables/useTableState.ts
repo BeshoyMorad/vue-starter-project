@@ -1,5 +1,5 @@
-import { ref, computed, toValue, type MaybeRefOrGetter, type Ref } from "vue";
-import { refDebounced } from "@vueuse/core";
+import { ref, computed, toValue, type MaybeRefOrGetter, type Ref } from 'vue';
+import { refDebounced } from '@vueuse/core';
 
 export interface TableParams {
   per_page: number;
@@ -19,13 +19,13 @@ export interface BaseTableOptions<TFilters extends object = object> {
 }
 
 export function useTableState<TFilters extends object = object>(
-  options: BaseTableOptions<TFilters>,
+  options: BaseTableOptions<TFilters>
 ) {
   const {
     query,
     perPage = 10,
     searchDebounce = 500,
-    initialSearch = "",
+    initialSearch = '',
     searchRef: externalSearchRef,
     initialFilters = {},
   } = options;

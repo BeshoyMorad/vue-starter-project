@@ -1,46 +1,43 @@
 <script setup lang="ts">
   import type { PrimitiveProps } from 'reka-ui';
-  import type { HTMLAttributes } from 'vue';
+  import { computed, type HTMLAttributes } from 'vue';
   import type { ButtonVariants } from '.';
-  import type { IconVariants } from '@/components/icon';
-  import { computed } from 'vue';
   import { Primitive } from 'reka-ui';
-  import { Icon } from '@/components';
   import { cn } from '@/utils';
   import { buttonVariants } from '.';
+  import type { IconVariants } from '@/components/icon';
+  import { Icon } from '@/components';
 
   interface Props extends PrimitiveProps {
     testId: string;
-    color?: ButtonVariants['color'];
     variant?: ButtonVariants['variant'];
     size?: ButtonVariants['size'];
+    class?: HTMLAttributes['class'];
+
     disabled?: boolean;
     loading?: boolean;
 
     icon?: HTMLAttributes['class'];
     iconSize?: IconVariants['size'];
-    iconPos?: ButtonVariants['iconPos'];
+    iconPosition?: ButtonVariants['iconPosition'];
     iconClass?: HTMLAttributes['class'];
     isIconColored?: IconVariants['colored'];
-
-    class?: HTMLAttributes['class'];
-    type?: HTMLButtonElement['type'];
   }
 
   const props = withDefaults(defineProps<Props>(), {
     as: 'button',
-    color: 'default',
-    variant: 'filled',
+
+    variant: 'default',
     size: 'default',
+    class: undefined,
+
     disabled: false,
     loading: false,
     icon: undefined,
     iconSize: undefined,
-    iconPos: 'left',
+    iconPosition: 'left',
     iconClass: undefined,
     isIconColored: undefined,
-    class: undefined,
-    type: 'button',
   });
 
   const resolvedDisabled = computed(() => Boolean(props.disabled || props.loading));
@@ -51,16 +48,14 @@
 <template>
   <Primitive
     :as="as"
-    :as-child="asChild"
+    data-slot="button"
     :disabled="resolvedDisabled"
     :data-test-id="testId ?? undefined"
-    data-slot="button"
-    :data-color="color"
     :data-variant="variant"
     :data-size="size"
+    :as-child="asChild"
     :aria-busy="loading ? 'true' : undefined"
-    :class="cn(buttonVariants({ color, variant, size, iconPos }), props.class)"
-    :type="type"
+    :class="cn(buttonVariants({ variant, size, iconPosition }), props.class)"
   >
     <Icon
       v-if="loading"

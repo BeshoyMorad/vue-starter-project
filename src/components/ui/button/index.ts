@@ -1,109 +1,42 @@
-import { cva, type VariantProps } from 'class-variance-authority';
+import type { VariantProps } from 'class-variance-authority';
+import { cva } from 'class-variance-authority';
 
 export { default as Button } from './Button.vue';
 
 export const buttonVariants = cva(
-  `inline-flex rounded-md font-medium cursor-pointer select-none items-center justify-center border relative disabled:pointer-events-none transition-colors duration-200 disabled:cursor-not-allowed
-    disabled:[--color-accent-pressed:var(--color-border-disabled)]!
-    disabled:[--color-accent-soft:var(--color-border-disabled)]!
-    disabled:[--color-accent-solid:var(--color-bg-disabled)]!
-    disabled:[--color-accent-contrast:var(--color-text-disabled)]!
-  `,
+  "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-all disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg:not([class*='size-'])]:size-4 shrink-0 [&_svg]:shrink-0 outline-none focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-3 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive",
   {
     variants: {
-      color: {
-        default: `
-                [--color-accent-solid:var(--color-text-default)]
-                [--color-accent-soft:var(--color-bg-hovered)]
-                [--color-accent-contrast:var(--color-text-base)]
-                [--color-accent-pressed:var(--color-border-default)]
-                `,
-        primary: `
-                [--color-accent-solid:var(--color-bg-primary-default)]
-                [--color-accent-soft:var(--color-bg-primary-hovered-invert)]
-                [--color-accent-contrast:var(--color-text-base)]
-                [--color-accent-pressed:var(--color-bg-primary-pressed)]
-                `,
-        info: `
-                [--color-accent-solid:var(--color-bg-info-default)]
-                [--color-accent-soft:var(--color-bg-info-hovered-invert)]
-                [--color-accent-contrast:var(--color-text-base)]
-                [--color-accent-pressed:var(--color-bg-info-pressed)]
-                `,
-        success: `
-                [--color-accent-solid:var(--color-bg-success-default)]
-                [--color-accent-soft:var(--color-bg-success-hovered-invert)]
-                [--color-accent-contrast:var(--color-text-base)]
-                [--color-accent-pressed:var(--color-bg-success-pressed)]
-                `,
-        warning: `
-                [--color-accent-solid:var(--color-bg-warning-default)]
-                [--color-accent-soft:var(--color-bg-warning-hovered-invert)]
-                [--color-accent-contrast:var(--color-text-base)]
-                [--color-accent-pressed:var(--color-bg-warning-pressed)]
-                `,
-        danger: `
-                [--color-accent-solid:var(--color-bg-danger-default)]
-                [--color-accent-soft:var(--color-bg-danger-hovered-invert)]
-                [--color-accent-contrast:var(--color-text-base)]
-                [--color-accent-pressed:var(--color-bg-danger-pressed)]
-                `,
-      },
       variant: {
-        filled: `
-          bg-(--color-accent-solid) hover:bg-(--color-accent-pressed) active:bg-(--color-accent-pressed)
-          text-(--color-accent-contrast)
-          border-(--color-accent-solid) hover:border-(--color-accent-pressed) active:border-(--color-accent-pressed)
-          `,
-
-        outlined: `
-          hover:bg-(--color-accent-soft) active:bg-(--color-accent-solid)
-          text-(--color-accent-solid) active:text-text-base
-          border-(--color-accent-solid)
-          `,
-
-        dashed: `
-          hover:bg-(--color-accent-soft) active:bg-(--color-accent-solid)
-          text-(--color-accent-solid) active:text-text-base
-          border-(--color-accent-solid) border-dashed
-          `,
-
-        text: `
-          text-(--color-accent-solid) hover:text-(--color-accent-pressed)
-          border-transparent
-          `,
-
-        soft: `
-          bg-(--color-accent-soft) hover:bg-(--color-accent-solid)/70 active:bg-(--color-accent-pressed)
-          text-(--color-accent-solid) hover:text-text-base
-          border-(--color-accent-soft) active:border-(--color-accent-pressed)
-          `,
-
-        ghost: `
-          bg-transparent hover:bg-bg-hovered
-          text-text-default
-          border-transparent
-          `,
+        default: 'bg-bg-primary-default text-text-base hover:bg-bg-primary-default/90',
+        danger:
+          'bg-bg-danger-default text-text-base hover:bg-bg-danger-default/90 focus-visible:ring-bg-danger-default/20',
+        success:
+          'bg-bg-success-default text-text-base hover:bg-bg-success-default/90 focus-visible:ring-bg-success-default/20',
+        warning:
+          'bg-bg-warning-default text-text-base hover:bg-bg-warning-default/90 focus-visible:ring-bg-warning-default/20',
+        outline: 'border shadow-xs hover:bg-bg-hovered',
+        ghost: 'hover:bg-bg-hovered text-text-default',
+        link: 'text-text-primary underline-offset-4 hover:underline',
       },
       size: {
-        'x-small': 'h-6 gap-1 text-xs',
-        small: 'h-10 py-2 px-2 gap-2 text-xs',
-        default: 'h-10 py-2 px-3 gap-2.5 text-sm',
-        large: 'h-12 py-2 px-3.5 gap-3 text-lg',
-        icon: 'size-9 shrink-0 gap-0 p-0',
+        default: 'h-9 px-4 py-2 has-[>svg]:px-3',
+        sm: 'h-8 rounded-md gap-1.5 px-3 has-[>svg]:px-2.5',
+        lg: 'h-10 rounded-md px-6 has-[>svg]:px-4',
+        icon: 'size-9',
+        'icon-sm': 'size-8',
+        'icon-lg': 'size-10',
       },
-      iconPos: {
+      iconPosition: {
         left: '',
         right: 'flex-row-reverse',
       },
     },
     defaultVariants: {
-      color: 'default',
-      variant: 'filled',
+      variant: 'default',
       size: 'default',
-      iconPos: 'left',
+      iconPosition: 'left',
     },
   }
 );
-
 export type ButtonVariants = VariantProps<typeof buttonVariants>;

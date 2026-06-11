@@ -8,3 +8,4 @@ export { default as ComingSoonPlaceholder } from './placeholders/ComingSoonPlace
 
 // UI Components
 export { default as Button } from './ui/button/Button.vue';
+export { default as Dialog } from './ui/dialog/Dialog.vue';

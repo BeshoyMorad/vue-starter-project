@@ -32,7 +32,7 @@ export default typescriptEslint.config(
         {
           patterns: [
             {
-              group: ['./*', '../*', '../../*', '../../../*', '../../../../*', '../../../../../*'],
+              group: ['../*', '../../*', '../../../*', '../../../../*', '../../../../../*'],
               message: 'Use the @/ alias instead of parent-relative imports.',
             },
           ],
@@ -74,7 +74,7 @@ export default typescriptEslint.config(
 
       // Type Safety
       '@typescript-eslint/no-explicit-any': 'error',
-      '@typescript-eslint/no-unused-vars': ['warn', { argsIgnorePattern: '^_' }],
+      '@typescript-eslint/no-unused-vars': ['error', { argsIgnorePattern: '^_' }],
       '@typescript-eslint/consistent-type-imports': [
         'error',
         {

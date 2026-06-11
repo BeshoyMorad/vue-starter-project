@@ -3,12 +3,11 @@ import { cva, type VariantProps } from 'class-variance-authority';
 export { default as Button } from './Button.vue';
 
 export const buttonVariants = cva(
-  `inline-flex rounded-md font-medium cursor-pointer select-none items-center justify-center border relative disabled:pointer-events-none transition-colors duration-200 
+  `inline-flex rounded-md font-medium cursor-pointer select-none items-center justify-center border relative disabled:pointer-events-none transition-colors duration-200 disabled:cursor-not-allowed
     disabled:[--color-accent-pressed:var(--color-border-disabled)]!
     disabled:[--color-accent-soft:var(--color-border-disabled)]!
     disabled:[--color-accent-solid:var(--color-bg-disabled)]!
     disabled:[--color-accent-contrast:var(--color-text-disabled)]!
-    disabled:cursor-not-allowed
   `,
   {
     variants: {
@@ -51,23 +50,43 @@ export const buttonVariants = cva(
                 `,
       },
       variant: {
-        filled:
-          'bg-(--color-accent-solid) text-(--color-accent-contrast) border-(--color-accent-solid) hover:bg-(--color-accent-pressed) hover:border-(--color-accent-pressed) active:bg-(--color-accent-pressed) active:border-(--color-accent-pressed) ',
-        outlined:
-          'border-(--color-accent-solid) text-(--color-accent-solid) hover:bg-(--color-accent-soft) active:bg-(--color-accent-solid) active:text-text-base  ',
-        dashed:
-          'border-(--color-accent-solid) text-(--color-accent-solid) hover:bg-(--color-accent-soft) active:bg-(--color-accent-solid) active:text-text-base border-dashed',
-        text: 'border-transparent text-(--color-accent-solid) hover:text-(--color-accent-pressed)',
-        soft: 'bg-(--color-accent-soft) border-(--color-accent-soft) text-(--color-accent-solid)  active:bg-(--color-accent-pressed) active:border-(--color-accent-pressed) hover:bg-(--color-accent-solid)/70 hover:text-text-base',
-        /** shadcn-style alias (matches `outlined`) */
-        outline:
-          'border-(--color-accent-solid) text-(--color-accent-solid) hover:bg-(--color-accent-soft) active:bg-(--color-accent-solid) active:text-text-base  ',
-        /** subtle surface; used by dialog close etc. */
-        ghost:
-          'border-transparent bg-transparent text-(--color-text-default) hover:bg-(--color-bg-hovered)',
+        filled: `
+          bg-(--color-accent-solid) hover:bg-(--color-accent-pressed) active:bg-(--color-accent-pressed)
+          text-(--color-accent-contrast)
+          border-(--color-accent-solid) hover:border-(--color-accent-pressed) active:border-(--color-accent-pressed)
+          `,
+
+        outlined: `
+          hover:bg-(--color-accent-soft) active:bg-(--color-accent-solid)
+          text-(--color-accent-solid) active:text-text-base
+          border-(--color-accent-solid)
+          `,
+
+        dashed: `
+          hover:bg-(--color-accent-soft) active:bg-(--color-accent-solid)
+          text-(--color-accent-solid) active:text-text-base
+          border-(--color-accent-solid) border-dashed
+          `,
+
+        text: `
+          text-(--color-accent-solid) hover:text-(--color-accent-pressed)
+          border-transparent
+          `,
+
+        soft: `
+          bg-(--color-accent-soft) hover:bg-(--color-accent-solid)/70 active:bg-(--color-accent-pressed)
+          text-(--color-accent-solid) hover:text-text-base
+          border-(--color-accent-soft) active:border-(--color-accent-pressed)
+          `,
+
+        ghost: `
+          bg-transparent hover:bg-bg-hovered
+          text-text-default
+          border-transparent
+          `,
       },
       size: {
-        xsmall: 'h-6 gap-1 text-xs',
+        'x-small': 'h-6 gap-1 text-xs',
         small: 'h-10 py-2 px-2 gap-2 text-xs',
         default: 'h-10 py-2 px-3 gap-2.5 text-sm',
         large: 'h-12 py-2 px-3.5 gap-3 text-lg',
@@ -86,4 +105,5 @@ export const buttonVariants = cva(
     },
   }
 );
+
 export type ButtonVariants = VariantProps<typeof buttonVariants>;

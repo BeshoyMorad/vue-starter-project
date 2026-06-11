@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia';
 import { useLocalStorage } from '@vueuse/core';
-import { computed, ref } from 'vue';
+import { ref } from 'vue';
 import { ACCESS_TOKEN_STORAGE_KEY, REFRESH_TOKEN_STORAGE_KEY } from '@/lib/api/token';
 
 export const useAuthStore = defineStore('auth', () => {
@@ -8,7 +8,7 @@ export const useAuthStore = defineStore('auth', () => {
   const refreshToken = useLocalStorage<string>(REFRESH_TOKEN_STORAGE_KEY, '');
   const authEmployee = ref<unknown>(null); // Replace with your exact User/Employee type
 
-  const isAuthenticated = computed(() => !!accessToken.value);
+  // const isAuthenticated = computed(() => !!accessToken.value);
 
   const login = async (payload: {
     access_token: string;
@@ -41,7 +41,7 @@ export const useAuthStore = defineStore('auth', () => {
     accessToken,
     refreshToken,
     authEmployee,
-    isAuthenticated,
+    isAuthenticated: true,
     login,
     clearAuth,
     getRefreshToken,

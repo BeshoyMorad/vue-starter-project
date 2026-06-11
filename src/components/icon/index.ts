@@ -7,7 +7,7 @@ export const iconVariants = cva('shrink-0', {
       false: 'iconify',
     },
     size: {
-      xxs: 'size-2', // 8px
+      '2xs': 'size-2', // 8px
       xs: 'size-3', // 12px
       sm: 'size-3.5', // 14px
       default: 'size-4', // 16px - alias for md
@@ -27,4 +27,5 @@ export const iconVariants = cva('shrink-0', {
     size: 'md',
   },
 });
+
 export type IconVariants = VariantProps<typeof iconVariants>;

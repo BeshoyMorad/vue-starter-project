@@ -19,6 +19,7 @@
     title?: string;
     description?: string;
     hideCloseIcon?: boolean;
+    hideHeader?: boolean;
     contentClass?: HTMLAttributes['class'];
     bodyClass?: HTMLAttributes['class'];
   };
@@ -45,15 +46,15 @@
     </DialogTrigger>
 
     <DialogContent :class="props.contentClass">
-      <DialogHeader>
-        <div class="flex flex-col gap-1">
-          <slot name="header">
+      <DialogHeader v-if="!props.hideHeader">
+        <slot name="header">
+          <div class="flex flex-col gap-1">
             <DialogTitle v-if="props.title">{{ props.title }}</DialogTitle>
             <DialogDescription v-if="props.description">
               {{ props.description }}
             </DialogDescription>
-          </slot>
-        </div>
+          </div>
+        </slot>
 
         <DialogClose v-if="!props.hideCloseIcon" as-child>
           <Button test-id="dialog-close-button" variant="ghost" size="icon" aria-label="Close">

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-  import { Button, Dialog } from '@/components';
+  import { Button, ConfirmDialog, Dialog } from '@/components';
 </script>
 
 <template>
@@ -28,6 +28,10 @@
           <div>footer</div>
         </template>
       </Dialog>
+
+      <ConfirmDialog test-id="" title="title" description="des" icon="hugeicons--circle">
+        <template #trigger><Button test-id="">Open</Button></template>
+      </ConfirmDialog>
     </div>
   </div>
 </template>

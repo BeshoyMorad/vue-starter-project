@@ -1,6 +1,7 @@
 import type { RowData } from '@tanstack/vue-table';
 
 export {};
+
 declare global {
   export type Prettify<T> = T & { [K in keyof T]: T[K] };
 
@@ -34,5 +35,7 @@ declare module '@tanstack/vue-table' {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   interface ColumnMeta<TData extends RowData, TValue> {
     align?: 'left' | 'center' | 'right';
+    width?: string;
+    colSpan?: number;
   }
 }

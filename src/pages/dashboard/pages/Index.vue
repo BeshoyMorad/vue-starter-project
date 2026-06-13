@@ -1,6 +1,51 @@
 <script setup lang="ts">
-  import { Button, ConfirmDialog, Dialog } from '@/components';
-  import FormDialog from '@/components/form-dialog/FormDialog.vue';
+  import {
+    Button,
+    ConfirmDialog,
+    Dialog,
+    FormDialog,
+    InfiniteScrollTable,
+    Table,
+  } from '@/components';
+  import { formatDate } from '@/utils/formatter';
+  import type { ColumnDef } from '@tanstack/vue-table';
+  import { h } from 'vue';
+
+  const columns: ColumnDef<{ id: number; name: string; createdAt: Date }, unknown>[] = [
+    {
+      accessorKey: 'id',
+      header: 'Id',
+      enableSorting: false,
+      cell: ({ row }) => {
+        const data = row.original;
+        return h('p', {}, data.id);
+      },
+    },
+    {
+      accessorKey: 'name',
+      header: 'Name',
+      enableSorting: false,
+      cell: ({ row }) => {
+        const data = row.original;
+        return h('p', {}, data.name);
+      },
+    },
+    {
+      accessorKey: 'createdAt',
+      header: 'Created At',
+      enableSorting: true,
+      cell: ({ row }) => {
+        const data = row.original;
+        return h('p', {}, formatDate(data.createdAt));
+      },
+    },
+  ];
+
+  const data = [
+    { id: 1, name: 'name 1', createdAt: new Date() },
+    { id: 2, name: 'name 2', createdAt: new Date() },
+    { id: 3, name: 'name 3', createdAt: new Date() },
+  ];
 </script>
 
 <template>
@@ -40,6 +85,15 @@
 
           <div>form goes here</div>
         </FormDialog>
+      </div>
+    </div>
+
+    <div>
+      <h1 class="text-3xl font-bold mb-2">Tables</h1>
+
+      <div class="space-y-5">
+        <Table :columns="columns" :value="data" :loading="false" />
+        <InfiniteScrollTable :columns="columns" :value="data" :loading="false" />
       </div>
     </div>
   </div>

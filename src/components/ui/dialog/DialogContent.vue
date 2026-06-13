@@ -6,13 +6,39 @@
   import { cn } from '@/utils';
   import DialogOverlay from './DialogOverlay.vue';
 
-  type Props = DialogContentProps & { class?: HTMLAttributes['class'] };
+  type Props = DialogContentProps & {
+    class?: HTMLAttributes['class'];
+    dismissable?: boolean;
+    closeOnEscape?: boolean;
+  };
 
-  const props = defineProps<Props>();
+  const props = withDefaults(defineProps<Props>(), {
+    class: undefined,
+    dismissable: true,
+    closeOnEscape: true,
+  });
   const emits = defineEmits<DialogContentEmits>();
 
-  const delegatedProps = reactiveOmit(props, 'class');
+  const delegatedProps = reactiveOmit(props, 'class', 'dismissable', 'closeOnEscape');
   const forwarded = useForwardPropsEmits(delegatedProps, emits);
+
+  const onEscapeKeyDown = (event: KeyboardEvent) => {
+    if (!props.closeOnEscape) {
+      event.preventDefault();
+    }
+  };
+
+  const onInteractOutside = (event: Event) => {
+    if (!props.dismissable) {
+      event.preventDefault();
+    }
+  };
+
+  const onPointerDownOutside = (event: Event) => {
+    if (!props.dismissable) {
+      event.preventDefault();
+    }
+  };
 </script>
 
 <template>
@@ -27,6 +53,9 @@
           props.class
         )
       "
+      @escape-key-down="onEscapeKeyDown"
+      @interact-outside="onInteractOutside"
+      @pointer-down-outside="onPointerDownOutside"
     >
       <slot />
     </DialogContent>

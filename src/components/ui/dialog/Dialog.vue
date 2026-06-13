@@ -22,18 +22,32 @@
     hideHeader?: boolean;
     contentClass?: HTMLAttributes['class'];
     bodyClass?: HTMLAttributes['class'];
+    dismissable?: boolean;
+    closeOnEscape?: boolean;
   };
 
-  const props = defineProps<Props>();
+  const props = withDefaults(defineProps<Props>(), {
+    title: undefined,
+    description: undefined,
+    hideCloseIcon: false,
+    hideHeader: false,
+    contentClass: undefined,
+    bodyClass: undefined,
+    dismissable: true,
+    closeOnEscape: true,
+  });
   const emits = defineEmits<DialogRootEmits>();
 
   const delegatedRootProps = reactiveOmit(
     props,
     'title',
     'description',
+    'hideHeader',
     'hideCloseIcon',
     'contentClass',
-    'bodyClass'
+    'bodyClass',
+    'dismissable',
+    'closeOnEscape'
   );
 
   const forwarded = useForwardPropsEmits(delegatedRootProps, emits);
@@ -45,7 +59,11 @@
       <slot name="trigger" />
     </DialogTrigger>
 
-    <DialogContent :class="props.contentClass">
+    <DialogContent
+      :class="props.contentClass"
+      :dismissable="dismissable"
+      :close-on-escape="closeOnEscape"
+    >
       <DialogHeader v-if="!props.hideHeader">
         <slot name="header">
           <div class="flex flex-col gap-1">

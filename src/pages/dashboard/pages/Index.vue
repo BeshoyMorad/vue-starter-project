@@ -108,7 +108,8 @@
 
       <div class="space-y-5">
         <Table :columns="columns" :value="data" :loading="false" :meta="meta" />
-        <InfiniteScrollTable :columns="columns" :value="data" :loading="false" :meta="cursorMeta" />
+        <Table :columns="columns" :value="data" :loading="false" :meta="cursorMeta" />
+        <InfiniteScrollTable :columns="columns" :value="data" :loading="false" />
       </div>
     </div>
   </div>

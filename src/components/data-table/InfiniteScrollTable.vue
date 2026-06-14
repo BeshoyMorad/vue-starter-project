@@ -18,7 +18,6 @@
   } from '@/components/ui/table';
   import TableHead from './TableHead.vue';
   import TableRow from './TableRow.vue';
-  import TablePagination from './TablePagination.vue';
 
   interface Props {
     columns: ColumnDef<TRow, unknown>[];
@@ -29,23 +28,16 @@
     height?: string;
     maxHeight?: string;
     skeletonRows?: number;
-    meta?: Meta | CursorMeta | null;
-    limitOptions?: number[];
   }
 
   const props = withDefaults(defineProps<Props>(), {
     height: 'auto',
     maxHeight: '500px',
     skeletonRows: 10,
-    meta: null,
-    limitOptions: () => [10, 20, 30],
   });
   const emit = defineEmits<{
     (e: 'load-more'): void;
     (e: 'sort', sorting: { sort_by?: string; sort_order?: 'asc' | 'desc' }): void;
-    (e: 'limitChange', limit: number): void;
-    (e: 'next'): void;
-    (e: 'prev'): void;
   }>();
 
   const sorting = ref<SortingState>([]);
@@ -145,14 +137,6 @@
       <div v-if="isFetchingNextPage" class="flex justify-center py-4 w-full">
         <Icon icon="hugeicons--loading-03" class="animate-spin size-6" test-id="loading-icon" />
       </div>
-
-      <TablePagination
-        :meta="meta"
-        :limit-options="limitOptions"
-        @limit-change="emit('limitChange', $event)"
-        @next="emit('next')"
-        @prev="emit('prev')"
-      />
     </template>
   </Table>
 </template>

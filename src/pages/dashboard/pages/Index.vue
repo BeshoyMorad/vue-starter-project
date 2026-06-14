@@ -3,6 +3,7 @@
     Button,
     ConfirmDialog,
     Dialog,
+    Field,
     FormDialog,
     InfiniteScrollTable,
     Table,
@@ -10,6 +11,7 @@
   import { formatDate } from '@/utils/formatter';
   import type { ColumnDef } from '@tanstack/vue-table';
   import { h } from 'vue';
+  import { Form } from 'vee-validate';
 
   const columns: ColumnDef<{ id: number; name: string; createdAt: Date }, unknown>[] = [
     {
@@ -110,6 +112,80 @@
         <Table :columns="columns" :value="data" :loading="false" :meta="meta" />
         <Table :columns="columns" :value="data" :loading="false" :meta="cursorMeta" />
         <InfiniteScrollTable :columns="columns" :value="data" :loading="false" />
+      </div>
+    </div>
+
+    <div>
+      <h1 class="text-3xl font-bold mb-2">Forms</h1>
+
+      <div class="max-w-md space-y-6">
+        <div>
+          <h2 class="text-lg font-semibold mb-2">Direct v-model</h2>
+          <div class="space-y-4">
+            <Field.InputText
+              placeholder="Search..."
+              icon="hugeicons--search-01"
+              icon-position="left"
+              test-id="direct-search-input"
+            />
+            <Field.InputText
+              placeholder="Loading data..."
+              loading
+              icon-position="right"
+              test-id="direct-loading-input"
+            />
+            <Field.InputPassword placeholder="Enter password..." test-id="direct-password-input" />
+            <Field.InputNumber
+              placeholder="Enter age..."
+              icon="hugeicons--user"
+              icon-position="left"
+              test-id="direct-number-input"
+            />
+            <Field.InputNumber
+              placeholder="Steppers hidden..."
+              hide-steppers
+              :step="0.001"
+              test-id="direct-number-no-steppers"
+            />
+          </div>
+        </div>
+
+        <div>
+          <h2 class="text-lg font-semibold mb-2">Validation Wrapper (FormField)</h2>
+          <Form class="space-y-4">
+            <Field.InputText
+              name="username"
+              label="Username"
+              description="Enter a unique public display name."
+              placeholder="shadcn"
+              test-id="wrapped-username-input"
+            />
+            <Field.InputPassword
+              name="password"
+              label="Password"
+              description="Keep your password secure."
+              placeholder="••••••••"
+              test-id="wrapped-password-input"
+            />
+            <Field.InputNumber
+              name="age"
+              label="Age"
+              description="Enter your age."
+              placeholder="25"
+              test-id="wrapped-age-input"
+            />
+          </Form>
+        </div>
+
+        <div>
+          <h2 class="text-lg font-semibold mb-2">Textarea</h2>
+          <Field.Textarea
+            name="description"
+            label="Description"
+            placeholder="Enter a description"
+            test-id="textarea"
+          />
+        </div>
       </div>
     </div>
   </div>

@@ -46,6 +46,21 @@
     { id: 2, name: 'name 2', createdAt: new Date() },
     { id: 3, name: 'name 3', createdAt: new Date() },
   ];
+  const meta: Meta = {
+    currentPage: 1,
+    totalItems: 50,
+    totalPages: 5,
+    itemsPerPage: 10,
+    hasNextPage: true,
+    hasPreviousPage: false,
+  };
+  const cursorMeta: CursorMeta = {
+    hasNextPage: true,
+    hasPreviousPage: false,
+    limit: 10,
+    nextCursor: 'sdffdsdfs',
+    previousCursor: null,
+  };
 </script>
 
 <template>
@@ -92,8 +107,8 @@
       <h1 class="text-3xl font-bold mb-2">Tables</h1>
 
       <div class="space-y-5">
-        <Table :columns="columns" :value="data" :loading="false" />
-        <InfiniteScrollTable :columns="columns" :value="data" :loading="false" />
+        <Table :columns="columns" :value="data" :loading="false" :meta="meta" />
+        <InfiniteScrollTable :columns="columns" :value="data" :loading="false" :meta="cursorMeta" />
       </div>
     </div>
   </div>

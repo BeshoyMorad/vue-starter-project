@@ -16,15 +16,24 @@
   } from '@/components/ui/table';
   import TableHead from './TableHead.vue';
   import TableRow from './TableRow.vue';
+  import TablePagination from './TablePagination.vue';
 
   interface Props {
     columns: ColumnDef<TRow, unknown>[];
     value: TRow[];
     loading?: boolean;
+    meta?: Meta | CursorMeta | null;
+    limitOptions?: number[];
   }
 
   const props = defineProps<Props>();
-  const emit = defineEmits(['sort']);
+  const emit = defineEmits<{
+    (e: 'sort', sorting: { sort_by?: string; sort_order?: 'asc' | 'desc' }): void;
+    (e: 'pageChange', page: number): void;
+    (e: 'limitChange', limit: number): void;
+    (e: 'next'): void;
+    (e: 'prev'): void;
+  }>();
 
   const sorting = ref<SortingState>([]);
   const table = useVueTable({
@@ -84,5 +93,16 @@
         </TableCell>
       </UITableRow>
     </TableBody>
+
+    <template #footer>
+      <TablePagination
+        :meta="meta"
+        :limit-options="limitOptions"
+        @page-change="emit('pageChange', $event)"
+        @limit-change="emit('limitChange', $event)"
+        @next="emit('next')"
+        @prev="emit('prev')"
+      />
+    </template>
   </Table>
 </template>

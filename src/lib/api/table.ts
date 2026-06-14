@@ -8,10 +8,10 @@ import { api } from './client';
  * @param endpoint The API endpoint to fetch data from.
  * @param params The combined pagination and filter parameters.
  */
-export const fetchTableData = async <TData>(
+export const fetchTableData = async <TResponse>(
   endpoint: string,
   params: TableParams
-): Promise<CursorPaginatedResponse<TData>> => {
+): Promise<TResponse> => {
   const cleanParams: Record<string, unknown> = {};
   // Merge general filters at the root level, ignoring empties/nulls
   Object.entries(params).forEach(([key, value]) => {
@@ -20,7 +20,7 @@ export const fetchTableData = async <TData>(
     }
   });
 
-  const { data } = await api.get<CursorPaginatedResponse<TData>>(endpoint, {
+  const { data } = await api.get<TResponse>(endpoint, {
     params: cleanParams,
   });
 

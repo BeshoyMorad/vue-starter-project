@@ -17,17 +17,33 @@ declare global {
     path: string;
   }
 
-  interface CursorPaginatedMeta {
-    path: string;
-    per_page: number;
-    next_cursor: string | null;
-    prev_cursor: string | null;
-    total?: number;
+  // Standard Offset Pagination Meta
+  interface Meta {
+    currentPage: number;
+    itemsPerPage: number;
+    totalItems: number;
+    totalPages: number;
+    hasPreviousPage: boolean;
+    hasNextPage: boolean;
+  }
+
+  // Cursor Pagination Meta
+  interface CursorMeta {
+    hasNextPage: boolean;
+    hasPreviousPage: boolean;
+    nextCursor: string | null;
+    previousCursor: string | null;
+    limit: number;
   }
 
   interface CursorPaginatedResponse<T = unknown> {
     data: T[];
-    meta: CursorPaginatedMeta;
+    meta: CursorMeta;
+  }
+
+  interface OffsetPaginatedResponse<T = unknown> {
+    data: T[];
+    meta: Meta;
   }
 }
 

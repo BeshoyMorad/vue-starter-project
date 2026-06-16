@@ -12,6 +12,9 @@
   import type { ColumnDef } from '@tanstack/vue-table';
   import { h } from 'vue';
   import { Form } from 'vee-validate';
+  import { toTypedSchema } from '@vee-validate/yup';
+  import * as yup from 'yup';
+  import { useToast } from '@/composables/useToast';
 
   const columns: ColumnDef<{ id: number; name: string; createdAt: Date }, unknown>[] = [
     {
@@ -62,6 +65,49 @@
     limit: 10,
     nextCursor: 'sdffdsdfs',
     previousCursor: null,
+  };
+
+  const roles = [
+    { value: 'admin', label: 'Admin' },
+    { value: 'editor', label: 'Editor' },
+    { value: 'viewer', label: 'Viewer', disabled: true },
+  ];
+
+  const toast = useToast();
+
+  const validationSchema = toTypedSchema(
+    yup.object({
+      username: yup
+        .string()
+        .required('Username is required')
+        .min(3, 'Username must be at least 3 characters'),
+      password: yup
+        .string()
+        .required('Password is required')
+        .min(6, 'Password must be at least 6 characters'),
+      age: yup
+        .number()
+        .typeError('Age must be a number')
+        .required('Age is required')
+        .min(18, 'Must be at least 18'),
+      notifications: yup.boolean().optional(),
+      terms: yup.boolean().oneOf([true], 'You must accept the terms & conditions'),
+      roles: yup.array().of(yup.string()).min(1, 'Select at least one role'),
+      otp_code: yup
+        .string()
+        .required('OTP is required')
+        .length(6, 'OTP must be exactly 6 digits')
+        .matches(/^\d+$/, 'OTP must contain digits only'),
+      description: yup
+        .string()
+        .required('Description is required')
+        .min(10, 'Description must be at least 10 characters'),
+    })
+  );
+
+  const onFormSubmit = (values: Record<string, unknown>) => {
+    toast.success('Form submitted successfully!');
+    toast.info(`Form values: ${JSON.stringify(values)}`);
   };
 </script>
 
@@ -122,69 +168,98 @@
         <div>
           <h2 class="text-lg font-semibold mb-2">Direct v-model</h2>
           <div class="space-y-4">
-            <Field.InputText
+            <Field.Text
               placeholder="Search..."
               icon="hugeicons--search-01"
               icon-position="left"
               test-id="direct-search-input"
             />
-            <Field.InputText
+            <Field.Text
               placeholder="Loading data..."
               loading
               icon-position="right"
               test-id="direct-loading-input"
             />
-            <Field.InputPassword placeholder="Enter password..." test-id="direct-password-input" />
-            <Field.InputNumber
+            <Field.Password placeholder="Enter password..." test-id="direct-password-input" />
+            <Field.Number
               placeholder="Enter age..."
               icon="hugeicons--user"
               icon-position="left"
               test-id="direct-number-input"
             />
-            <Field.InputNumber
+            <Field.Number
               placeholder="Steppers hidden..."
               hide-steppers
               :step="0.001"
               test-id="direct-number-no-steppers"
             />
+            <Field.Switch label="Default Toggle Switch" test-id="direct-switch-default" />
+            <Field.Switch size="large" label="Large Toggle Switch" test-id="direct-switch-large" />
+            <Field.Checkbox label="Default Checkbox" test-id="direct-checkbox-default" />
+            <Field.Checkbox
+              size="small"
+              shape="circle"
+              label="Small Circle Checkbox"
+              test-id="direct-checkbox-small-circle"
+            />
+            <Field.Checkbox size="large" label="Large Checkbox" test-id="direct-checkbox-large" />
+            <Field.CheckboxGroup
+              :options="roles"
+              layout="horizontal"
+              test-id="direct-checkbox-group"
+            />
+            <Field.Otp :length="6" integer-only test-id="direct-otp" />
           </div>
         </div>
 
         <div>
           <h2 class="text-lg font-semibold mb-2">Validation Wrapper (FormField)</h2>
-          <Form class="space-y-4">
-            <Field.InputText
-              name="username"
+          <Form :validation-schema="validationSchema" class="space-y-4" @submit="onFormSubmit">
+            <Field.Text
               label="Username"
-              description="Enter a unique public display name."
+              name="username"
               placeholder="shadcn"
               test-id="wrapped-username-input"
             />
-            <Field.InputPassword
-              name="password"
+            <Field.Password
               label="Password"
-              description="Keep your password secure."
+              name="password"
               placeholder="••••••••"
               test-id="wrapped-password-input"
             />
-            <Field.InputNumber
-              name="age"
-              label="Age"
-              description="Enter your age."
-              placeholder="25"
-              test-id="wrapped-age-input"
+            <Field.Number label="Age" name="age" placeholder="25" test-id="wrapped-age-input" />
+            <Field.Switch
+              `description`="Keep up to date with notifications."
+              label="Enable Real-time Notifications"
+              name="notifications"
+              test-id="wrapped-switch-notifications"
             />
+            <Field.Checkbox
+              label="Accept Terms & Conditions"
+              name="terms"
+              test-id="wrapped-checkbox-terms"
+            />
+            <Field.CheckboxGroup
+              :options="roles"
+              label="User Roles"
+              name="roles"
+              test-id="wrapped-checkbox-group"
+            />
+            <Field.Otp
+              :length="6"
+              integer-only
+              label="One-Time Password"
+              name="otp_code"
+              test-id="wrapped-otp"
+            />
+            <Field.Textarea
+              label="Description"
+              name="description"
+              placeholder="Enter a description"
+              test-id="textarea"
+            />
+            <Button class="w-full" test-id="submit-form-button" type="submit"> Submit Form </Button>
           </Form>
-        </div>
-
-        <div>
-          <h2 class="text-lg font-semibold mb-2">Textarea</h2>
-          <Field.Textarea
-            name="description"
-            label="Description"
-            placeholder="Enter a description"
-            test-id="textarea"
-          />
         </div>
       </div>
     </div>

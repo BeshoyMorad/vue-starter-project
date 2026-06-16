@@ -6,6 +6,9 @@ import Switch from './switch/Switch.vue';
 import Checkbox from './checkbox/Checkbox.vue';
 import CheckboxGroup from './checkbox-group/CheckboxGroup.vue';
 import InputOtp from './input-otp/InputOtp.vue';
+import DatePicker from './date-picker/DatePicker.vue';
+import Radio from './radio/Radio.vue';
+import RadioGroup from './radio-group/RadioGroup.vue';
 
 export const Field = {
   Text: InputText,
@@ -16,11 +19,11 @@ export const Field = {
   Switch,
   Checkbox,
   CheckboxGroup,
-  // Radio: Radio,
-  // RadioGroup: RadioGroup,
+  Radio,
+  RadioGroup,
   // Select: Select,
   // InfiniteScrollSelect: InfiniteScrollSelect,
-  // DatePicker: DatePicker,
+  DatePicker,
 };
 
 // TODO: Create variant for input styles to use it with number, textarea, etc

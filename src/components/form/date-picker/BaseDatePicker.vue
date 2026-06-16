@@ -1,0 +1,124 @@
+<script setup lang="ts">
+  import { computed, ref, useAttrs, useId } from 'vue';
+  import { useVModel } from '@vueuse/core';
+  import { CalendarDate, getLocalTimeZone } from '@internationalized/date';
+  import { Popover } from '@/components/ui/popover';
+  import { Button } from '@/components/ui/button';
+  import { Calendar } from '@/components/ui/calendar';
+  import { Icon } from '@/components';
+  import { cn } from '@/utils';
+  import dayjs from 'dayjs';
+
+  defineOptions({
+    inheritAttrs: false,
+  });
+
+  interface Props {
+    testId: string;
+    modelValue?: Date | string | null;
+    defaultValue?: Date | string | null;
+    dateFormat?: string;
+    minDate?: Date;
+    maxDate?: Date;
+    disabled?: boolean;
+    placeholder?: string;
+    id?: string;
+  }
+
+  const props = withDefaults(defineProps<Props>(), {
+    modelValue: undefined,
+    defaultValue: undefined,
+    dateFormat: 'DD MMM, YYYY',
+    minDate: undefined,
+    maxDate: undefined,
+    disabled: false,
+    placeholder: 'Pick a date',
+    id: undefined,
+  });
+
+  const emits = defineEmits<{
+    (e: 'update:modelValue', value: Date | null): void;
+  }>();
+
+  const modelValue = useVModel(props, 'modelValue', emits, {
+    passive: true,
+    defaultValue: props.defaultValue ?? null,
+  });
+
+  const attrs = useAttrs();
+
+  const resolvedId = computed(() => {
+    if (props.id) return props.id;
+    if (typeof attrs.id === 'string') return attrs.id;
+    return useId();
+  });
+
+  const isInvalid = computed(() => {
+    return attrs['aria-invalid'] === 'true' || attrs['aria-invalid'] === true;
+  });
+
+  const convertToDateValue = (val: Date | string | null | undefined): CalendarDate | undefined => {
+    if (!val) return undefined;
+    const d = new Date(val);
+    if (isNaN(d.getTime())) return undefined;
+    return new CalendarDate(d.getFullYear(), d.getMonth() + 1, d.getDate());
+  };
+
+  const calendarValue = computed({
+    get() {
+      return convertToDateValue(modelValue.value);
+    },
+    set(newVal: CalendarDate | null | undefined) {
+      if (!newVal) {
+        modelValue.value = null;
+      } else {
+        modelValue.value = newVal.toDate(getLocalTimeZone());
+      }
+    },
+  });
+
+  const formattedDate = computed(() => {
+    if (!modelValue.value) return props.placeholder;
+    return dayjs(modelValue.value).format(props.dateFormat);
+  });
+
+  const open = ref(false);
+</script>
+
+<template>
+  <Popover v-model:open="open" align="start" class="w-auto p-0" :show-arrow="true">
+    <template #trigger>
+      <Button
+        :id="resolvedId"
+        v-bind="attrs"
+        :aria-invalid="isInvalid || undefined"
+        :class="
+          cn(
+            'w-full h-10 text-sm px-2 py-2 justify-start hover:bg-transparent',
+            'inline-flex text-text-default rounded-md border-[1.5px] focus:ring-2 focus:outline-0 placeholder:text-text-disabled read-only:bg-bg-default',
+            'disabled:text-text-disabled disabled:border-border-disabled disabled:cursor-not-allowed',
+            'aria-invalid:border-border-danger aria-invalid:focus:ring-danger-300',
+            'border-border-disabled hover:border-border-primary focus:ring-border-ring focus-visible:ring-border-ring',
+            !modelValue && 'text-text-disabled',
+            attrs.class
+          )
+        "
+        :disabled="disabled"
+        :test-id="testId"
+        variant="outline"
+      >
+        <Icon icon="hugeicons--calendar-01" class="mr-2 size-5 text-text-disabled" />
+        <span>{{ formattedDate }}</span>
+      </Button>
+    </template>
+
+    <Calendar
+      v-model="calendarValue"
+      initial-focus
+      layout="month-and-year"
+      :max-value="convertToDateValue(maxDate)"
+      :min-value="convertToDateValue(minDate)"
+      @update:model-value="open = false"
+    />
+  </Popover>
+</template>

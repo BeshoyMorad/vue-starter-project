@@ -73,6 +73,12 @@
     { value: 'viewer', label: 'Viewer', disabled: true },
   ];
 
+  const genders = [
+    { value: 'male', label: 'Male' },
+    { value: 'female', label: 'Female' },
+    { value: 'other', label: 'Other', disabled: true },
+  ];
+
   const toast = useToast();
 
   const validationSchema = toTypedSchema(
@@ -98,6 +104,12 @@
         .required('OTP is required')
         .length(6, 'OTP must be exactly 6 digits')
         .matches(/^\d+$/, 'OTP must contain digits only'),
+      birthDate: yup
+        .date()
+        .typeError('Birth date must be a valid date')
+        .required('Birth date is required')
+        .max(new Date(), 'Birth date cannot be in the future'),
+      gender: yup.string().required('Gender is required'),
       description: yup
         .string()
         .required('Description is required')
@@ -209,6 +221,13 @@
               test-id="direct-checkbox-group"
             />
             <Field.Otp :length="6" integer-only test-id="direct-otp" />
+            <Field.DatePicker placeholder="Pick a birth date..." test-id="direct-date-picker" />
+            <Field.RadioGroup :options="genders" layout="horizontal" test-id="direct-radio-group" />
+            <Field.Radio
+              label="Standalone Radio (Option A)"
+              test-id="direct-radio-standalone"
+              value="a"
+            />
           </div>
         </div>
 
@@ -251,6 +270,24 @@
               label="One-Time Password"
               name="otp_code"
               test-id="wrapped-otp"
+            />
+            <Field.DatePicker
+              label="Birth Date"
+              name="birthDate"
+              placeholder="Select birth date..."
+              test-id="wrapped-date-picker"
+            />
+            <Field.RadioGroup
+              label="Gender"
+              name="gender"
+              :options="genders"
+              test-id="wrapped-radio-group"
+            />
+            <Field.Radio
+              label="Standlone Radio (Option B)"
+              name="radioStandalone"
+              test-id="wrapped-radio-standalone"
+              value="b"
             />
             <Field.Textarea
               label="Description"

@@ -19,6 +19,7 @@ export const fetchTableData = async <TResponse>(
       cleanParams[key] = value;
     }
   });
+  console.log(cleanParams);
 
   const { data } = await api.get<TResponse>(endpoint, {
     params: cleanParams,

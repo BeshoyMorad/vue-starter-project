@@ -1,5 +1,4 @@
-/* eslint-disable max-lines-per-function */
-import { computed, toValue, type MaybeRefOrGetter, type ComputedRef } from 'vue';
+import { computed, toValue, type MaybeRefOrGetter, type ComputedRef, type Ref } from 'vue';
 import {
   keepPreviousData,
   useInfiniteQuery,
@@ -30,9 +29,11 @@ export type UseDataInfiniteScrollReturn<
   Omit<UseInfiniteQueryReturnType<unknown, TError>, 'data' | 'meta'> & {
     data: ComputedRef<TData[]>;
     meta: ComputedRef<Meta | CursorMeta | null | undefined>;
+    hasMore: Ref<boolean>;
     changeLimit: (limit: number) => void;
   };
 
+// eslint-disable-next-line max-lines-per-function
 export function useDataInfiniteScroll<
   TData = unknown,
   TFilters extends object = object,

@@ -5,10 +5,10 @@
     IsMultiple extends boolean,
     Option extends Record<string, unknown>,
     Value extends AcceptableValue,
-    TOptionValue extends keyof Option | ((data: Option) => Value)
+    OptionValue extends keyof Option | ((data: Option) => Value)
   "
 >
-  import { Combobox as UICombobox } from '@/components/ui/combobox';
+  import BaseInfiniteScrollSelect from './BaseInfiniteScrollSelect.vue';
   import type { AcceptableValue } from 'reka-ui';
   import {
     FormField,
@@ -25,21 +25,22 @@
 
   interface Props {
     testId: string;
-    options: Option[];
-    optionLabel: string;
-    optionValue: TOptionValue | ((data: Option) => TOptionValue);
-    placeholder?: string;
-    searchPlaceholder?: string;
-    size?: 'small' | 'default' | 'large';
-    multiple?: IsMultiple;
+    endpoint: string;
+    queryKey: unknown[];
+    paginationType?: 'offset' | 'cursor';
+    limit?: number;
+    initialFilters?: Record<string, unknown>;
+    query?: Record<string, unknown>;
     disabled?: boolean;
-    readonly?: boolean;
+    optionLabel?: string;
+    optionValue?: OptionValue | ((data: Option) => Value);
+    placeholder?: string;
+    size?: 'small' | 'default' | 'large';
     showClear?: boolean;
     searchable?: boolean;
-    emptyMessage?: string;
+    multiple?: IsMultiple;
     maxSelectedLabels?: number;
-    selectedItemsLabel?: string;
-    loading?: boolean;
+    initialOptions?: Option[] | Option;
     // Form validation wrapper props
     name?: string;
     label?: string;
@@ -48,22 +49,24 @@
   }
 
   withDefaults(defineProps<Props>(), {
-    placeholder: 'Select..',
-    searchPlaceholder: 'Search..',
-    size: 'default',
-    multiple: undefined,
+    paginationType: 'offset',
+    limit: 10,
+    initialFilters: undefined,
+    query: undefined,
     disabled: false,
-    readonly: false,
-    showClear: false,
+    multiple: undefined,
+    size: 'default',
+    optionLabel: 'name',
+    optionValue: (data: Option) => data.id as Value,
+    placeholder: undefined,
+    showClear: true,
     searchable: false,
-    emptyMessage: 'No results found',
+    initialOptions: () => [],
     maxSelectedLabels: 4,
-    selectedItemsLabel: '{0} items selected',
-    loading: false,
     name: undefined,
     label: undefined,
     description: undefined,
-    containerClass: undefined,
+    containerClass: '',
   });
 
   const modelValue = defineModel<IsMultiple extends true ? Value[] : Value>();
@@ -76,23 +79,23 @@
         <FormLabel v-if="label">{{ label }}</FormLabel>
 
         <FormControl>
-          <UICombobox
+          <BaseInfiniteScrollSelect
             :aria-invalid="!!errorMessage"
-            :options="options"
+            :endpoint="endpoint"
+            :query-key="queryKey"
+            :limit="limit"
+            :initial-filters="initialFilters"
+            :query="query"
+            :disabled="disabled"
             :option-label="optionLabel"
             :option-value="optionValue"
             :placeholder="placeholder"
-            :search-placeholder="searchPlaceholder"
             :size="size"
-            :multiple="multiple"
-            :disabled="disabled"
-            :readonly="readonly"
             :show-clear="showClear"
             :searchable="searchable"
-            :empty-message="emptyMessage"
+            :initial-options="initialOptions"
+            :multiple="multiple"
             :max-selected-labels="maxSelectedLabels"
-            :selected-items-label="selectedItemsLabel"
-            :loading="loading"
             :test-id="testId"
             v-bind="$attrs"
             :model-value="value"
@@ -101,7 +104,7 @@
             <template v-for="(_, slotName) in $slots" #[slotName]="slotProps">
               <slot :name="slotName" v-bind="slotProps || {}" />
             </template>
-          </UICombobox>
+          </BaseInfiniteScrollSelect>
         </FormControl>
 
         <FormDescription v-if="description">{{ description }}</FormDescription>
@@ -112,30 +115,30 @@
   </template>
 
   <template v-else>
-    <UICombobox
+    <BaseInfiniteScrollSelect
       v-model="modelValue"
       v-bind="$attrs"
       :class="containerClass"
-      :options="options"
+      :endpoint="endpoint"
+      :query-key="queryKey"
+      :limit="limit"
+      :initial-filters="initialFilters"
+      :query="query"
+      :disabled="disabled"
       :option-label="optionLabel"
       :option-value="optionValue"
       :placeholder="placeholder"
-      :search-placeholder="searchPlaceholder"
       :size="size"
-      :multiple="multiple"
-      :disabled="disabled"
-      :readonly="readonly"
       :show-clear="showClear"
       :searchable="searchable"
-      :empty-message="emptyMessage"
+      :initial-options="initialOptions"
+      :multiple="multiple"
       :max-selected-labels="maxSelectedLabels"
-      :selected-items-label="selectedItemsLabel"
-      :loading="loading"
       :test-id="testId"
     >
       <template v-for="(_, slotName) in $slots" #[slotName]="slotProps">
         <slot :name="slotName" v-bind="slotProps || {}" />
       </template>
-    </UICombobox>
+    </BaseInfiniteScrollSelect>
   </template>
 </template>

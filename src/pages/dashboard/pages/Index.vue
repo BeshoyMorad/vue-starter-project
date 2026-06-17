@@ -73,6 +73,7 @@
         .max(new Date(), 'Birth date cannot be in the future'),
       gender: yup.string().required('Gender is required'),
       country: yup.string().required('Country is required'),
+      userId: yup.number().required('User is required'),
       description: yup
         .string()
         .required('Description is required')
@@ -132,7 +133,7 @@
       <div class="space-y-5">
         <Table :columns="columns" :value="data" :loading="false" :meta="meta" />
         <Table :columns="columns" :value="data" :loading="false" :meta="cursorMeta" />
-        <InfiniteScrollTable :columns="columns" :value="data" :loading="false" />
+        <InfiniteScrollTable :columns="columns" :value="data" :loading="true" :skeleton-rows="3" />
       </div>
     </div>
 
@@ -208,6 +209,26 @@
               placeholder="Select countries..."
               test-id="direct-select-multiple"
             />
+            <Field.InfiniteScrollSelect
+              endpoint="/api/mock/users"
+              :query-key="['mock-users-direct']"
+              option-label="name"
+              option-value="id"
+              placeholder="Search users (Infinite)..."
+              test-id="direct-infinite-scroll-select"
+              searchable
+            />
+            <Field.InfiniteScrollSelect
+              multiple
+              endpoint="/api/mock/users"
+              :query-key="['mock-users-direct-multiple']"
+              option-label="name"
+              option-value="id"
+              placeholder="Search multiple users (Infinite)..."
+              test-id="direct-infinite-scroll-select-multiple"
+              searchable
+              :max-selected-labels="1"
+            />
           </div>
         </div>
 
@@ -277,6 +298,17 @@
               option-value="value"
               placeholder="Select a country..."
               test-id="wrapped-select-country"
+            />
+            <Field.InfiniteScrollSelect
+              label="User (Infinite)"
+              name="userId"
+              endpoint="/api/mock/users"
+              :query-key="['mock-users-wrapped']"
+              option-label="name"
+              option-value="id"
+              placeholder="Search user (Infinite)..."
+              test-id="wrapped-infinite-scroll-select"
+              searchable
             />
             <Field.Textarea
               label="Description"

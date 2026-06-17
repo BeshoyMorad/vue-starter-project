@@ -3,12 +3,13 @@
   lang="ts"
   generic="
     IsMultiple extends boolean,
-    Option extends object,
+    Option extends Record<string, unknown>,
     Value extends AcceptableValue,
     TOptionValue extends keyof Option | ((data: Option) => Value)
   "
 >
-  import { computed, ref, type HtmlHTMLAttributes } from 'vue';
+  /* eslint-disable max-lines */
+  import { computed, type HtmlHTMLAttributes } from 'vue';
   import {
     useForwardPropsEmits,
     type AcceptableValue,
@@ -58,6 +59,7 @@
     emptyMessage: 'No results found',
     maxSelectedLabels: 4,
     selectedItemsLabel: '{0} items selected',
+    showClear: true,
     searchable: false,
   });
 
@@ -85,7 +87,7 @@
 
   const forwarded = useForwardPropsEmits(delegatedProps, emits);
   const modelValue = defineModel<IsMultiple extends true ? Value[] : Value>();
-  const searchTerm = ref('');
+  const search = defineModel<string>('search', { default: '' });
 
   const iconSizesMap = { small: 'md', default: 'default', large: 'xl' } as const;
   const sizeClasses = {
@@ -99,15 +101,19 @@
       ? props.optionValue(option)
       : option[(props.optionValue ?? 'id') as keyof Option];
 
-  const getOptionLabel = (option: Option): string => {
-    const label = option[props.optionLabel as keyof Option];
-    return label == null ? '' : String(label);
-  };
+  const getOptionLabel = (option: Option): string =>
+    option[props.optionLabel as keyof Option] == null
+      ? ''
+      : String(option[props.optionLabel as keyof Option]);
+
+  const selectedCache = new Map<unknown, Option>();
 
   const displayValue = (val: unknown): string => {
     if (!val) return '';
     const match = props.options?.find((o) => getOptionValue(o) === val);
-    return match ? getOptionLabel(match) : String(val);
+    if (match) selectedCache.set(val, match);
+    const option = match || selectedCache.get(val);
+    return option ? getOptionLabel(option) : String(val);
   };
 
   const selectedLabel = computed(() => displayValue(modelValue.value));
@@ -122,7 +128,9 @@
     if (!props.multiple || !Array.isArray(modelValue.value)) return [];
     return modelValue.value.map((val) => {
       const match = props.options?.find((o) => getOptionValue(o) === val);
-      return { value: val, label: match ? getOptionLabel(match) : String(val), data: match };
+      if (match) selectedCache.set(val, match);
+      const option = match || selectedCache.get(val);
+      return { value: val, label: option ? getOptionLabel(option) : String(val), data: option };
     });
   });
 
@@ -137,10 +145,11 @@
   );
 
   const removeChip = (val: unknown) => {
-    if (!props.multiple || !Array.isArray(modelValue.value)) return;
-    modelValue.value = modelValue.value.filter((item) => item !== val) as IsMultiple extends true
-      ? Value[]
-      : Value;
+    if (props.multiple && Array.isArray(modelValue.value)) {
+      modelValue.value = modelValue.value.filter((i) => i !== val) as IsMultiple extends true
+        ? Value[]
+        : Value;
+    }
   };
 
   const hasValue = computed(() =>
@@ -152,39 +161,38 @@
 
   const rootClass = computed(() =>
     cn(
-      `group flex w-full min-w-0 items-center cursor-pointer relative select-none rounded-md
-        border-[1.5px] border-border-disabled hover:border-border-primary font-medium
-        focus-within:outline-2 focus-within:outline-border-primary
-        aria-invalid:border-border-danger aria-invalid:hover:border-border-danger
-        disabled:bg-bg-disabled disabled:text-text-disabled disabled:pointer-events-none
-        transition-colors duration-200`,
-      sizeClasses[props.size ?? 'default'],
-      props.multiple && hasValue.value && 'h-auto min-h-10 py-1',
+      'group flex w-full min-w-0 items-center cursor-pointer relative select-none rounded-md border-[1.5px] border-border-disabled hover:border-border-primary font-medium focus-within:outline-2 focus-within:outline-border-primary aria-invalid:border-border-danger aria-invalid:hover:border-border-danger disabled:bg-bg-disabled disabled:text-text-disabled disabled:pointer-events-none transition-colors duration-200',
       (props.readonly || props.disabled) &&
         'pointer-events-none cursor-default bg-bg-disabled text-text-disabled',
       props.class
+    )
+  );
+
+  const triggerClass = computed(() =>
+    cn(
+      sizeClasses[props.size ?? 'default'],
+      props.multiple && hasValue.value && 'h-auto min-h-10 py-1',
+      props.multiple && 'overflow-hidden'
     )
   );
 </script>
 
 <template>
   <ComboboxRoot
-    v-model="modelValue"
-    v-model:search-term="searchTerm"
     v-bind="forwarded"
+    v-model="modelValue"
     :multiple="multiple"
     :disabled="disabled"
     :reset-model-value-on-clear="showClear"
     :as-child="true"
-    :ignore-filter="false"
     @update:open="
       (val) => {
-        if (!val) searchTerm = '';
+        if (!val) search = '';
       }
     "
   >
     <ComboboxAnchor :class="rootClass" :data-test-id="testId" :aria-readonly="readonly">
-      <ComboboxTrigger :class="{ 'overflow-hidden': multiple }" :disabled="isLocked">
+      <ComboboxTrigger :class="triggerClass" :disabled="isLocked">
         <span
           v-if="isEmpty"
           class="block min-w-0 flex-1 truncate text-left font-medium text-text-disabled grow"
@@ -211,7 +219,6 @@
               class="inline-flex max-w-full shrink-0 items-center gap-1 rounded-md bg-bg-default px-2 py-0.5 text-sm text-text-default"
             >
               <span class="max-w-24 truncate">{{ chip.label }}</span>
-
               <button
                 v-if="!isLocked"
                 type="button"
@@ -263,8 +270,11 @@
       <ComboboxContent position="popper" :side-offset="4">
         <div v-if="searchable" class="shrink-0 px-2 pt-2 pb-1 relative">
           <div class="relative">
-            <ComboboxInput :placeholder="props.searchPlaceholder ?? 'Search…'" />
-
+            <ComboboxInput
+              v-model="search"
+              :display-value="() => ''"
+              :placeholder="props.searchPlaceholder"
+            />
             <span class="pointer-events-none absolute top-1/2 right-3 z-1 -mt-2 leading-none">
               <Icon
                 test-id="combobox-filter-icon"

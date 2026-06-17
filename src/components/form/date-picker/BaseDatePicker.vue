@@ -7,6 +7,7 @@
   import { Calendar } from '@/components/ui/calendar';
   import { Icon } from '@/components';
   import { cn } from '@/utils';
+  import { inputVariants } from '@/components/ui/input';
   import dayjs from 'dayjs';
 
   defineOptions({
@@ -94,11 +95,8 @@
         :aria-invalid="isInvalid || undefined"
         :class="
           cn(
-            'w-full h-10 text-sm px-2 py-2 justify-start hover:bg-transparent',
-            'inline-flex text-text-default rounded-md border-[1.5px] focus:ring-2 focus:outline-0 placeholder:text-text-disabled read-only:bg-bg-default',
-            'disabled:text-text-disabled disabled:border-border-disabled disabled:cursor-not-allowed',
-            'aria-invalid:border-border-danger aria-invalid:focus:ring-danger-300',
-            'border-border-disabled hover:border-border-primary focus:ring-border-ring focus-visible:ring-border-ring',
+            inputVariants(),
+            'w-full h-10 text-sm px-2 py-2 justify-start hover:bg-transparent inline-flex aria-invalid:focus:ring-danger-300',
             !modelValue && 'text-text-disabled',
             attrs.class
           )
@@ -108,6 +106,7 @@
         variant="outline"
       >
         <Icon icon="hugeicons--calendar-01" class="mr-2 size-5 text-text-disabled" />
+
         <span>{{ formattedDate }}</span>
       </Button>
     </template>

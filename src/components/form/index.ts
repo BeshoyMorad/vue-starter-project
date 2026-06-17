@@ -27,5 +27,3 @@ export const Field = {
   InfiniteScrollSelect,
   DatePicker,
 };
-
-// TODO: Create variant for input styles to use it with number, textarea, etc

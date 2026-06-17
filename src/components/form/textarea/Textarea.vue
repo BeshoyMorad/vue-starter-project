@@ -49,10 +49,13 @@
     <FormField v-slot="{ componentField }" :name="name">
       <FormItem :class="containerClass">
         <FormLabel v-if="label">{{ label }}</FormLabel>
+
         <FormControl>
           <UITextarea v-bind="{ ...$attrs, ...componentField }" :test-id="testId" />
         </FormControl>
+
         <FormDescription v-if="description">{{ description }}</FormDescription>
+
         <FormMessage />
       </FormItem>
     </FormField>

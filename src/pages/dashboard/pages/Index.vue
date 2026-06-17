@@ -208,6 +208,7 @@
               option-value="value"
               placeholder="Select countries..."
               test-id="direct-select-multiple"
+              :max-selected-labels="2"
             />
             <Field.InfiniteScrollSelect
               endpoint="/api/mock/users"

@@ -9,6 +9,7 @@ import InputOtp from './input-otp/InputOtp.vue';
 import DatePicker from './date-picker/DatePicker.vue';
 import Radio from './radio/Radio.vue';
 import RadioGroup from './radio-group/RadioGroup.vue';
+import Select from './select/Select.vue';
 
 export const Field = {
   Text: InputText,
@@ -21,7 +22,7 @@ export const Field = {
   CheckboxGroup,
   Radio,
   RadioGroup,
-  // Select: Select,
+  Select,
   // InfiniteScrollSelect: InfiniteScrollSelect,
   DatePicker,
 };

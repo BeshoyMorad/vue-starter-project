@@ -16,68 +16,30 @@
   import * as yup from 'yup';
   import { useToast } from '@/composables/useToast';
 
+  /* prettier-ignore */
   const columns: ColumnDef<{ id: number; name: string; createdAt: Date }, unknown>[] = [
-    {
-      accessorKey: 'id',
-      header: 'Id',
-      enableSorting: false,
-      cell: ({ row }) => {
-        const data = row.original;
-        return h('p', {}, data.id);
-      },
-    },
-    {
-      accessorKey: 'name',
-      header: 'Name',
-      enableSorting: false,
-      cell: ({ row }) => {
-        const data = row.original;
-        return h('p', {}, data.name);
-      },
-    },
-    {
-      accessorKey: 'createdAt',
-      header: 'Created At',
-      enableSorting: true,
-      cell: ({ row }) => {
-        const data = row.original;
-        return h('p', {}, formatDate(data.createdAt));
-      },
-    },
+    { accessorKey: 'id', header: 'Id', enableSorting: false, cell: ({ row }) => h('p', {}, row.original.id) },
+    { accessorKey: 'name', header: 'Name', enableSorting: false, cell: ({ row }) => h('p', {}, row.original.name) },
+    { accessorKey: 'createdAt', header: 'Created At', enableSorting: true, cell: ({ row }) => h('p', {}, formatDate(row.original.createdAt)) },
   ];
 
+  /* prettier-ignore */
   const data = [
     { id: 1, name: 'name 1', createdAt: new Date() },
     { id: 2, name: 'name 2', createdAt: new Date() },
     { id: 3, name: 'name 3', createdAt: new Date() },
   ];
-  const meta: Meta = {
-    currentPage: 1,
-    totalItems: 50,
-    totalPages: 5,
-    itemsPerPage: 10,
-    hasNextPage: true,
-    hasPreviousPage: false,
-  };
-  const cursorMeta: CursorMeta = {
-    hasNextPage: true,
-    hasPreviousPage: false,
-    limit: 10,
-    nextCursor: 'sdffdsdfs',
-    previousCursor: null,
-  };
+  /* prettier-ignore */
+  const meta: Meta = { currentPage: 1, totalItems: 50, totalPages: 5, itemsPerPage: 10, hasNextPage: true, hasPreviousPage: false };
+  /* prettier-ignore */
+  const cursorMeta: CursorMeta = { hasNextPage: true, hasPreviousPage: false, limit: 10, nextCursor: 'sdffdsdfs', previousCursor: null };
 
-  const roles = [
-    { value: 'admin', label: 'Admin' },
-    { value: 'editor', label: 'Editor' },
-    { value: 'viewer', label: 'Viewer', disabled: true },
-  ];
-
-  const genders = [
-    { value: 'male', label: 'Male' },
-    { value: 'female', label: 'Female' },
-    { value: 'other', label: 'Other', disabled: true },
-  ];
+  /* prettier-ignore */
+  const roles = [{ value: 'admin', label: 'Admin' }, { value: 'editor', label: 'Editor' }, { value: 'viewer', label: 'Viewer', disabled: true }];
+  /* prettier-ignore */
+  const genders = [{ value: 'male', label: 'Male' }, { value: 'female', label: 'Female' }, { value: 'other', label: 'Other', disabled: true }];
+  /* prettier-ignore */
+  const countries = [{ value: 'eg', label: 'Egypt' }, { value: 'us', label: 'United States' }, { value: 'uk', label: 'United Kingdom' }, { value: 'ca', label: 'Canada', disabled: true }];
 
   const toast = useToast();
 
@@ -110,6 +72,7 @@
         .required('Birth date is required')
         .max(new Date(), 'Birth date cannot be in the future'),
       gender: yup.string().required('Gender is required'),
+      country: yup.string().required('Country is required'),
       description: yup
         .string()
         .required('Description is required')
@@ -228,6 +191,23 @@
               test-id="direct-radio-standalone"
               value="a"
             />
+            <Field.Select
+              :options="countries"
+              option-label="label"
+              option-value="value"
+              placeholder="Select a country..."
+              test-id="direct-select-single"
+              show-clear
+              searchable
+            />
+            <Field.Select
+              multiple
+              :options="countries"
+              option-label="label"
+              option-value="value"
+              placeholder="Select countries..."
+              test-id="direct-select-multiple"
+            />
           </div>
         </div>
 
@@ -288,6 +268,15 @@
               name="radioStandalone"
               test-id="wrapped-radio-standalone"
               value="b"
+            />
+            <Field.Select
+              label="Country"
+              name="country"
+              :options="countries"
+              option-label="label"
+              option-value="value"
+              placeholder="Select a country..."
+              test-id="wrapped-select-country"
             />
             <Field.Textarea
               label="Description"

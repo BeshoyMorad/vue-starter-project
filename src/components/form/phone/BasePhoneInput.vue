@@ -217,7 +217,7 @@
       :placeholder="placeholder"
       :disabled="disabled"
       :data-test-id="testId"
-      class="text-foreground placeholder:text-foreground-placeholder min-w-0 flex-1 bg-transparent px-4 py-2 text-sm outline-none"
+      class="text-foreground placeholder:text-foreground-placeholder min-w-0 flex-1 bg-transparent px-4 py-3 text-sm outline-none"
     />
 
     <!-- Clear button -->

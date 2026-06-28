@@ -1,22 +1,9 @@
 import { createRouter, createWebHistory } from 'vue-router';
 import { paths } from './paths';
-import authGuard from './guards/authGuard';
-import guestGuard from './guards/guestGuard';
+import { authGuard } from './guards';
+import { authRoutes } from '@/modules/auth/auth.routes';
 
 export const routes = [
-  {
-    path: '/auth',
-    component: () => import('@/layouts/AuthLayout.vue'),
-    beforeEnter: [guestGuard],
-    children: [
-      {
-        path: 'login',
-        name: paths.auth.login,
-        component: () => import('@/pages/auth/Login.vue'),
-        meta: { title: 'Sign In' },
-      },
-    ],
-  },
   {
     path: '/',
     component: () => import('@/layouts/AppLayout.vue'),
@@ -30,6 +17,7 @@ export const routes = [
       },
     ],
   },
+  ...authRoutes,
 ];
 
 const router = createRouter({

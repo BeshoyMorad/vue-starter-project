@@ -12,6 +12,7 @@ import Select from './select/Select.vue';
 import DatePicker from './date-picker/DatePicker.vue';
 import InfiniteScrollSelect from './infinite-scroll-select/InfiniteScrollSelect.vue';
 import PhoneInput from './phone/PhoneInput.vue';
+import ImageUpload from './image-upload/ImageUpload.vue';
 
 export const Field = {
   Text: InputText,
@@ -28,4 +29,5 @@ export const Field = {
   InfiniteScrollSelect,
   DatePicker,
   Phone: PhoneInput,
+  ImageUpload,
 };

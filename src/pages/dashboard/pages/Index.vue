@@ -16,8 +16,9 @@
   import { toTypedSchema } from '@vee-validate/yup';
   import * as yup from 'yup';
   import { phoneSchema } from '@/utils/yup-phone';
-  import { useDarkTheme } from '@/composables';
+  import { useDarkTheme, useFormMedia, extractMediaPayload, type MediaValue } from '@/composables';
   import { info, success } from '@/utils/toast';
+  import { ref } from 'vue';
 
   /* prettier-ignore */
   const columns: ColumnDef<{ id: number; name: string; createdAt: Date }, unknown>[] = [
@@ -76,6 +77,12 @@
       country: yup.string().required('Country is required'),
       userId: yup.number().required('User is required'),
       phone: phoneSchema().required('Phone number is required'),
+      logo: yup
+        .mixed<MediaValue>()
+        .required('Logo is required')
+        .test('required', 'Logo is required', (val) => {
+          return Boolean(val && (val.file || val.initialUrl));
+        }),
       description: yup
         .string()
         .required('Description is required')
@@ -83,9 +90,19 @@
     })
   );
 
-  const onFormSubmit = (values: Record<string, unknown>) => {
+  const { uploadFormMedia } = useFormMedia();
+  const directMedia = ref<MediaValue | null>(null);
+
+  const onFormSubmit = async (values: Record<string, unknown>) => {
+    // 1. Upload any new/changed files in parallel
+    await uploadFormMedia(values, 'PHOTO');
+
+    // 2. Extract media payloads
+    const payload = extractMediaPayload(values);
+
     success('Form submitted successfully!');
     info(`Form values: ${JSON.stringify(values)}`);
+    info(`Media payload: ${JSON.stringify(payload)}`);
   };
 
   const { toggleDark } = useDarkTheme();
@@ -230,6 +247,46 @@
               placeholder="10 1234 5678"
               test-id="direct-phone-input-eg"
             />
+
+            <Field.ImageUpload
+              v-model="directMedia"
+              size-preset="avatar"
+              test-id="direct-avatar-upload"
+            />
+
+            <Field.ImageUpload
+              v-model="directMedia"
+              size-preset="default"
+              test-id="direct-avatar-upload"
+            />
+
+            <Field.ImageUpload
+              v-model="directMedia"
+              size-preset="logo"
+              test-id="direct-avatar-upload"
+            />
+
+            <Field.ImageUpload
+              v-model="directMedia"
+              size-preset="smallLogo"
+              test-id="direct-avatar-upload"
+            />
+
+            <div class="flex items-center gap-4">
+              <Field.ImageUpload
+                v-model="directMedia"
+                size-preset="avatar"
+                test-id="direct-avatar-upload"
+              />
+
+              <div class="text-text-disabled text-xs">
+                <p>Direct v-model state:</p>
+                <pre class="bg-background max-w-60 overflow-auto rounded p-2 text-left">{{
+                  JSON.stringify(directMedia, null, 2)
+                }}</pre>
+              </div>
+            </div>
+
             <Field.InfiniteScrollSelect
               multiple
               endpoint="/api/mock/users"
@@ -330,6 +387,12 @@
               placeholder="000 000 0000"
               show-clear
               test-id="wrapped-phone-input"
+            />
+            <Field.ImageUpload
+              label="Corporate Logo"
+              name="logo"
+              size-preset="logo"
+              test-id="wrapped-logo-upload"
             />
             <Field.Textarea
               label="Description"

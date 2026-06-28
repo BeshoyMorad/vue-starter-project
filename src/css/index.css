@@ -4,12 +4,13 @@
 @import './colors.css';
 @import './token.css';
 @import './dark-token.css';
+@import './typography.css';
 @import './utilities.css';
 @import 'tw-animate-css';
 
 @custom-variant dark (&:is(.dark *));
 
-@plugin "@iconify/tailwind4" {
+@plugin '@iconify/tailwind4' {
   prefixes: 'hugeicons', 'custom';
   scale: 1.5;
   icon-sets: from-folder('custom', './src/assets/icons');

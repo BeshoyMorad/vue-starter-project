@@ -6,3 +6,5 @@ export type { TableParams } from './useTableState';
 export type { UseTableOptions } from './useDataTable';
 export { useDataInfiniteScroll } from './useDataInfiniteScroll';
 export type { UseDataInfiniteScrollOptions } from './useDataInfiniteScroll';
+export { useUploadImage } from './useUploadImage';
+export type { StorageServiceType, UploadImagePayload } from './useUploadImage';

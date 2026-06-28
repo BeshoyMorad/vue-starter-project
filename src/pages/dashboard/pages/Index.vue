@@ -1,4 +1,5 @@
 <script setup lang="ts">
+  /* eslint-disable max-lines */
   import {
     Button,
     ConfirmDialog,
@@ -14,7 +15,9 @@
   import { Form } from 'vee-validate';
   import { toTypedSchema } from '@vee-validate/yup';
   import * as yup from 'yup';
-  import { useToast } from '@/composables/useToast';
+  import { phoneSchema } from '@/utils/yup-phone';
+  import { useDarkTheme } from '@/composables';
+  import { info, success } from '@/utils/toast';
 
   /* prettier-ignore */
   const columns: ColumnDef<{ id: number; name: string; createdAt: Date }, unknown>[] = [
@@ -40,8 +43,6 @@
   const genders = [{ value: 'male', label: 'Male' }, { value: 'female', label: 'Female' }, { value: 'other', label: 'Other', disabled: true }];
   /* prettier-ignore */
   const countries = [{ value: 'eg', label: 'Egypt' }, { value: 'us', label: 'United States' }, { value: 'uk', label: 'United Kingdom' }, { value: 'ca', label: 'Canada', disabled: true }];
-
-  const toast = useToast();
 
   const validationSchema = toTypedSchema(
     yup.object({
@@ -74,6 +75,7 @@
       gender: yup.string().required('Gender is required'),
       country: yup.string().required('Country is required'),
       userId: yup.number().required('User is required'),
+      phone: phoneSchema().required('Phone number is required'),
       description: yup
         .string()
         .required('Description is required')
@@ -82,15 +84,18 @@
   );
 
   const onFormSubmit = (values: Record<string, unknown>) => {
-    toast.success('Form submitted successfully!');
-    toast.info(`Form values: ${JSON.stringify(values)}`);
+    success('Form submitted successfully!');
+    info(`Form values: ${JSON.stringify(values)}`);
   };
+
+  const { toggleDark } = useDarkTheme();
 </script>
 
 <template>
   <div class="space-y-4">
+    <Button test-id="" variant="outline" @click="toggleDark()">Toggle Dark Mode</Button>
     <div>
-      <h1 class="text-3xl font-bold mb-2">Buttons</h1>
+      <h1 class="mb-2 text-3xl font-bold">Buttons</h1>
 
       <Button test-id="" variant="default">default</Button>
       <Button test-id="" variant="danger">danger</Button>
@@ -102,7 +107,7 @@
     </div>
 
     <div>
-      <h1 class="text-3xl font-bold mb-2">Dialogs</h1>
+      <h1 class="mb-2 text-3xl font-bold">Dialogs</h1>
 
       <div class="flex items-center gap-2">
         <Dialog title="Dialog" description="Description">
@@ -128,7 +133,7 @@
     </div>
 
     <div>
-      <h1 class="text-3xl font-bold mb-2">Tables</h1>
+      <h1 class="mb-2 text-3xl font-bold">Tables</h1>
 
       <div class="space-y-5">
         <Table :columns="columns" :value="data" :loading="false" :meta="meta" />
@@ -138,11 +143,11 @@
     </div>
 
     <div>
-      <h1 class="text-3xl font-bold mb-2">Forms</h1>
+      <h1 class="mb-2 text-3xl font-bold">Forms</h1>
 
       <div class="max-w-md space-y-6">
         <div>
-          <h2 class="text-lg font-semibold mb-2">Direct v-model</h2>
+          <h2 class="mb-2 text-lg font-semibold">Direct v-model</h2>
           <div class="space-y-4">
             <Field.Text
               placeholder="Search..."
@@ -219,6 +224,12 @@
               test-id="direct-infinite-scroll-select"
               searchable
             />
+            <Field.Phone placeholder="12 345 6789" test-id="direct-phone-input" />
+            <Field.Phone
+              default-country="EG"
+              placeholder="10 1234 5678"
+              test-id="direct-phone-input-eg"
+            />
             <Field.InfiniteScrollSelect
               multiple
               endpoint="/api/mock/users"
@@ -234,7 +245,7 @@
         </div>
 
         <div>
-          <h2 class="text-lg font-semibold mb-2">Validation Wrapper (FormField)</h2>
+          <h2 class="mb-2 text-lg font-semibold">Validation Wrapper (FormField)</h2>
           <Form :validation-schema="validationSchema" class="space-y-4" @submit="onFormSubmit">
             <Field.Text
               label="Username"
@@ -294,6 +305,7 @@
             <Field.Select
               label="Country"
               name="country"
+              show-clear
               :options="countries"
               option-label="label"
               option-value="value"
@@ -311,12 +323,21 @@
               test-id="wrapped-infinite-scroll-select"
               searchable
             />
+            <Field.Phone
+              label="Phone Number"
+              name="phone"
+              default-country="US"
+              placeholder="000 000 0000"
+              show-clear
+              test-id="wrapped-phone-input"
+            />
             <Field.Textarea
               label="Description"
               name="description"
               placeholder="Enter a description"
               test-id="textarea"
             />
+
             <Button class="w-full" test-id="submit-form-button" type="submit"> Submit Form </Button>
           </Form>
         </div>

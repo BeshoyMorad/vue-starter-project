@@ -6,6 +6,10 @@ export { default as FormDialog } from './form-dialog/FormDialog.vue';
 export { default as Table } from './data-table/Table.vue';
 export { default as InfiniteScrollTable } from './data-table/InfiniteScrollTable.vue';
 
+export { default as StatusBadge } from './StatusBadge.vue';
+export { default as EntityAvatar } from './EntityAvatar.vue';
+export { default as CopyText } from './CopyText.vue';
+
 // PlaceHolders
 export { default as EmptyPlaceholder } from './placeholders/EmptyPlaceholder.vue';
 export { default as ComingSoonPlaceholder } from './placeholders/ComingSoonPlaceholder.vue';

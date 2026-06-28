@@ -16,11 +16,8 @@ export const TEST_IDS = {
     },
   },
   toast: {
-    success: 'toast-success',
-    info: 'toast-info',
-    warning: 'toast-warning',
-    error: 'toast-error',
-    loading: 'toast-loading',
+    status: 'toast-status',
+    message: 'toast-message',
     close: 'toast-close',
   },
 } as const;

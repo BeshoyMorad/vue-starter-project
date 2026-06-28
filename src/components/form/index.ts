@@ -11,6 +11,7 @@ import RadioGroup from './radio-group/RadioGroup.vue';
 import Select from './select/Select.vue';
 import DatePicker from './date-picker/DatePicker.vue';
 import InfiniteScrollSelect from './infinite-scroll-select/InfiniteScrollSelect.vue';
+import PhoneInput from './phone/PhoneInput.vue';
 
 export const Field = {
   Text: InputText,
@@ -26,4 +27,5 @@ export const Field = {
   Select,
   InfiniteScrollSelect,
   DatePicker,
+  Phone: PhoneInput,
 };

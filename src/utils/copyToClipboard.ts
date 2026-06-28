@@ -1,14 +1,6 @@
-import { useToast } from '@/composables';
+import { success } from './toast';
 
-export const useCopyToClipboard = () => {
-  const toast = useToast();
-
-  async function copyToClipboard(text: string) {
-    await navigator.clipboard.writeText(text);
-    toast.success('Copied to clipboard');
-  }
-
-  return {
-    copyToClipboard,
-  };
-};
+export async function copyToClipboard(text: string) {
+  await navigator.clipboard.writeText(text);
+  success('Copied to clipboard');
+}

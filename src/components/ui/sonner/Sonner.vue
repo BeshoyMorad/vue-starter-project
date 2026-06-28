@@ -1,50 +1,32 @@
-<script lang="ts" setup>
-  import type { ToasterProps } from 'vue-sonner';
-  import { Toaster as Sonner } from 'vue-sonner';
-  import { cn } from '@/utils';
+<script setup lang="ts">
+  import 'vue-sonner/style.css';
   import { Icon } from '@/components';
+  import { Toaster } from 'vue-sonner';
   import { TEST_IDS } from '@/lib/test-ids';
 
-  const props = defineProps<ToasterProps>();
+  const TOAST_COLORS = {
+    '--success-bg': 'linear-gradient(135deg, #15803d, #112c2c)',
+    '--success-text': '#ffffff',
+    '--success-border': '#15803d',
+
+    '--error-bg': 'linear-gradient(135deg, #b91c1c, #330a12)',
+    '--error-text': '#ffffff',
+    '--error-border': '#b91c1c',
+
+    '--warning-bg': 'linear-gradient(135deg, #b45309, #f59e0b)',
+    '--warning-text': '#ffffff',
+    '--warning-border': '#d97706',
+
+    '--info-bg': 'linear-gradient(135deg, #1e3a8a, #1d4ed8)',
+    '--info-text': '#ffffff',
+    '--info-border': '#1e3a8a',
+  } as const;
 </script>
 
 <template>
-  <Sonner
-    :class="cn('toaster group', props.class)"
-    :style="{
-      '--normal-bg': 'var(--popover)',
-      '--normal-text': 'var(--popover-foreground)',
-      '--normal-border': 'var(--border)',
-      '--border-radius': 'var(--radius)',
-    }"
-    v-bind="props"
-  >
-    <template #success-icon>
-      <Icon icon="custom--check" :test-id="TEST_IDS.toast.success" class="size-4" />
-    </template>
-
-    <template #info-icon>
-      <Icon icon="hugeicons--info" :test-id="TEST_IDS.toast.info" class="size-4" />
-    </template>
-
-    <template #warning-icon>
-      <Icon icon="hugeicons--alert-02" :test-id="TEST_IDS.toast.warning" class="size-4" />
-    </template>
-
-    <template #error-icon>
-      <Icon icon="hugeicons--cancel-circle" :test-id="TEST_IDS.toast.error" class="size-4" />
-    </template>
-
-    <template #loading-icon>
-      <Icon
-        icon="hugeicons--loading-03"
-        :test-id="TEST_IDS.toast.loading"
-        class="size-4 animate-spin"
-      />
-    </template>
-
+  <Toaster position="top-right" :duration="5000" close-button rich-colors :style="TOAST_COLORS">
     <template #close-icon>
       <Icon icon="hugeicons--cancel-01" :test-id="TEST_IDS.toast.close" class="size-4" />
     </template>
-  </Sonner>
+  </Toaster>
 </template>

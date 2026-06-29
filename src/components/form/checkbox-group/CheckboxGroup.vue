@@ -56,7 +56,7 @@
 
 <template>
   <template v-if="name">
-    <FormField v-slot="{ value, handleChange, errorMessage }" v-model="modelValue" :name="name">
+    <FormField v-slot="{ componentField, errorMessage }" :name="name">
       <FormItem :class="containerClass">
         <FormLabel v-if="label">{{ label }}</FormLabel>
 
@@ -65,12 +65,11 @@
             :aria-invalid="!!errorMessage"
             :disabled="disabled"
             :layout="layout"
-            :model-value="value"
             :options="options"
             :shape="shape"
             :size="size"
             :test-id="testId"
-            @update:model-value="handleChange"
+            v-bind="componentField"
           />
         </FormControl>
 

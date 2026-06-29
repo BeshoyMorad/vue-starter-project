@@ -58,7 +58,7 @@
 
 <template>
   <template v-if="name">
-    <FormField v-slot="{ value, handleChange, errorMessage }" v-model="modelValue" :name="name">
+    <FormField v-slot="{ componentField, errorMessage }" :name="name">
       <FormItem :class="containerClass">
         <FormLabel v-if="label">{{ label }}</FormLabel>
 
@@ -70,10 +70,9 @@
             :disabled="disabled"
             :max-date="maxDate"
             :min-date="minDate"
-            :model-value="value"
             :placeholder="placeholder"
             :test-id="testId"
-            @update:model-value="handleChange"
+            v-bind="componentField"
           />
         </FormControl>
 

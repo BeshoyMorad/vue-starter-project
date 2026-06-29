@@ -76,7 +76,13 @@
       <slot name="header" />
     </template>
 
-    <form v-auto-animate :id="formId" :test-id="testId" @submit.prevent="onFormSubmit">
+    <form
+      v-auto-animate
+      :id="formId"
+      :test-id="testId"
+      class="w-full"
+      @submit.prevent="onFormSubmit"
+    >
       <slot />
     </form>
 
@@ -95,6 +101,8 @@
 
         <Button
           :test-id="`${testId}-confirm-button`"
+          type="submit"
+          :form="formId"
           :variant="submitVariant"
           class="min-w-35.5"
           :disabled="!isDirty"

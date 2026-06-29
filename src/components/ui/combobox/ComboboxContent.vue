@@ -19,7 +19,7 @@
     v-bind="forwarded"
     :class="
       cn(
-        'z-50 w-(--reka-combobox-trigger-width) overflow-auto rounded-md border border-border-disabled bg-bg-surface text-text-default shadow-sm',
+        'border-border-disabled bg-bg-surface text-text-default z-50 w-(--reka-combobox-trigger-width) overflow-auto rounded-md border shadow-sm',
         props.class
       )
     "

@@ -80,11 +80,11 @@
   <DefineMonthTemplate v-slot="{ date }">
     <div class="**:data-[slot=native-select-icon]:right-1">
       <div class="relative">
-        <div class="absolute inset-0 flex h-full items-center text-sm pl-2 pointer-events-none">
+        <div class="pointer-events-none absolute inset-0 flex h-full items-center pl-2 text-sm">
           {{ formatter.custom(toDate(date), { month: 'short' }) }}
         </div>
         <NativeSelect
-          class="text-xs h-8 pr-6 pl-2 text-transparent relative"
+          class="relative h-8 pr-6 pl-2 text-xs text-transparent"
           :model-value="date.month"
           @change="
             (e: Event) => {
@@ -110,11 +110,11 @@
   <DefineYearTemplate v-slot="{ date }">
     <div class="**:data-[slot=native-select-icon]:right-1">
       <div class="relative">
-        <div class="absolute inset-0 flex h-full items-center text-sm pl-2 pointer-events-none">
+        <div class="pointer-events-none absolute inset-0 flex h-full items-center pl-2 text-sm">
           {{ formatter.custom(toDate(date), { year: 'numeric' }) }}
         </div>
         <NativeSelect
-          class="text-xs h-8 pr-6 pl-2 text-transparent relative"
+          class="relative h-8 pr-6 pl-2 text-xs text-transparent"
           :model-value="date.year"
           @change="
             (e: Event) => {
@@ -145,7 +145,7 @@
     :class="cn('p-3', props.class)"
   >
     <CalendarHeader class="pt-0">
-      <nav class="flex items-center gap-1 absolute top-0 inset-x-0 justify-between">
+      <nav class="absolute inset-x-0 top-0 flex items-center justify-between gap-1">
         <CalendarPrevButton>
           <slot name="calendar-prev-icon" />
         </CalendarPrevButton>
@@ -184,7 +184,7 @@
       </slot>
     </CalendarHeader>
 
-    <div class="flex flex-col gap-y-4 mt-4 sm:flex-row sm:gap-x-4 sm:gap-y-0">
+    <div class="mt-4 flex flex-col gap-y-4 sm:flex-row sm:gap-x-4 sm:gap-y-0">
       <CalendarGrid v-for="month in grid" :key="month.value.toString()">
         <CalendarGridHead>
           <CalendarGridRow>

@@ -16,12 +16,12 @@
 </script>
 
 <template>
-  <div class="flex flex-col items-center justify-center gap-6 py-8 h-full">
+  <div class="flex h-full flex-col items-center justify-center gap-6 py-8">
     <Icon :icon="icon" class="size-32" test-id="empty-placeholder-icon" :colored="true" />
 
     <div class="space-y-1.5 text-center">
-      <p class="text-xl text-text-placeholder font-bold">{{ title }}</p>
-      <p class="text-sm text-text-disabled font-medium">
+      <p class="text-text-placeholder text-xl font-bold">{{ title }}</p>
+      <p class="text-text-disabled text-sm font-medium">
         {{ description }}
       </p>
     </div>

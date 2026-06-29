@@ -36,19 +36,19 @@
 </script>
 
 <template>
-  <div class="relative flex items-center w-full">
+  <div class="relative flex w-full items-center">
     <span
       v-if="
         $slots.left || (icon && iconPosition === 'left') || (loading && iconPosition === 'left')
       "
-      class="absolute left-3 flex items-center justify-center text-text-disabled"
+      class="text-text-disabled absolute left-3 flex items-center justify-center"
       :class="{ 'pointer-events-none': !$slots.left }"
     >
       <slot name="left">
         <Icon
           v-if="loading"
           icon="hugeicons--loading-03"
-          class="animate-spin duration-500 size-5"
+          class="size-5 animate-spin duration-500"
           :test-id="`${testId}-loading`"
         />
         <Icon v-else-if="icon" :icon="icon" class="size-5" :test-id="`${testId}-icon`" />
@@ -76,14 +76,14 @@
       v-if="
         $slots.right || (icon && iconPosition === 'right') || (loading && iconPosition === 'right')
       "
-      class="absolute right-3 flex items-center justify-center text-text-disabled"
+      class="text-text-disabled absolute right-3 flex items-center justify-center"
       :class="{ 'pointer-events-none': !$slots.right }"
     >
       <slot name="right">
         <Icon
           v-if="loading"
           icon="hugeicons--loading-03"
-          class="animate-spin duration-500 size-5"
+          class="size-5 animate-spin duration-500"
           :test-id="`${testId}-loading`"
         />
         <Icon v-else-if="icon" :icon="icon" class="size-5" :test-id="`${testId}-icon`" />

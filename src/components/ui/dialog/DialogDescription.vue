@@ -15,7 +15,7 @@
   <DialogDescription
     data-slot="dialog-description"
     v-bind="forwardedProps"
-    :class="cn('text-sm text-text-disabled leading-relaxed whitespace-pre-line', props.class)"
+    :class="cn('text-text-disabled text-sm leading-relaxed whitespace-pre-line', props.class)"
   >
     <slot />
   </DialogDescription>

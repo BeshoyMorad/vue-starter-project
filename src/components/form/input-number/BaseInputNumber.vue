@@ -127,7 +127,7 @@
           <Icon
             v-if="loading"
             icon="hugeicons--loading-03"
-            class="animate-spin duration-500 size-5"
+            class="size-5 animate-spin duration-500"
             :test-id="`${testId}-loading`"
           />
           <Icon v-else-if="icon" :icon="icon" class="size-5" :test-id="`${testId}-icon`" />
@@ -142,7 +142,7 @@
           <Icon
             v-if="loading"
             icon="hugeicons--loading-03"
-            class="animate-spin duration-500 size-5"
+            class="size-5 animate-spin duration-500"
             :test-id="`${testId}-loading`"
           />
           <Icon v-else-if="icon" :icon="icon" class="size-5" :test-id="`${testId}-icon`" />

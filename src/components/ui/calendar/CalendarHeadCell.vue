@@ -15,7 +15,7 @@
 <template>
   <CalendarHeadCell
     data-slot="calendar-head-cell"
-    :class="cn('font-medium text-text-disabled rounded-md flex-1 text-[0.8rem]', props.class)"
+    :class="cn('text-text-disabled flex-1 rounded-md text-[0.8rem] font-medium', props.class)"
     v-bind="forwardedProps"
   >
     <slot />

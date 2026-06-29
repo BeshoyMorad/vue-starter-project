@@ -12,7 +12,7 @@
     data-slot="table-cell"
     :class="
       cn(
-        'py-3 px-2 text-sm text-text-default align-middle whitespace-nowrap has-[[role=checkbox]]:pr-0 *:[[role=checkbox]]:translate-y-0.5',
+        'text-text-default px-2 py-3 align-middle text-sm whitespace-nowrap has-[[role=checkbox]]:pr-0 *:[[role=checkbox]]:translate-y-0.5',
         props.class
       )
     "

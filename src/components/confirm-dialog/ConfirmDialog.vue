@@ -94,17 +94,17 @@
 
     <slot>
       <div class="flex flex-col items-center gap-2 text-center">
-        <div v-if="icon" class="flex items-center justify-center p-5 rounded-full">
-          <Icon :test-id="`${testId}-icon`" :icon="icon" :class="cn('w-8 h-8', iconClass)" />
+        <div v-if="icon" class="flex items-center justify-center rounded-full p-5">
+          <Icon :test-id="`${testId}-icon`" :icon="icon" :class="cn('h-8 w-8', iconClass)" />
         </div>
 
-        <p v-if="title" class="font-semibold text-xl text-text-default m-0">
+        <p v-if="title" class="text-text-default m-0 text-xl font-semibold">
           {{ title }}
         </p>
 
         <p
           v-if="description"
-          class="font-medium text-sm text-text-disabled m-0 whitespace-pre-line"
+          class="text-text-disabled m-0 text-sm font-medium whitespace-pre-line"
         >
           {{ description }}
         </p>

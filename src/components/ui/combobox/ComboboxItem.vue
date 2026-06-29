@@ -19,7 +19,7 @@
     v-bind="forwarded"
     :class="
       cn(
-        'relative flex cursor-pointer items-center gap-1 overflow-hidden rounded-sm border-none bg-transparent p-2 font-normal whitespace-nowrap transition-colors duration-200 hover:bg-bg-hovered data-highlighted:bg-bg-focused data-[state=checked]:bg-bg-default data-highlighted:data-[state=checked]:bg-bg-hovered',
+        'hover:bg-bg-hovered data-highlighted:bg-bg-focused data-[state=checked]:bg-bg-default data-highlighted:data-[state=checked]:bg-bg-hovered relative flex cursor-pointer items-center gap-1 overflow-hidden rounded-sm border-none bg-transparent p-2 font-normal whitespace-nowrap transition-colors duration-200',
         props.class
       )
     "

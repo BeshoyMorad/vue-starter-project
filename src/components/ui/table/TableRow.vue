@@ -10,7 +10,7 @@
 <template>
   <tr
     data-slot="table-row"
-    :class="cn('border-b border-border-disabled transition-colors', props.class)"
+    :class="cn('border-border-disabled border-b transition-colors', props.class)"
   >
     <slot />
   </tr>

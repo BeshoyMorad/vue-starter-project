@@ -15,7 +15,7 @@
     :class="
       cn(
         inputVariants(),
-        'h-10 text-sm px-2 py-2 inline-flex aria-invalid:focus:ring-danger-300',
+        'aria-invalid:focus:ring-danger-300 inline-flex h-10 px-2 py-2 text-sm',
         props.class
       )
     "

@@ -19,7 +19,7 @@
     v-bind="forwarded"
     :class="
       cn(
-        'absolute top-1/2 -translate-y-1/2 left-0 px-2.5 cursor-pointer disabled:cursor-not-allowed disabled:opacity-20',
+        'absolute top-1/2 left-0 -translate-y-1/2 cursor-pointer px-2.5 disabled:cursor-not-allowed disabled:opacity-20',
         props.class
       )
     "

@@ -79,7 +79,7 @@
 </script>
 
 <template>
-  <div v-if="showPagination" class="flex items-center justify-between w-full mt-4 p-3">
+  <div v-if="showPagination" class="mt-4 flex w-full items-center justify-between p-3">
     <!-- Navigation controls -->
     <div v-if="paginationType === 'cursor'" class="flex items-center gap-2">
       <Button
@@ -89,7 +89,7 @@
         :disabled="!hasPrev"
         @click="emit('prev')"
       >
-        <Icon icon="hugeicons--arrow-left-01" class="size-4 mr-1" />
+        <Icon icon="hugeicons--arrow-left-01" class="mr-1 size-4" />
         Previous
       </Button>
 
@@ -101,7 +101,7 @@
         @click="emit('next')"
       >
         Next
-        <Icon icon="hugeicons--arrow-right-01" class="size-4 ml-1" />
+        <Icon icon="hugeicons--arrow-right-01" class="ml-1 size-4" />
       </Button>
     </div>
 
@@ -138,7 +138,7 @@
     </div>
 
     <!-- Limit Selector -->
-    <div class="flex items-center gap-2 text-sm text-text-default">
+    <div class="text-text-default flex items-center gap-2 text-sm">
       <span>Rows per page:</span>
       <DropdownMenu>
         <DropdownMenuTrigger as-child>

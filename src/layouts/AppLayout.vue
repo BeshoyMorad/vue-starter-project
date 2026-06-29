@@ -1,6 +1,6 @@
 <template>
-  <div class="min-h-screen bg-gray-100 flex flex-col">
-    <header class="bg-white shadow p-4">Header</header>
+  <div class="flex min-h-screen flex-col bg-gray-100">
+    <header class="bg-white p-4 shadow">Header</header>
     <main class="grow p-6">
       <RouterView />
     </main>

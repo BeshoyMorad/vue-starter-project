@@ -24,8 +24,8 @@
     :data-active="slot?.isActive"
     :class="
       cn(
-        'border border-border-disabled relative flex size-12 items-center justify-center border-y border-r text-sm shadow-xs transition-all outline-none first:rounded-l-md first:border-l last:rounded-r-md',
-        'data-[active=true]:ring-3 data-[active=true]:ring-border-primary data-[active=true]:z-10 ',
+        'border-border-disabled relative flex size-12 items-center justify-center border border-y border-r text-sm shadow-xs transition-all outline-none first:rounded-l-md first:border-l last:rounded-r-md',
+        'data-[active=true]:ring-border-primary data-[active=true]:z-10 data-[active=true]:ring-3',
         'data-[active=true]:aria-invalid:border-border-danger/20 aria-invalid:border-border-danger',
         props.class
       )

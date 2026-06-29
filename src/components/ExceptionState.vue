@@ -11,16 +11,16 @@
 </script>
 
 <template>
-  <div class="flex flex-col items-center justify-center text-center p-8 min-h-screen bg-bg-default">
-    <div class="relative w-95.5 h-95.5 mb-16">
-      <img :src="image" :alt="title" class="w-full h-full object-contain mix-blend-multiply" />
+  <div class="bg-bg-default flex min-h-screen flex-col items-center justify-center p-8 text-center">
+    <div class="relative mb-16 h-95.5 w-95.5">
+      <img :src="image" :alt="title" class="h-full w-full object-contain mix-blend-multiply" />
     </div>
 
-    <h1 class="text-6xl font-bold text-text-default mb-6">
+    <h1 class="text-text-default mb-6 text-6xl font-bold">
       {{ title }}
     </h1>
 
-    <p class="text-2xl text-text-placeholder max-w-lg mb-6 leading-relaxed">
+    <p class="text-text-placeholder mb-6 max-w-lg text-2xl leading-relaxed">
       {{ description }}
     </p>
 

@@ -20,17 +20,17 @@
     v-bind="forwarded"
     :class="
       cn(
-        'group relative flex select-none items-center gap-2 rounded-md py-3 px-4 text-sm outline-none transition-colors  duration-500 data-disabled:pointer-events-none cursor-pointer data-disabled:opacity-50',
+        'group relative flex cursor-pointer items-center gap-2 rounded-md px-4 py-3 text-sm transition-colors duration-500 outline-none select-none data-disabled:pointer-events-none data-disabled:opacity-50',
         props.class
       )
     "
   >
     <span
-      class="flex size-3 p-1 items-center justify-center border border-border-default rounded-full group-data-[state=checked]:border-bg-primary-default"
+      class="border-border-default group-data-[state=checked]:border-bg-primary-default flex size-3 items-center justify-center rounded-full border p-1"
     >
       <DropdownMenuItemIndicator>
         <slot name="indicator">
-          <span class="block size-1.5 bg-bg-primary-default rounded-full"></span>
+          <span class="bg-bg-primary-default block size-1.5 rounded-full"></span>
         </slot>
       </DropdownMenuItemIndicator>
     </span>

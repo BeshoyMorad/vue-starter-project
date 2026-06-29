@@ -63,7 +63,7 @@
         v-if="label"
         :for="resolvedId"
         :class="
-          cn('text-text-default cursor-pointer select-none text-sm', {
+          cn('text-text-default cursor-pointer text-sm select-none', {
             'text-text-disabled cursor-default': disabled,
             'text-text-danger': isInvalid,
           })

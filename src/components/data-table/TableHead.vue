@@ -20,8 +20,8 @@
       >
         <div
           :class="{
-            'cursor-pointer select-none flex items-center gap-3': header.column.getCanSort(),
-            'text-center mx-auto justify-center': header.column.columnDef.meta?.align === 'center',
+            'flex cursor-pointer items-center gap-3 select-none': header.column.getCanSort(),
+            'mx-auto justify-center text-center': header.column.columnDef.meta?.align === 'center',
           }"
           @click="header.column.getToggleSortingHandler()?.($event)"
         >

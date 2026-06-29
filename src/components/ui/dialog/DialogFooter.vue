@@ -17,7 +17,7 @@
     data-slot="dialog-footer"
     :class="
       cn(
-        'flex items-center justify-end gap-4 px-6 py-4 border-t border-border-disabled w-full bg-bg-surface',
+        'border-border-disabled bg-bg-surface flex w-full items-center justify-end gap-4 border-t px-6 py-4',
         props.class
       )
     "

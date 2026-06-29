@@ -149,7 +149,7 @@
         >
           <span
             v-if="multiple"
-            class="relative flex size-4 shrink-0 items-center justify-center rounded border border-border-default bg-bg-surface transition-colors group-data-[state=checked]:border-bg-primary-default group-data-[state=checked]:bg-bg-primary-default"
+            class="border-border-default bg-bg-surface group-data-[state=checked]:border-bg-primary-default group-data-[state=checked]:bg-bg-primary-default relative flex size-4 shrink-0 items-center justify-center rounded border transition-colors"
             aria-hidden="true"
           >
             <ComboboxItemIndicator class="flex items-center justify-center">

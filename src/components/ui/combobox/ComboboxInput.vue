@@ -19,7 +19,7 @@
     v-bind="forwarded"
     :class="
       cn(
-        'w-full appearance-none rounded-md border border-border-disabled py-1 ps-3 pe-10 text-text-default shadow-sm transition-colors duration-200 outline-hidden placeholder:text-text-placeholder enabled:hover:border-border-primary enabled:focus:border-border-primary disabled:bg-bg-disabled disabled:text-text-disabled',
+        'border-border-disabled text-text-default placeholder:text-text-placeholder enabled:hover:border-border-primary enabled:focus:border-border-primary disabled:bg-bg-disabled disabled:text-text-disabled w-full appearance-none rounded-md border py-1 ps-3 pe-10 shadow-sm outline-hidden transition-colors duration-200',
         props.class
       )
     "

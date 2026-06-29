@@ -18,7 +18,7 @@
     v-bind="forwarded"
     :class="
       cn(
-        'min-w-0 flex flex-1 gap-1.5 items-center border-none bg-transparent p-0 outline-none cursor-pointer',
+        'flex min-w-0 flex-1 cursor-pointer items-center gap-1.5 border-none bg-transparent p-0 outline-none',
         props.class
       )
     "

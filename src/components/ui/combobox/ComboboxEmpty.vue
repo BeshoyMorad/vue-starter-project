@@ -16,7 +16,7 @@
 <template>
   <ComboboxEmpty
     v-bind="forwarded"
-    :class="cn('px-3 py-2 text-center text-sm text-text-placeholder', props.class)"
+    :class="cn('text-text-placeholder px-3 py-2 text-center text-sm', props.class)"
   >
     <slot />
   </ComboboxEmpty>

@@ -3,12 +3,12 @@ import dayjs from 'dayjs';
 const DEFAULT_LOCALE = 'en-US';
 const DEFAULT_CURRENCY = 'USD';
 
-export type FormatCurrencyOptions = {
+export interface FormatCurrencyOptions {
   locale?: string;
   currency?: string;
   minimumFractionDigits?: number;
   maximumFractionDigits?: number;
-};
+}
 
 export function formatCurrency(
   value: number | null | undefined,
@@ -31,9 +31,9 @@ export function formatCurrency(
 
 export type FormatDateMode = 'date' | 'datetime' | 'month';
 
-export type FormatDateOptions = {
+export interface FormatDateOptions {
   mode?: FormatDateMode;
-};
+}
 
 const DATE_FORMAT_MAP: Record<FormatDateMode, string> = {
   date: 'DD MMM, YYYY',
@@ -52,13 +52,13 @@ export function formatDate(
   return date.format(DATE_FORMAT_MAP[mode]);
 }
 
-export type FormatTimeOptions = {
+export interface FormatTimeOptions {
   locale?: string;
   hour?: 'numeric' | '2-digit';
   minute?: 'numeric' | '2-digit';
   second?: 'numeric' | '2-digit';
   hour12?: boolean;
-};
+}
 
 export function formatTime(
   dateStr: string | Date | null | undefined,
@@ -82,11 +82,11 @@ export function formatTime(
   });
 }
 
-export type FormatPercentageOptions = {
+export interface FormatPercentageOptions {
   locale?: string;
   minimumFractionDigits?: number;
   maximumFractionDigits?: number;
-};
+}
 
 export function formatPercentage(
   value: number | null | undefined,
@@ -105,11 +105,11 @@ export function formatPercentage(
   }).format(value / 100);
 }
 
-export type FormatNumberOptions = {
+export interface FormatNumberOptions {
   locale?: string;
   minimumFractionDigits?: number;
   maximumFractionDigits?: number;
-};
+}
 
 /** Plain number with locale-aware grouping (e.g. thousands separators every 3 digits). */
 export function formatNumber(
@@ -125,11 +125,11 @@ export function formatNumber(
   }).format(value);
 }
 
-export type FormatListOptions = {
+export interface FormatListOptions {
   locale?: string;
   type?: Intl.ListFormatType;
   style?: Intl.ListFormatStyle;
-};
+}
 
 export function formatList(
   items: readonly string[] | null | undefined,

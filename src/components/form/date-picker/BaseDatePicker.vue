@@ -96,7 +96,7 @@
         :class="
           cn(
             inputVariants(),
-            'w-full h-10 text-sm px-2 py-2 justify-start hover:bg-transparent inline-flex aria-invalid:focus:ring-danger-300',
+            'aria-invalid:focus:ring-danger-300 inline-flex h-10 w-full justify-start px-2 py-2 text-sm hover:bg-transparent',
             !modelValue && 'text-text-disabled',
             attrs.class
           )
@@ -105,7 +105,7 @@
         :test-id="testId"
         variant="outline"
       >
-        <Icon icon="hugeicons--calendar-01" class="mr-2 size-5 text-text-disabled" />
+        <Icon icon="hugeicons--calendar-01" class="text-text-disabled mr-2 size-5" />
 
         <span>{{ formattedDate }}</span>
       </Button>

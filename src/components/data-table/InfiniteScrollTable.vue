@@ -104,7 +104,7 @@
       maxHeight: props.maxHeight,
     }"
   >
-    <TableHeader class="sticky top-0 z-20 shadow-sm bg-bg-surface">
+    <TableHeader class="bg-bg-surface sticky top-0 z-20 shadow-sm">
       <TableHead :table="table" />
     </TableHeader>
 
@@ -134,8 +134,8 @@
     </TableBody>
 
     <template #footer>
-      <div v-if="isFetchingNextPage" class="flex justify-center py-4 w-full">
-        <Icon icon="hugeicons--loading-03" class="animate-spin size-6" test-id="loading-icon" />
+      <div v-if="isFetchingNextPage" class="flex w-full justify-center py-4">
+        <Icon icon="hugeicons--loading-03" class="size-6 animate-spin" test-id="loading-icon" />
       </div>
     </template>
   </Table>

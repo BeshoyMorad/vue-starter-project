@@ -37,7 +37,7 @@
     <template #right>
       <button
         type="button"
-        class="flex items-center justify-center text-text-disabled hover:text-text-default focus:outline-none cursor-pointer"
+        class="text-text-disabled hover:text-text-default flex cursor-pointer items-center justify-center focus:outline-none"
         :test-id="`${testId}-toggle`"
         @click="showPassword = !showPassword"
       >

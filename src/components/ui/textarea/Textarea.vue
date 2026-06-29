@@ -27,7 +27,7 @@
     :class="
       cn(
         inputVariants(),
-        'appearance-none text-sm font-medium px-3 py-3.5 min-h-24 disabled:bg-bg-disabled',
+        'disabled:bg-bg-disabled min-h-24 appearance-none px-3 py-3.5 text-sm font-medium',
         props.class
       )
     "

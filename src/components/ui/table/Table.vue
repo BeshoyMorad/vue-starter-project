@@ -18,7 +18,7 @@
   <div
     ref="containerRef"
     data-slot="table-container"
-    :class="cn('relative w-full overflow-auto rounded-md bg-bg-surface', props.containerClass)"
+    :class="cn('bg-bg-surface relative w-full overflow-auto rounded-md', props.containerClass)"
   >
     <table data-slot="table" :class="cn('w-full caption-bottom text-sm', props.class)">
       <slot />

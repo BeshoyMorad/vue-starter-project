@@ -195,7 +195,7 @@
       <ComboboxTrigger :class="triggerClass" :disabled="isLocked">
         <span
           v-if="isEmpty"
-          class="block min-w-0 flex-1 truncate text-left font-medium text-text-disabled grow"
+          class="text-text-disabled block min-w-0 flex-1 grow truncate text-left font-medium"
           data-empty="true"
         >
           {{ placeholder }}
@@ -203,7 +203,7 @@
 
         <span
           v-else-if="multiple && showSelectedItemsLabel"
-          class="block min-w-0 flex-1 truncate text-left text-sm font-medium text-text-default grow"
+          class="text-text-default block min-w-0 flex-1 grow truncate text-left text-sm font-medium"
         >
           {{ selectedItemsLabelText }}
         </span>
@@ -216,13 +216,13 @@
         >
           <slot name="chip" :chip="chip" :remove="() => removeChip(chip.value)">
             <span
-              class="inline-flex max-w-full shrink-0 items-center gap-1 rounded-md bg-bg-default px-2 py-0.5 text-sm text-text-default"
+              class="bg-bg-default text-text-default inline-flex max-w-full shrink-0 items-center gap-1 rounded-md px-2 py-0.5 text-sm"
             >
               <span class="max-w-24 truncate">{{ chip.label }}</span>
               <button
                 v-if="!isLocked"
                 type="button"
-                class="inline-flex shrink-0 items-center justify-center rounded-sm text-text-default hover:text-text-default"
+                class="text-text-default hover:text-text-default inline-flex shrink-0 items-center justify-center rounded-sm"
                 :aria-label="`Remove ${chip.label}`"
                 @click.stop="removeChip(chip.value)"
               >
@@ -232,7 +232,7 @@
           </slot>
         </span>
 
-        <span v-else class="block min-w-0 flex-1 truncate text-left font-medium grow">
+        <span v-else class="block min-w-0 flex-1 grow truncate text-left font-medium">
           {{ selectedLabel }}
         </span>
 
@@ -259,7 +259,7 @@
           <Icon
             test-id="combobox-dropdown-icon"
             icon="hugeicons--arrow-down-01"
-            class="pointer-events-none shrink-0 text-text-placeholder"
+            class="text-text-placeholder pointer-events-none shrink-0"
             :size="iconSizesMap[props.size ?? 'default']"
           />
         </slot>
@@ -268,7 +268,7 @@
 
     <ComboboxPortal>
       <ComboboxContent position="popper" :side-offset="4">
-        <div v-if="searchable" class="shrink-0 px-2 pt-2 pb-1 relative">
+        <div v-if="searchable" class="relative shrink-0 px-2 pt-2 pb-1">
           <div class="relative">
             <ComboboxInput
               v-model="search"
@@ -306,14 +306,14 @@
               >
                 <span
                   v-if="multiple"
-                  class="relative flex size-4 shrink-0 items-center justify-center rounded border border-border-default bg-bg-surface transition-colors group-data-[state=checked]:border-bg-primary-default group-data-[state=checked]:bg-bg-primary-default"
+                  class="border-border-default bg-bg-surface group-data-[state=checked]:border-bg-primary-default group-data-[state=checked]:bg-bg-primary-default relative flex size-4 shrink-0 items-center justify-center rounded border transition-colors"
                   aria-hidden="true"
                 >
                   <ComboboxItemIndicator class="flex items-center justify-center">
                     <Icon
                       test-id="combobox-item-check-icon"
                       icon="hugeicons--tick-02"
-                      class="size-3 text-text-base"
+                      class="text-text-base size-3"
                     />
                   </ComboboxItemIndicator>
                 </span>

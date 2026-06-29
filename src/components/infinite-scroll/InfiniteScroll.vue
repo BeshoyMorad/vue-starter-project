@@ -57,7 +57,7 @@
   <div
     ref="containerRef"
     :class="
-      cn('w-full overflow-y-auto ', [
+      cn('w-full overflow-y-auto', [
         {
           'hide-scrollbar': hideScrollbar,
         },
@@ -69,10 +69,10 @@
 
     <div
       v-if="props.loading"
-      class="flex justify-center items-center text-sm text-text-placeholder shrink-0 py-4"
+      class="text-text-placeholder flex shrink-0 items-center justify-center py-4 text-sm"
     >
       <slot name="loading">
-        <Icon icon="hugeicons--loading-03" class="animate-spin size-5" />
+        <Icon icon="hugeicons--loading-03" class="size-5 animate-spin" />
       </slot>
     </div>
   </div>

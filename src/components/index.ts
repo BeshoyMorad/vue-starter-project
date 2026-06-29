@@ -8,7 +8,9 @@ export { default as InfiniteScrollTable } from './data-table/InfiniteScrollTable
 
 export { default as StatusBadge } from './StatusBadge.vue';
 export { default as EntityAvatar } from './EntityAvatar.vue';
+export { default as PageWrapper } from './PageWrapper.vue';
 export { default as CopyText } from './CopyText.vue';
+export { default as Tabs } from './Tabs.vue';
 
 // PlaceHolders
 export { default as EmptyPlaceholder } from './placeholders/EmptyPlaceholder.vue';

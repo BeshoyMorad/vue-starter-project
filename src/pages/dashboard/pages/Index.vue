@@ -222,7 +222,17 @@
               test-id="direct-select-single"
               show-clear
               searchable
-            />
+            >
+              <template #value="{ label, selectedOption }">
+                <span class="flex items-center gap-2">
+                  <span v-if="selectedOption?.value === 'eg'">🇪🇬</span>
+                  <span v-else-if="selectedOption?.value === 'us'">🇺🇸</span>
+                  <span v-else-if="selectedOption?.value === 'uk'">🇬🇧</span>
+                  <span v-else-if="selectedOption?.value === 'ca'">🇨🇦</span>
+                  <span>{{ label }}</span>
+                </span>
+              </template>
+            </Field.Select>
             <Field.Select
               multiple
               :options="countries"

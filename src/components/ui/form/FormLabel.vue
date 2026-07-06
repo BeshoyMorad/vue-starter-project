@@ -16,7 +16,7 @@
     :data-error="!!error"
     :class="
       cn(
-        'data-[error=true]:text-text-danger text-text-default text-base font-medium first-letter:capitalize',
+        'data-[error=true]:text-text-danger text-text-default text-base font-medium capitalize',
         props.class
       )
     "

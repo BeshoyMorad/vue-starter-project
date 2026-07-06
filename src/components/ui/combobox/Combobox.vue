@@ -118,6 +118,15 @@
 
   const selectedLabel = computed(() => displayValue(modelValue.value));
 
+  const selectedOption = computed(() => {
+    if (props.multiple) return undefined;
+    const val = modelValue.value;
+    if (!val) return undefined;
+    const match = props.options?.find((o) => getOptionValue(o) === val);
+    if (match) selectedCache.set(val, match);
+    return match || selectedCache.get(val);
+  });
+
   interface SelectedChip {
     value: unknown;
     label: string;
@@ -233,7 +242,14 @@
         </span>
 
         <span v-else class="block min-w-0 flex-1 grow truncate text-left font-medium">
-          {{ selectedLabel }}
+          <slot
+            name="value"
+            :value="modelValue"
+            :label="selectedLabel"
+            :selected-option="selectedOption"
+          >
+            {{ selectedLabel }}
+          </slot>
         </span>
 
         <span class="ms-auto" />

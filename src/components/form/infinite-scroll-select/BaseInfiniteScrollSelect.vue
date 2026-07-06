@@ -130,6 +130,10 @@
       <slot name="chip" :chip="chip" :remove="remove" />
     </template>
 
+    <template v-if="$slots.value" #value="slotProps">
+      <slot name="value" v-bind="slotProps" />
+    </template>
+
     <template #options="{ isLocked, getOptionValue, getOptionLabel: getOptionLabelCb }">
       <InfiniteScroll
         :has-more="hasMore"

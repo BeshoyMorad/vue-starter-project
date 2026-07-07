@@ -42,6 +42,7 @@
     multiple?: IsMultiple;
     maxSelectedLabels?: number;
     initialOptions?: Option[] | Option;
+    excludeValues?: Value[];
     // Form validation wrapper props
     name?: string;
     label?: string;
@@ -64,6 +65,7 @@
     searchable: false,
     initialOptions: () => [],
     maxSelectedLabels: 4,
+    excludeValues: () => [],
     name: undefined,
     label: undefined,
     description: undefined,
@@ -97,6 +99,7 @@
             :initial-options="initialOptions"
             :multiple="multiple"
             :max-selected-labels="maxSelectedLabels"
+            :exclude-values="excludeValues"
             :test-id="testId"
             v-bind="$attrs"
             :model-value="value"
@@ -135,6 +138,7 @@
       :initial-options="initialOptions"
       :multiple="multiple"
       :max-selected-labels="maxSelectedLabels"
+      :exclude-values="excludeValues"
       :test-id="testId"
     >
       <template v-for="(_, slotName) in $slots" #[slotName]="slotProps">

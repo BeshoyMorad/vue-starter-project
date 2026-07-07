@@ -40,6 +40,7 @@
     maxSelectedLabels?: number;
 
     initialOptions?: Option[] | Option;
+    excludeValues?: Value[];
   }
 
   const props = withDefaults(defineProps<Props>(), {
@@ -58,6 +59,7 @@
     searchable: false,
     initialOptions: () => [],
     maxSelectedLabels: 4,
+    excludeValues: () => [],
   });
 
   const modelValue = defineModel<IsMultiple extends true ? Value[] : Value>();
@@ -91,9 +93,15 @@
 
   const options = computed(() => {
     const initial = [props.initialOptions].flat().filter(Boolean) as Option[];
-    return [
+    const allOptions = [
       ...new Map([...initial, ...fetchedOptions.value].map((o) => [getOptionKey(o), o])).values(),
     ];
+
+    if (props.excludeValues && props.excludeValues.length > 0) {
+      return allOptions.filter((o) => !props.excludeValues.includes(getOptionKey(o) as Value));
+    }
+
+    return allOptions;
   });
 
   const onLazyLoad = (last: number) => {

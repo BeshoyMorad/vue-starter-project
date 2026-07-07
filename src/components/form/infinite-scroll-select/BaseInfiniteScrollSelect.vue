@@ -64,6 +64,10 @@
 
   const modelValue = defineModel<IsMultiple extends true ? Value[] : Value>();
 
+  const emits = defineEmits<{
+    (e: 'selected', option: Option | undefined): void;
+  }>();
+
   const {
     data: fetchedOptions,
     search,
@@ -134,6 +138,7 @@
     :max-selected-labels="props.maxSelectedLabels"
     :searchable="searchable"
     :ignore-filter="true"
+    @selected="emits('selected', $event)"
   >
     <template v-if="$slots.chip" #chip="{ chip, remove }">
       <slot name="chip" :chip="chip" :remove="remove" />

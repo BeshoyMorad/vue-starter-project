@@ -9,7 +9,7 @@
   "
 >
   /* eslint-disable max-lines */
-  import { computed, type HtmlHTMLAttributes } from 'vue';
+  import { computed, watch, type HtmlHTMLAttributes } from 'vue';
   import {
     useForwardPropsEmits,
     type AcceptableValue,
@@ -63,7 +63,11 @@
     searchable: false,
   });
 
-  const emits = defineEmits<ComboboxRootEmits>();
+  const emits = defineEmits<
+    ComboboxRootEmits & {
+      selected: [value: Option | undefined];
+    }
+  >();
 
   const delegatedProps = reactiveOmit(
     props,
@@ -126,6 +130,14 @@
     if (match) selectedCache.set(val, match);
     return match || selectedCache.get(val);
   });
+
+  watch(
+    selectedOption,
+    (newVal) => {
+      emits('selected', newVal);
+    },
+    { immediate: true }
+  );
 
   interface SelectedChip {
     value: unknown;

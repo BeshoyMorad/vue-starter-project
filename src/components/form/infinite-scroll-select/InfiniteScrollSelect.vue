@@ -73,6 +73,10 @@
   });
 
   const modelValue = defineModel<IsMultiple extends true ? Value[] : Value>();
+
+  defineEmits<{
+    (e: 'selected', option: Option | undefined): void;
+  }>();
 </script>
 
 <template>
@@ -104,6 +108,7 @@
             v-bind="$attrs"
             :model-value="value"
             @update:model-value="handleChange"
+            @selected="(opt) => $emit('selected', opt)"
           >
             <template v-for="(_, slotName) in $slots" #[slotName]="slotProps">
               <slot :name="slotName" v-bind="slotProps || {}" />
@@ -140,6 +145,7 @@
       :max-selected-labels="maxSelectedLabels"
       :exclude-values="excludeValues"
       :test-id="testId"
+      @selected="(opt) => $emit('selected', opt)"
     >
       <template v-for="(_, slotName) in $slots" #[slotName]="slotProps">
         <slot :name="slotName" v-bind="slotProps || {}" />

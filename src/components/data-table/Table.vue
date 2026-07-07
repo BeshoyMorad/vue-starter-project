@@ -1,5 +1,6 @@
 <script setup lang="ts" generic="TRow extends { id: number | string }">
-  import { ref } from 'vue';
+  import { ref, computed } from 'vue';
+  import { cn } from '@/utils';
   import {
     getCoreRowModel,
     useVueTable,
@@ -24,6 +25,7 @@
     loading?: boolean;
     meta?: Meta | CursorMeta | null;
     limitOptions?: number[];
+    clickable?: boolean;
   }
 
   const props = defineProps<Props>();
@@ -33,7 +35,22 @@
     (e: 'limitChange', limit: number): void;
     (e: 'next'): void;
     (e: 'prev'): void;
+    (e: 'rowClick', row: TRow): void;
   }>();
+
+  const isRowClickable = computed(() => props.clickable || false);
+
+  const handleRowClick = (row: TRow, event: MouseEvent) => {
+    if (!isRowClickable.value) return;
+    const target = event.target as HTMLElement | null;
+    if (!target) return;
+    const isInteractive = target.closest(
+      'button, a, input, select, textarea, [role="menuitem"], [role="button"], svg, path'
+    );
+    if (isInteractive) return;
+
+    emit('rowClick', row);
+  };
 
   const sorting = ref<SortingState>([]);
   const table = useVueTable({
@@ -84,6 +101,8 @@
           :key="row.id"
           :row="row"
           :index="index"
+          :class="cn(isRowClickable && 'hover:bg-default-hovered cursor-pointer transition-colors')"
+          @click="handleRowClick(row.original, $event)"
         />
       </template>
 

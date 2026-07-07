@@ -18,6 +18,7 @@
     FormDescription,
     FormMessage,
   } from '@/components/ui/form';
+  import type { QueryKey } from '@tanstack/vue-query';
 
   defineOptions({
     inheritAttrs: false,
@@ -26,7 +27,7 @@
   interface Props {
     testId: string;
     endpoint: string;
-    queryKey: unknown[];
+    queryKey: QueryKey;
     paginationType?: 'offset' | 'cursor';
     limit?: number;
     initialFilters?: Record<string, unknown>;

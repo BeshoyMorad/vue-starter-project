@@ -9,7 +9,7 @@ declare global {
 
   type Models = keyof AppPermissions;
 
-  type CanPermission<Model> = Model extends Models
-    ? `${Model}.${AppPermissions[Model]}` | `${Model}.${AppPermissions[Model]}`[]
-    : never;
+  type CanPermission<Model extends Models> =
+    | (Model extends Models ? `${Model}.${AppPermissions[Model]}` : never)
+    | (Model extends Models ? `${Model}.${AppPermissions[Model]}` : never)[];
 }

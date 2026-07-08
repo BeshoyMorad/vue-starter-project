@@ -5,6 +5,7 @@ export { default as ConfirmDialog } from './confirm-dialog/ConfirmDialog.vue';
 export { default as FormDialog } from './form-dialog/FormDialog.vue';
 export { default as Table } from './data-table/Table.vue';
 export { default as InfiniteScrollTable } from './data-table/InfiniteScrollTable.vue';
+export { default as Tooltip } from './tooltip/Tooltip.vue';
 
 export { default as StatusBadge } from './StatusBadge.vue';
 export { default as EntityAvatar } from './EntityAvatar.vue';

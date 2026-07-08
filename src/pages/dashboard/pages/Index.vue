@@ -8,6 +8,7 @@
     FormDialog,
     InfiniteScrollTable,
     Table,
+    Tooltip,
   } from '@/components';
   import { formatDate } from '@/utils/formatter';
   import type { ColumnDef } from '@tanstack/vue-table';
@@ -122,6 +123,14 @@
       <Button test-id="" variant="link">link</Button>
       <Button test-id="" variant="outline">outline</Button>
     </div>
+
+    <Tooltip>
+      <template #trigger>
+        <p>tooltip</p>
+      </template>
+
+      <div class="bg-white">data here</div>
+    </Tooltip>
 
     <div>
       <h1 class="mb-2 text-3xl font-bold">Dialogs</h1>

@@ -38,7 +38,13 @@ export function createMediaValue(initialUrl?: string | null): MediaValue {
  */
 function walkMediaValues(
   obj: unknown,
-  callback: (mediaVal: MediaValue, key: string, parent: Record<string, unknown>) => void
+  callback: (
+    mediaVal: MediaValue,
+    key: string,
+    path: string,
+    parent: Record<string, unknown>
+  ) => void,
+  path = ''
 ): void {
   if (!obj || typeof obj !== 'object') {
     return;
@@ -47,10 +53,11 @@ function walkMediaValues(
   const record = obj as Record<string, unknown>;
   for (const key in record) {
     const val = record[key];
+    const currentPath = path ? `${path}.${key}` : key;
     if (isMediaValue(val)) {
-      callback(val, key, record);
-    } else if (val && typeof val === 'object') {
-      walkMediaValues(val, callback);
+      callback(val, key, currentPath, record);
+    } else if (val && typeof val === 'object' && !Array.isArray(val)) {
+      walkMediaValues(val, callback, currentPath);
     }
   }
 }
@@ -63,7 +70,7 @@ export interface ExtractMediaPayloadOptions {
  * Extracts lists for mediaIdsToAdd and mediaUrlsToRemove for the API payload.
  */
 export function extractMediaPayload(
-  values: Record<string, unknown>,
+  values: object,
   options?: ExtractMediaPayloadOptions
 ): MediaPayload {
   const usePayloadItems = options?.usePayloadItems ?? false;
@@ -130,15 +137,18 @@ export function useFormMedia() {
    * in parallel, and caches the returned mediaId in the field values.
    */
   const uploadFormMedia = async (
-    values: Record<string, unknown>,
-    serviceType: StorageServiceType
+    values: object,
+    serviceType: StorageServiceType,
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    setFieldValue?: (field: any, value: any) => void
   ): Promise<void> => {
     isUploading.value = true;
     try {
       const uploadPromises: Promise<void>[] = [];
 
-      walkMediaValues(values, (mediaVal) => {
+      walkMediaValues(values, (mediaVal, _key, path) => {
         const file = mediaVal.file;
+
         // If the user changed the file, we have a File object, and it hasn't been uploaded yet
         if (mediaVal.isChanged && file && !mediaVal.mediaId) {
           const promise = (async () => {
@@ -146,7 +156,12 @@ export function useFormMedia() {
               serviceType,
               files: [file],
             });
+
             mediaVal.mediaId = mediaId;
+
+            if (setFieldValue) {
+              setFieldValue(path, { ...mediaVal });
+            }
           })();
           uploadPromises.push(promise);
         }

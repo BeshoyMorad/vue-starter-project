@@ -1,4 +1,5 @@
 <script setup lang="ts">
+  /* eslint-disable max-lines */
   import type { MediaValue } from '@/types/media';
   import { ref, computed, watch } from 'vue';
   import { cn } from '@/utils';
@@ -6,6 +7,7 @@
   import { createMediaValue } from '@/composables/useFormMedia';
   import { error } from '@/utils/toast';
   import { DEFAULT_ALLOWED_TYPES, MIME_TO_EXTENSION } from './constants';
+  import ImageCropperDialog from './ImageCropperDialog.vue';
 
   defineOptions({
     inheritAttrs: false,
@@ -19,6 +21,8 @@
     sizePreset?: 'logo' | 'smallLogo' | 'avatar' | 'default';
     ariaInvalid?: boolean;
     allowedTypes?: string[];
+    crop?: boolean;
+    cropAspectRatio?: number;
   }
 
   const props = withDefaults(defineProps<Props>(), {
@@ -28,11 +32,18 @@
     sizePreset: 'default',
     ariaInvalid: false,
     allowedTypes: undefined,
+    crop: false,
+    cropAspectRatio: undefined,
   });
 
   const emits = defineEmits<{
     (e: 'update:modelValue', value: MediaValue | null): void;
   }>();
+
+  // Cropper State
+  const cropperVisible = ref(false);
+  const selectedImage = ref<string | null>(null);
+  const selectedFileMeta = ref<{ name: string; type: string } | null>(null);
 
   // DOM References
   const fileInputRef = ref<HTMLInputElement | null>(null);
@@ -72,6 +83,22 @@
   });
 
   const acceptAttribute = computed(() => (props.allowedTypes || DEFAULT_ALLOWED_TYPES).join(','));
+
+  const computedAspectRatio = computed(() => {
+    if (props.cropAspectRatio !== undefined) {
+      return props.cropAspectRatio;
+    }
+    if (props.sizePreset === 'avatar') {
+      return 1;
+    }
+    if (props.sizePreset === 'logo') {
+      return 64 / 24;
+    }
+    if (props.sizePreset === 'smallLogo') {
+      return 2;
+    }
+    return undefined;
+  });
 
   const sizeClasses = {
     avatar: 'size-24',
@@ -117,6 +144,18 @@
       return;
     }
 
+    if (props.crop) {
+      selectedFileMeta.value = { name: file.name, type: file.type };
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        selectedImage.value = e.target?.result as string;
+        cropperVisible.value = true;
+      };
+      reader.readAsDataURL(file);
+      target.value = '';
+      return;
+    }
+
     // Revoke old temp URL to prevent memory leaks
     if (localMedia.value.tempUrl) {
       URL.revokeObjectURL(localMedia.value.tempUrl);
@@ -136,6 +175,38 @@
 
     // Reset input value so change event fires again if selecting the same file
     target.value = '';
+  };
+
+  const handleCrop = (blob: Blob) => {
+    if (!selectedFileMeta.value) return;
+
+    const file = new File([blob], selectedFileMeta.value.name, {
+      type: selectedFileMeta.value.type,
+    });
+
+    if (localMedia.value.tempUrl) {
+      URL.revokeObjectURL(localMedia.value.tempUrl);
+    }
+
+    const updatedMedia: MediaValue = {
+      file,
+      tempUrl: URL.createObjectURL(file),
+      mediaId: null,
+      initialUrl: localMedia.value.initialUrl,
+      isChanged: true,
+      wasRemoved: true,
+    };
+
+    localMedia.value = updatedMedia;
+    emits('update:modelValue', updatedMedia);
+
+    selectedImage.value = null;
+    selectedFileMeta.value = null;
+  };
+
+  const handleCropCancel = () => {
+    selectedImage.value = null;
+    selectedFileMeta.value = null;
   };
 
   const clearMedia = (event: Event) => {
@@ -326,5 +397,13 @@
         </button>
       </div>
     </slot>
+
+    <ImageCropperDialog
+      v-model:visible="cropperVisible"
+      :image="selectedImage"
+      :aspect-ratio="computedAspectRatio"
+      @crop="handleCrop"
+      @cancel="handleCropCancel"
+    />
   </div>
 </template>

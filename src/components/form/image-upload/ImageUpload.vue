@@ -22,6 +22,8 @@
     placeholder?: string;
     sizePreset?: 'logo' | 'smallLogo' | 'avatar' | 'default';
     allowedTypes?: string[];
+    crop?: boolean;
+    cropAspectRatio?: number;
     // Form validation wrapper props
     name?: string;
     label?: string;
@@ -35,6 +37,8 @@
     placeholder: 'Upload image',
     sizePreset: 'default',
     allowedTypes: undefined,
+    crop: false,
+    cropAspectRatio: undefined,
     name: undefined,
     label: undefined,
     description: undefined,
@@ -66,6 +70,8 @@
             :allowed-types="allowedTypes"
             :aria-invalid="!!errorMessage"
             :model-value="value"
+            :crop="crop"
+            :crop-aspect-ratio="cropAspectRatio"
             v-bind="$attrs"
             @update:model-value="handleChange"
           />
@@ -87,6 +93,8 @@
       :placeholder="placeholder"
       :size-preset="sizePreset"
       :allowed-types="allowedTypes"
+      :crop="crop"
+      :crop-aspect-ratio="cropAspectRatio"
       :class="containerClass"
     />
   </template>

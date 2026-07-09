@@ -20,6 +20,10 @@ export const TEST_IDS = {
     message: 'toast-message',
     close: 'toast-close',
   },
+  imageCropperDialog: {
+    cancelButton: 'image-cropper-dialog-cancel',
+    applyButton: 'image-cropper-dialog-apply',
+  },
   starter: {
     dashboard: 'starter-dashboard',
     card: 'starter-card',

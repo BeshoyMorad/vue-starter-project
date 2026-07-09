@@ -93,6 +93,7 @@
 
   const { uploadFormMedia } = useFormMedia();
   const directMedia = ref<MediaValue | null>(null);
+  const directMediaCropped = ref<MediaValue | null>(null);
 
   const onFormSubmit = async (values: Record<string, unknown>) => {
     // 1. Upload any new/changed files in parallel
@@ -267,41 +268,65 @@
               test-id="direct-phone-input-eg"
             />
 
-            <Field.ImageUpload
-              v-model="directMedia"
-              size-preset="avatar"
-              test-id="direct-avatar-upload"
-            />
-
-            <Field.ImageUpload
-              v-model="directMedia"
-              size-preset="default"
-              test-id="direct-avatar-upload"
-            />
-
-            <Field.ImageUpload
-              v-model="directMedia"
-              size-preset="logo"
-              test-id="direct-avatar-upload"
-            />
-
-            <Field.ImageUpload
-              v-model="directMedia"
-              size-preset="smallLogo"
-              test-id="direct-avatar-upload"
-            />
-
-            <div class="flex items-center gap-4">
+            <div class="space-y-2">
+              <span class="text-text-disabled text-xs font-semibold tracking-wider uppercase"
+                >Normal Upload (No Crop)</span
+              >
               <Field.ImageUpload
                 v-model="directMedia"
                 size-preset="avatar"
                 test-id="direct-avatar-upload"
               />
+            </div>
 
+            <div class="space-y-2">
+              <span class="text-text-disabled text-xs font-semibold tracking-wider uppercase"
+                >With Circular Crop (Avatar)</span
+              >
+              <Field.ImageUpload
+                v-model="directMediaCropped"
+                size-preset="avatar"
+                crop
+                test-id="direct-avatar-crop-upload"
+              />
+            </div>
+
+            <div class="space-y-2">
+              <span class="text-text-disabled text-xs font-semibold tracking-wider uppercase"
+                >With Rectangular Crop (Logo)</span
+              >
+              <Field.ImageUpload
+                v-model="directMediaCropped"
+                size-preset="logo"
+                crop
+                test-id="direct-logo-crop-upload"
+              />
+            </div>
+
+            <div class="space-y-2">
+              <span class="text-text-disabled text-xs font-semibold tracking-wider uppercase"
+                >With Free Crop (Default)</span
+              >
+              <Field.ImageUpload
+                v-model="directMediaCropped"
+                size-preset="default"
+                crop
+                test-id="direct-default-crop-upload"
+              />
+            </div>
+
+            <div class="flex items-start gap-4">
               <div class="text-text-disabled text-xs">
-                <p>Direct v-model state:</p>
+                <p>Direct state (No Crop):</p>
                 <pre class="bg-background max-w-60 overflow-auto rounded p-2 text-left">{{
                   JSON.stringify(directMedia, null, 2)
+                }}</pre>
+              </div>
+
+              <div class="text-text-disabled text-xs">
+                <p>Direct state (Cropped):</p>
+                <pre class="bg-background max-w-60 overflow-auto rounded p-2 text-left">{{
+                  JSON.stringify(directMediaCropped, null, 2)
                 }}</pre>
               </div>
             </div>
@@ -408,9 +433,10 @@
               test-id="wrapped-phone-input"
             />
             <Field.ImageUpload
-              label="Corporate Logo"
+              label="Corporate Logo (Cropping Enabled)"
               name="logo"
               size-preset="logo"
+              crop
               test-id="wrapped-logo-upload"
             />
             <Field.Textarea

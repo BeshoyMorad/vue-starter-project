@@ -14,4 +14,5 @@ export {
   serializeMediaValues,
 } from './useFormMedia';
 export type { ExtractMediaPayloadOptions } from './useFormMedia';
-export type { MediaValue } from '@/types/media';
+export { useMultiStepForm } from './useMultiStepForm';
+export type { UseMultiStepFormReturn } from './useMultiStepForm';

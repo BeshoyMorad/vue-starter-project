@@ -23,3 +23,4 @@ export { default as Dialog } from './ui/dialog/Dialog.vue';
 export { default as Skeleton } from './ui/skeleton/Skeleton.vue';
 
 export * from './form';
+export * from './multi-step-form';

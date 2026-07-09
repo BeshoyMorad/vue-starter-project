@@ -16,10 +16,12 @@
   import { Form } from 'vee-validate';
   import { toTypedSchema } from '@vee-validate/yup';
   import * as yup from 'yup';
-  import { phoneSchema } from '@/utils/yup-phone';
-  import { useDarkTheme, useFormMedia, extractMediaPayload, type MediaValue } from '@/composables';
+  import { phoneSchema } from '@/utils/yup-schemas';
+  import { useDarkTheme, useFormMedia, extractMediaPayload } from '@/composables';
   import { info, success } from '@/utils/toast';
   import { ref } from 'vue';
+  import type { MediaValue } from '@/types/media';
+  import { paths } from '@/router/paths';
 
   /* prettier-ignore */
   const columns: ColumnDef<{ id: number; name: string; createdAt: Date }, unknown>[] = [
@@ -112,7 +114,15 @@
 
 <template>
   <div class="space-y-4">
-    <Button test-id="" variant="outline" @click="toggleDark()">Toggle Dark Mode</Button>
+    <div class="flex items-center gap-3">
+      <Button test-id="" variant="outline" @click="toggleDark()">Toggle Dark Mode</Button>
+      <RouterLink
+        :to="{ name: paths.dashboard.multiStepForm }"
+        class="bg-bg-primary-default text-text-base hover:bg-bg-primary-default/90 inline-flex h-9 items-center justify-center rounded-md px-4 py-2 text-sm font-medium transition-all"
+      >
+        View Multi-Step Form Example
+      </RouterLink>
+    </div>
     <div>
       <h1 class="mb-2 text-3xl font-bold">Buttons</h1>
 

@@ -21,6 +21,12 @@ export const routes = [
         component: () => import('@/modules/starter/pages/StarterDashboard.vue'),
         meta: { title: 'Starter' },
       },
+      {
+        path: 'multi-step-form',
+        name: paths.dashboard.multiStepForm,
+        component: () => import('@/pages/dashboard/pages/MultiStepFormExample.vue'),
+        meta: { title: 'Multi Step Form' },
+      },
     ],
   },
   ...authRoutes,

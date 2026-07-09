@@ -5,6 +5,7 @@ export const paths = {
   dashboard: {
     root: 'dashboard',
     starter: 'starter',
+    multiStepForm: 'multi-step-form',
   },
   errors: {
     notFound: '404',

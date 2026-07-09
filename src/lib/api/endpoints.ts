@@ -8,6 +8,9 @@ const routes = {
   'auth.refresh-token': { uri: 'refresh-token', methods: ['POST'] },
   'auth.profile': { uri: 'profile', methods: ['GET'] },
 
+  // STARTER
+  'starter.profile': { uri: 'starter/profile', methods: ['GET'] },
+
   // STORAGE
   'storage.presigned-url': { uri: 'storage/presigned-url', methods: ['POST'] },
 } as const satisfies Config['routes'];

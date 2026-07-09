@@ -12,4 +12,8 @@ export const QUERY_KEYS = {
     details: (id: number | string) =>
       [...QUERY_KEYS.corporates.all(), 'details', String(id)] as const,
   },
+  starter: {
+    all: () => ['starter'] as const,
+    profile: () => [...QUERY_KEYS.starter.all(), 'profile'] as const,
+  },
 } as const;

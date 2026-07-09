@@ -20,4 +20,14 @@ export const TEST_IDS = {
     message: 'toast-message',
     close: 'toast-close',
   },
+  starter: {
+    dashboard: 'starter-dashboard',
+    card: 'starter-card',
+    cardTitle: 'starter-card-title',
+    cardDescription: 'starter-card-description',
+    filterToggle: 'starter-filter-toggle',
+    loading: 'starter-loading',
+    error: 'starter-error',
+    noData: 'starter-no-data',
+  },
 } as const;

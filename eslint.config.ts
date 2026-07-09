@@ -90,5 +90,13 @@ export default typescriptEslint.config(
       'no-console': process.env.NODE_ENV === 'production' ? 'error' : 'warn',
     },
   },
+  {
+    files: ['**/*.spec.ts', '**/*.test.ts', 'tests/**/*.ts'],
+    rules: {
+      'max-lines': 'off',
+      'max-lines-per-function': 'off',
+      complexity: 'off',
+    },
+  },
   eslintConfigPrettier
 );

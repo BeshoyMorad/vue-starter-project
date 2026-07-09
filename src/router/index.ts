@@ -15,6 +15,12 @@ export const routes = [
         component: () => import('@/pages/dashboard/pages/Index.vue'),
         meta: { title: 'Dashboard' },
       },
+      {
+        path: 'starter',
+        name: paths.dashboard.starter,
+        component: () => import('@/modules/starter/pages/StarterDashboard.vue'),
+        meta: { title: 'Starter' },
+      },
     ],
   },
   ...authRoutes,

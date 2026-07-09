@@ -4,6 +4,7 @@ export const paths = {
   },
   dashboard: {
     root: 'dashboard',
+    starter: 'starter',
   },
   errors: {
     notFound: '404',

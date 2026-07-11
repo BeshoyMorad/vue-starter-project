@@ -1,4 +1,4 @@
-import type { LoginRequest, LoginResponse } from '@/pages/auth/types';
+import type { LoginRequest, LoginResponse } from '@/modules/auth/types';
 import { api } from '@/lib/api/client';
 import { apiRoute } from '@/lib/api/endpoints';
 

@@ -27,10 +27,11 @@
     <Button
       v-if="buttonLabel"
       color="primary"
-      size="default"
+      size="lg"
       test-id="exception-state-action"
-      :label="buttonLabel"
       @click="buttonAction"
-    />
+    >
+      {{ buttonLabel }}
+    </Button>
   </div>
 </template>

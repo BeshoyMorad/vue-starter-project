@@ -4,7 +4,7 @@
   import { cn } from '@/utils';
   import { useMultiStepForm } from '@/composables/useMultiStepForm';
   import StepIndicator from './StepIndicator.vue';
-  import type { StepDefinition } from './types';
+  import type { StepDefinition } from './types.ts';
   import type { GenericObject } from 'vee-validate';
   import type { HTMLAttributes } from 'vue';
 

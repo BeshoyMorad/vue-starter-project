@@ -1,29 +1,34 @@
 import { defineStore } from 'pinia';
-import { useLocalStorage } from '@vueuse/core';
-import { ref } from 'vue';
+import { StorageSerializers, useLocalStorage } from '@vueuse/core';
 import { ACCESS_TOKEN_STORAGE_KEY, REFRESH_TOKEN_STORAGE_KEY } from '@/lib/api/token';
+import { useRouter } from 'vue-router';
+import { paths } from '@/router/paths';
+
+const USER_STORAGE_KEY = 'user';
 
 export const useAuthStore = defineStore('auth', () => {
   const accessToken = useLocalStorage<string>(ACCESS_TOKEN_STORAGE_KEY, '');
   const refreshToken = useLocalStorage<string>(REFRESH_TOKEN_STORAGE_KEY, '');
-  const authEmployee = ref<unknown>(null); // Replace with your exact User/Employee type
+  // Replace with your exact User type
+  const user = useLocalStorage<unknown>(USER_STORAGE_KEY, null, {
+    serializer: StorageSerializers.object,
+  });
+
+  const router = useRouter();
 
   // const isAuthenticated = computed(() => !!accessToken.value);
 
-  const login = async (payload: {
-    access_token: string;
-    refresh_token: string;
-    employee: unknown;
-  }) => {
+  const login = async (payload: { access_token: string; refresh_token: string; user: unknown }) => {
     accessToken.value = payload.access_token;
     refreshToken.value = payload.refresh_token;
-    authEmployee.value = payload.employee;
+    user.value = payload.user;
   };
 
   const clearAuth = () => {
     accessToken.value = '';
     refreshToken.value = '';
-    authEmployee.value = null;
+    user.value = null;
+    router.push({ name: paths.auth.login });
   };
 
   const getRefreshToken = async () => {
@@ -40,7 +45,7 @@ export const useAuthStore = defineStore('auth', () => {
   return {
     accessToken,
     refreshToken,
-    authEmployee,
+    user,
     isAuthenticated: true,
     login,
     clearAuth,

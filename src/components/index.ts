@@ -7,10 +7,13 @@ export { default as Table } from './data-table/Table.vue';
 export { default as InfiniteScrollTable } from './data-table/InfiniteScrollTable.vue';
 export { default as Tooltip } from './tooltip/Tooltip.vue';
 
-export { default as StatusBadge } from './StatusBadge.vue';
-export { default as EntityAvatar } from './EntityAvatar.vue';
-export { default as PageWrapper } from './PageWrapper.vue';
+// Custom Components
 export { default as CopyText } from './CopyText.vue';
+export { default as EntityAvatar } from './EntityAvatar.vue';
+export { default as ErrorBoundary } from './ErrorBoundary.vue';
+export { default as ExceptionState } from './ExceptionState.vue';
+export { default as PageWrapper } from './PageWrapper.vue';
+export { default as StatusBadge } from './StatusBadge.vue';
 export { default as Tabs } from './Tabs.vue';
 
 // PlaceHolders
@@ -18,9 +21,10 @@ export { default as EmptyPlaceholder } from './placeholders/EmptyPlaceholder.vue
 export { default as ComingSoonPlaceholder } from './placeholders/ComingSoonPlaceholder.vue';
 
 // UI Components
-export { default as Button } from './ui/button/Button.vue';
-export { default as Dialog } from './ui/dialog/Dialog.vue';
-export { default as Skeleton } from './ui/skeleton/Skeleton.vue';
-
+export * from './ui/button';
+export * from './ui/dialog';
+export * from './ui/accordion';
+export * from './ui/skeleton';
+export * from './ui/sonner';
 export * from './form';
-export * from './multi-step-form';
+export * from './form/multi-step-form';

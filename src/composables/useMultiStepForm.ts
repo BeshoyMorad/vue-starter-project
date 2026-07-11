@@ -2,7 +2,7 @@ import { computed, ref, type Ref } from 'vue';
 import { useForm, type GenericObject, type FormContext } from 'vee-validate';
 import { toTypedSchema } from '@vee-validate/yup';
 import * as yup from 'yup';
-import type { MultiStepFormOptions } from '@/components/multi-step-form/types';
+import type { MultiStepFormOptions } from '@/components/form/multi-step-form/types';
 
 export interface UseMultiStepFormReturn {
   /** The underlying VeeValidate form context (exposes values, errors, setFieldValue, etc.). */

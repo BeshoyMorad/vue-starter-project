@@ -44,9 +44,10 @@ async function onResponseError(error: AxiosError) {
   if (status === 401) {
     authStore.clearAuth();
     return Promise.reject(error);
-  }
-
-  if (status === 500) {
+  } else if (status === 403) {
+    router.push({ name: paths.errors.accessDenied });
+    return Promise.reject(error);
+  } else if (status === 500) {
     router.push({ name: paths.errors.serverError });
     return Promise.reject(error);
   }

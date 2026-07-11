@@ -1,5 +1,5 @@
 <script setup lang="ts">
-  import ExceptionState from '@/components/ExceptionState.vue';
+  import { ExceptionState } from '@/components';
   import { paths } from '@/router/paths';
   import { useRouter } from 'vue-router';
 

@@ -5,7 +5,7 @@
   import { success } from '@/utils/toast';
   import { phoneSchema } from '@/utils/yup-schemas';
   import * as yup from 'yup';
-  import type { StepDefinition } from '@/components/multi-step-form/types';
+  import type { StepDefinition } from '@/components';
   import type { GenericObject } from 'vee-validate';
 
   // 1. Define Step Definitions & Schemas

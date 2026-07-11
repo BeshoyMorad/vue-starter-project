@@ -26,7 +26,6 @@ export default typescriptEslint.config(
       // Structure & Length
       'max-lines': ['warn', { max: 300, skipBlankLines: true, skipComments: true }],
       'max-lines-per-function': ['warn', { max: 50, skipBlankLines: true, skipComments: true }],
-      complexity: ['warn', { max: 10 }],
       'no-restricted-imports': [
         'warn',
         {
@@ -95,7 +94,6 @@ export default typescriptEslint.config(
     rules: {
       'max-lines': 'off',
       'max-lines-per-function': 'off',
-      complexity: 'off',
     },
   },
   eslintConfigPrettier

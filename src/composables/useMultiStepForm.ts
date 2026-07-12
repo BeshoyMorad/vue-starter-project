@@ -20,7 +20,7 @@ export interface UseMultiStepFormReturn {
   /** Move to the previous step (no validation). */
   back: () => void;
   /** Jump to an arbitrary step index. */
-  goTo: (step: number) => void;
+  goTo: (step: number) => Promise<void>;
   /**
    * Validate all steps, then call the provided `onSubmit` callback.
    * If validation fails, auto-navigates to the first step with errors.
@@ -72,6 +72,37 @@ function findFirstStepWithError(
   return fallback;
 }
 
+/**
+ * Validate all steps up to the target step.
+ * Stops and sets currentStep to the first invalid step encountered.
+ */
+async function validateAndNavigateToStep(
+  form: FormContext<GenericObject>,
+  steps: MultiStepFormOptions['steps'],
+  targetStep: number,
+  currentStep: Ref<number>,
+  completedSteps: Ref<Set<number>>
+): Promise<void> {
+  const totalSteps = steps.length;
+  if (targetStep >= 0 && targetStep < totalSteps) {
+    for (let i = 0; i < targetStep; i++) {
+      const isValid = await validateStepFields(form, steps[i].fields);
+      if (!isValid) {
+        const nextCompleted = new Set(completedSteps.value);
+        for (let j = i; j < totalSteps; j++) {
+          nextCompleted.delete(j);
+        }
+        completedSteps.value = nextCompleted;
+
+        currentStep.value = i;
+        return;
+      }
+      completedSteps.value = new Set([...completedSteps.value, i]);
+    }
+    currentStep.value = targetStep;
+  }
+}
+
 // ─── Navigation factory ────────────────────────────────────────────────────────
 
 function createNavigation(
@@ -83,7 +114,6 @@ function createNavigation(
   completedSteps: Ref<Set<number>>
 ) {
   const { steps } = options;
-  const totalSteps = steps.length;
 
   const next = async (): Promise<boolean> => {
     const isValid = await validateStepFields(form, steps[currentStep.value].fields);
@@ -97,8 +127,8 @@ function createNavigation(
     if (!isFirstStep.value) currentStep.value--;
   };
 
-  const goTo = (step: number): void => {
-    if (step >= 0 && step < totalSteps) currentStep.value = step;
+  const goTo = async (step: number): Promise<void> => {
+    await validateAndNavigateToStep(form, steps, step, currentStep, completedSteps);
   };
 
   const submit = async (
@@ -109,7 +139,7 @@ function createNavigation(
     );
 
     if (!validations.every(Boolean)) {
-      goTo(findFirstStepWithError(options, form.errors.value, currentStep.value));
+      await goTo(findFirstStepWithError(options, form.errors.value, currentStep.value));
       return false;
     }
 

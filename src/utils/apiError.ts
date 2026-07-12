@@ -51,7 +51,7 @@ export function getApiFieldErrors(err: unknown): Record<string, string | string[
 export function applyApiErrorToForm<TValues extends GenericObject>(
   err: unknown,
   ctx: SubmissionContext<TValues> | undefined,
-  fallbackField: Extract<keyof TValues, string>
+  fallbackField?: Extract<keyof TValues, string>
 ): void {
   if (!ctx) {
     return;
@@ -65,5 +65,7 @@ export function applyApiErrorToForm<TValues extends GenericObject>(
     return;
   }
 
-  setErrors({ [fallbackField]: getApiErrorMessage(err) });
+  if (fallbackField) {
+    setErrors({ [fallbackField]: getApiErrorMessage(err) });
+  }
 }

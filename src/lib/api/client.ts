@@ -3,6 +3,7 @@ import { useAuthStore } from '@/stores/auth';
 import router from '@/router';
 import { paths } from '@/router/paths';
 import { config } from '@/config/env';
+import { getDeviceId } from '@/utils/device';
 
 interface ExtendedAxiosRequestConfig extends InternalAxiosRequestConfig {
   _retry?: boolean;
@@ -24,10 +25,12 @@ function onRequest(config: InternalAxiosRequestConfig): InternalAxiosRequestConf
   const authStore = useAuthStore();
   config.headers.set('Accept', 'application/json');
   config.headers.set('Content-Type', 'application/json');
+  config.headers.set('device-id', getDeviceId());
 
   if (authStore.accessToken) {
     config.headers.set('Authorization', `Bearer ${authStore.accessToken}`);
   }
+
   return config;
 }
 

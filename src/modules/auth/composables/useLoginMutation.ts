@@ -1,4 +1,3 @@
-import { isAxiosError } from 'axios';
 import { useMutation } from '@tanstack/vue-query';
 import { authServices } from '@/modules/auth/services';
 import type { SubmissionContext } from 'vee-validate';
@@ -6,6 +5,7 @@ import type { LoginForm } from '@/modules/auth/schemas/login.schema';
 import type { LoginRequest, LoginResponse } from '@/modules/auth/types';
 import { useAuthStore } from '@/stores/auth';
 import { useAuthRedirect } from '@/composables/useAuthRedirect';
+import { applyApiErrorToForm } from '@/utils/apiError';
 
 export const useLoginMutation = () => {
   const authStore = useAuthStore();
@@ -31,9 +31,7 @@ export const useLoginMutation = () => {
       handleRedirect();
     },
     onError: (error: unknown, variables) => {
-      if (isAxiosError(error)) {
-        variables.ctx?.setErrors(error.response?.data.errors);
-      }
+      applyApiErrorToForm(error, variables.ctx, 'password');
     },
   });
 };

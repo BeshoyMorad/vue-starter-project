@@ -10,6 +10,13 @@ declare global {
     data: T;
   }
 
+  interface ApiErrorResponse {
+    message: string;
+    error?: string;
+    statusCode: number;
+    errors?: Record<string, string | string[]>;
+  }
+
   interface Image {
     url: string;
     extension: string;

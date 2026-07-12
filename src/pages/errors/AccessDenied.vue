@@ -9,7 +9,7 @@
 
 <template>
   <ExceptionState
-    image="/images/access-denied.png"
+    image="@/assets/images/access-denied.png"
     title="Access Forbidden"
     description="The page you're trying to access is completely forbidden for some reason."
     button-label="Back to home"

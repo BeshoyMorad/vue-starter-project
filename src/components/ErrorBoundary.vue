@@ -83,7 +83,7 @@
 
   <ExceptionState
     v-else
-    image="/images/internal-server-error.png"
+    image="@/assets/images/internal-server-error.png"
     :title="fallbackTitle"
     :description="fallbackDescription"
     button-label="Try again"

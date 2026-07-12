@@ -9,7 +9,7 @@
 
 <template>
   <ExceptionState
-    image="/images/no-internet.png"
+    image="@/assets/images/no-internet.png"
     title="This page not found"
     description="You can either stay and chill here, or go back to the beginning."
     button-label="Back to home"

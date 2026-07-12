@@ -9,7 +9,7 @@
 
 <template>
   <ExceptionState
-    image="/images/internal-server-error.png"
+    image="@/assets/images/internal-server-error.png"
     title="Internal Server Error"
     description="We apologize for the inconvenience. Please try again later."
     button-label="Back to home"

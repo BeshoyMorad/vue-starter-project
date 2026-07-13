@@ -11,12 +11,6 @@ importers:
       '@formkit/auto-animate':
         specifier: ^0.9.0
         version: 0.9.0
-      '@hugeicons/core-free-icons':
-        specifier: ^4.2.0
-        version: 4.2.0
-      '@hugeicons/vue':
-        specifier: ^1.0.5
-        version: 1.0.5(vue@3.5.35(typescript@6.0.3))
       '@iconify-json/hugeicons':
         specifier: ^1.2.28
         version: 1.2.28
@@ -365,14 +359,6 @@ packages:
 
   '@formkit/auto-animate@0.9.0':
     resolution: {integrity: sha512-VhP4zEAacXS3dfTpJpJ88QdLqMTcabMg0jwpOSxZ/VzfQVfl3GkZSCZThhGC5uhq/TxPHPzW0dzr4H9Bb1OgKA==}
-
-  '@hugeicons/core-free-icons@4.2.0':
-    resolution: {integrity: sha512-V1G/Ph9TbmEow+pKnupZRWQjdORR/TGGr3JVRZOWkomdJ/5N6GgLuKPgBDs7G0kZ0//9LL34AGOUzWe3K+umNA==}
-
-  '@hugeicons/vue@1.0.5':
-    resolution: {integrity: sha512-kaouUZceXtdDfupfiqqfn40tIyRBF/fcEvCfY96hZIXZ3JMsqpwhCDqiqoj+B5bMEUXOuvz3npNyKI5+7iPfYA==}
-    peerDependencies:
-      vue: ^2.6.0 || ^3.0.0
 
   '@humanfs/core@0.19.2':
     resolution: {integrity: sha512-UhXNm+CFMWcbChXywFwkmhqjs3PRCmcSa/hfBgLIb7oQ5HNb1wS0icWsGtSAUNgefHeI+eBrA8I1fxmbHsGdvA==}
@@ -2806,12 +2792,6 @@ snapshots:
       - vue
 
   '@formkit/auto-animate@0.9.0': {}
-
-  '@hugeicons/core-free-icons@4.2.0': {}
-
-  '@hugeicons/vue@1.0.5(vue@3.5.35(typescript@6.0.3))':
-    dependencies:
-      vue: 3.5.35(typescript@6.0.3)
 
   '@humanfs/core@0.19.2':
     dependencies:

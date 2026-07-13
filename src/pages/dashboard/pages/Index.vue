@@ -90,12 +90,19 @@
         .string()
         .required('Description is required')
         .min(10, 'Description must be at least 10 characters'),
+      tags: yup.array().of(yup.string().required()).min(1, 'At least one tag is required'),
+      emails: yup
+        .array()
+        .of(yup.string().email('Invalid email address').required())
+        .min(1, 'At least one email is required'),
     })
   );
 
   const { uploadFormMedia } = useFormMedia();
   const directMedia = ref<MediaValue | null>(null);
   const directMediaCropped = ref<MediaValue | null>(null);
+  const directTags = ref<string[]>(['vue', 'starter']);
+  const directEmails = ref<string[]>(['user@example.com']);
 
   const onFormSubmit = async (values: Record<string, unknown>) => {
     // 1. Upload any new/changed files in parallel
@@ -352,6 +359,44 @@
               searchable
               :max-selected-labels="1"
             />
+
+            <div class="space-y-2">
+              <span class="text-text-disabled text-xs font-semibold tracking-wider uppercase"
+                >Tags Input (Direct v-model)</span
+              >
+              <Field.TagsInput
+                v-model="directTags"
+                placeholder="Add text tag..."
+                test-id="direct-tags-input"
+              />
+            </div>
+
+            <div class="space-y-2">
+              <span class="text-text-disabled text-xs font-semibold tracking-wider uppercase"
+                >Emails Input (Direct v-model)</span
+              >
+              <Field.TagsInput
+                v-model="directEmails"
+                placeholder="Add email tag..."
+                test-id="direct-emails-input"
+              />
+            </div>
+
+            <div class="flex items-start gap-4">
+              <div class="text-text-disabled text-xs">
+                <p>Direct Tags:</p>
+                <pre class="bg-background max-w-60 overflow-auto rounded p-2 text-left">{{
+                  JSON.stringify(directTags, null, 2)
+                }}</pre>
+              </div>
+
+              <div class="text-text-disabled text-xs">
+                <p>Direct Emails:</p>
+                <pre class="bg-background max-w-60 overflow-auto rounded p-2 text-left">{{
+                  JSON.stringify(directEmails, null, 2)
+                }}</pre>
+              </div>
+            </div>
           </div>
         </div>
 
@@ -448,6 +493,18 @@
               size-preset="logo"
               crop
               test-id="wrapped-logo-upload"
+            />
+            <Field.TagsInput
+              label="Tags"
+              name="tags"
+              placeholder="Enter tags..."
+              test-id="wrapped-tags-input"
+            />
+            <Field.TagsInput
+              label="Emails"
+              name="emails"
+              placeholder="Enter email addresses..."
+              test-id="wrapped-emails-input"
             />
             <Field.Textarea
               label="Description"

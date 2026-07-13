@@ -31,6 +31,22 @@ export const routes = [
   },
   ...authRoutes,
   {
+    path: '/access-denied',
+    name: paths.errors.accessDenied,
+    component: () => import('@/pages/errors/AccessDenied.vue'),
+    meta: {
+      title: 'Access Denied',
+    },
+  },
+  {
+    path: '/internal-server-error',
+    name: paths.errors.serverError,
+    component: () => import('@/pages/errors/InternalServerError.vue'),
+    meta: {
+      title: 'Internal Server Error',
+    },
+  },
+  {
     path: '/:pathMatch(.*)*',
     component: () => import('@/pages/errors/NotFound.vue'),
     meta: {

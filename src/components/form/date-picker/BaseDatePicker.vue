@@ -2,12 +2,10 @@
   import { computed, ref, useAttrs, useId } from 'vue';
   import { useVModel } from '@vueuse/core';
   import { CalendarDate, getLocalTimeZone } from '@internationalized/date';
-  import { Popover } from '@/components/ui/popover';
-  import { Button } from '@/components/ui/button';
+  import { Popover, Button, Icon } from '@/components';
   import { Calendar } from '@/components/ui/calendar';
-  import { Icon } from '@/components';
-  import { cn } from '@/utils';
   import { inputVariants } from '@/components/ui/input';
+  import { cn } from '@/utils';
   import dayjs from 'dayjs';
 
   defineOptions({

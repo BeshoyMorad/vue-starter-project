@@ -23,6 +23,18 @@ export default defineConfig(() => {
           assetFileNames: 'project_assets/[name]-[hash][extname]',
           chunkFileNames: 'project_assets/[name]-[hash].js',
           entryFileNames: 'project_assets/[name]-[hash].js',
+          manualChunks(id) {
+            if (id.includes('node_modules')) {
+              if (
+                id.includes('vue') ||
+                id.includes('pinia') ||
+                id.includes('vue-router') ||
+                id.includes('@tanstack')
+              ) {
+                return 'vendor-core';
+              }
+            }
+          },
         },
       },
     },

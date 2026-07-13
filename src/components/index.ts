@@ -21,10 +21,13 @@ export { default as EmptyPlaceholder } from './placeholders/EmptyPlaceholder.vue
 export { default as ComingSoonPlaceholder } from './placeholders/ComingSoonPlaceholder.vue';
 
 // UI Components
+export * from './ui/accordion';
+export * from './ui/avatar';
 export * from './ui/button';
 export * from './ui/dialog';
-export * from './ui/accordion';
+export * from './ui/dropdown-menu';
+export * from './ui/pagination';
+export * from './ui/popover';
 export * from './ui/skeleton';
 export * from './ui/sonner';
 export * from './form';
-export * from './form/multi-step-form';

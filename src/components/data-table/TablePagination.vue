@@ -10,13 +10,11 @@
     PaginationLast,
     PaginationNext,
     PaginationPrevious,
-  } from '@/components/ui/pagination';
-  import {
     DropdownMenu,
     DropdownMenuTrigger,
     DropdownMenuContent,
     DropdownMenuItem,
-  } from '@/components/ui/dropdown-menu';
+  } from '@/components';
   import { TEST_IDS } from '@/lib/test-ids';
 
   interface Props {

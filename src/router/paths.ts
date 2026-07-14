@@ -8,8 +8,9 @@ export const paths = {
     multiStepForm: 'multi-step-form',
   },
   errors: {
-    notFound: '404',
-    accessDenied: '403',
-    serverError: '500',
+    notFound: 'not-found',
+    accessDenied: 'access-denied',
+    serverError: 'server-error',
+    noInternet: 'no-internet',
   },
 };

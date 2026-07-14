@@ -9,9 +9,9 @@
 
 <template>
   <ExceptionState
-    image="@/assets/images/access-denied.png"
-    title="Access Forbidden"
-    description="The page you're trying to access is completely forbidden for some reason."
+    icon="hugeicons--unavailable"
+    title="Access Denied!"
+    description="We're sorry, but you don't have permission to access this page."
     button-label="Back to home"
     :button-action="goHome"
   />

@@ -1,8 +1,8 @@
 <script setup lang="ts">
-  import { Button } from '@/components/ui/button';
+  import { Icon, Button } from '.';
 
   defineProps<{
-    image: string;
+    icon: string;
     title: string;
     description: string;
     buttonLabel?: string;
@@ -11,18 +11,18 @@
 </script>
 
 <template>
-  <div class="bg-bg-default flex min-h-screen flex-col items-center justify-center p-8 text-center">
-    <div class="relative mb-16 h-95.5 w-95.5">
-      <img :src="image" :alt="title" class="h-full w-full object-contain mix-blend-multiply" />
+  <div class="bg-background flex min-h-screen flex-col items-center justify-center p-8 text-center">
+    <Icon :icon="icon" class="mb-10 size-60" />
+
+    <div class="mb-6 max-w-4xl space-y-2 text-center">
+      <h1 class="text-foreground-default text-4xl-line-height font-semibold">
+        {{ title }}
+      </h1>
+
+      <p class="text-foreground-placeholder leading-relaxed">
+        {{ description }}
+      </p>
     </div>
-
-    <h1 class="text-text-default mb-6 text-6xl font-bold">
-      {{ title }}
-    </h1>
-
-    <p class="text-text-placeholder mb-6 max-w-lg text-2xl leading-relaxed">
-      {{ description }}
-    </p>
 
     <Button
       v-if="buttonLabel"

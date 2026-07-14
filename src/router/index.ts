@@ -2,6 +2,7 @@ import { createRouter, createWebHistory } from 'vue-router';
 import { paths } from './paths';
 import { authGuard } from './guards';
 import { authRoutes } from '@/modules/auth/auth.routes';
+import { handleOffline } from '@/composables/useNetwork';
 
 export const routes = [
   {
@@ -47,6 +48,14 @@ export const routes = [
     },
   },
   {
+    path: '/no-internet',
+    name: paths.errors.noInternet,
+    component: () => import('@/pages/errors/NoInternet.vue'),
+    meta: {
+      title: 'No Internet Connection',
+    },
+  },
+  {
     path: '/:pathMatch(.*)*',
     component: () => import('@/pages/errors/NotFound.vue'),
     meta: {
@@ -80,6 +89,15 @@ router.onError((error, to) => {
       // eslint-disable-next-line no-console
       console.error('[Router Dynamic Import Error]: Reload did not resolve the issue.', error);
     }
+  }
+});
+
+router.beforeEach((to, _from, next) => {
+  if (!navigator.onLine && to.name !== paths.errors.noInternet) {
+    handleOffline(to.fullPath);
+    next(false);
+  } else {
+    next();
   }
 });
 

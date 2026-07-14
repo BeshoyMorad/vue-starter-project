@@ -24,11 +24,11 @@ export const useAuthRedirect = () => {
   const handleRedirect = (routeName: string = paths.dashboard.root) => {
     const url = savedUrl.value;
     if (url) {
-      clearRedirectUrl();
       router.push(url);
     } else {
       router.push({ name: routeName });
     }
+    clearRedirectUrl();
   };
 
   return {

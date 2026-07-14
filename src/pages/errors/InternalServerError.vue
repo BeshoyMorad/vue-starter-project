@@ -1,7 +1,7 @@
 <script setup lang="ts">
   import { ExceptionState } from '@/components';
-  import { paths } from '@/router/paths';
   import { useRouter } from 'vue-router';
+  import { paths } from '@/router/paths';
 
   const router = useRouter();
   const goHome = () => router.push({ name: paths.dashboard.root });
@@ -9,9 +9,9 @@
 
 <template>
   <ExceptionState
-    image="@/assets/images/internal-server-error.png"
-    title="Internal Server Error"
-    description="We apologize for the inconvenience. Please try again later."
+    icon="hugeicons--work-alert"
+    title="Oops! Something went wrong on our end."
+    description="Server issues are often temporary. Try accessing the Packages module again in a few minutes."
     button-label="Back to home"
     :button-action="goHome"
   />

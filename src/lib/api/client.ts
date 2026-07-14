@@ -4,6 +4,7 @@ import router from '@/router';
 import { paths } from '@/router/paths';
 import { config } from '@/config/env';
 import { getDeviceId } from '@/utils/device';
+import { handleOffline } from '@/composables/useNetwork';
 
 interface ExtendedAxiosRequestConfig extends InternalAxiosRequestConfig {
   _retry?: boolean;
@@ -39,6 +40,9 @@ async function onResponseError(error: AxiosError) {
   const originalRequest = error.config as ExtendedAxiosRequestConfig;
 
   if (!error.response) {
+    if (!navigator.onLine) {
+      handleOffline();
+    }
     return Promise.reject(error);
   }
 

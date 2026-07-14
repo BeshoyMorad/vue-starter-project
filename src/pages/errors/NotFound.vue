@@ -9,9 +9,9 @@
 
 <template>
   <ExceptionState
-    image="@/assets/images/no-internet.png"
-    title="This page not found"
-    description="You can either stay and chill here, or go back to the beginning."
+    icon="hugeicons--alert-02"
+    title="Oops! We can't find that page."
+    description="The page you’re looking for doesn’t exist or has been removed. Please go back to the home page."
     button-label="Back to home"
     :button-action="goHome"
   />

@@ -44,7 +44,11 @@ export function useDataInfiniteScroll<
   const state = useTableState<TFilters>(options);
   const paginationType = options.paginationType ?? 'offset';
 
-  const dynamicQueryKey = computed(() => [...toValue(options.queryKey), state.baseParams.value]);
+  const dynamicQueryKey = computed(() => [
+    ...toValue(options.queryKey),
+    'infinite',
+    state.baseParams.value,
+  ]);
 
   const {
     data: rawPages,

@@ -1,4 +1,3 @@
-/* eslint-disable max-lines-per-function */
 import {
   ref,
   computed,
@@ -16,6 +15,8 @@ export interface TableParams {
   limit: number;
   search?: string;
   filters?: object;
+  sortKey?: string;
+  order?: 'ASC' | 'DESC';
   [key: string]: unknown;
 }
 
@@ -25,6 +26,10 @@ export interface TableStateOptions<TFilters extends object> {
   searchDebounce?: number;
   initialSearch?: string;
   initialFilters?: object;
+  initialSort?: {
+    sortKey?: string;
+    order?: 'ASC' | 'DESC';
+  };
   paginationType?: 'offset' | 'cursor' | 'none';
 }
 
@@ -34,12 +39,17 @@ export interface TableStateReturn<TFilters extends object> {
   isDebouncing: ComputedRef<boolean>;
   filters: Ref<TFilters>;
   setFilters: (newFilters: Partial<TFilters>) => void;
+  clearFilters: () => void;
   itemsPerPage: Ref<number>;
   baseParams: ComputedRef<TableParams>;
   page: Ref<number>;
   cursor: Ref<string | null>;
+  sortKey: Ref<string | undefined>;
+  order: Ref<'ASC' | 'DESC' | undefined>;
+  sort: (sorting: { sortKey?: string; order?: 'ASC' | 'DESC' }) => void;
 }
 
+// eslint-disable-next-line max-lines-per-function
 export function useTableState<TFilters extends object>(
   options: TableStateOptions<TFilters>
 ): TableStateReturn<TFilters> {
@@ -49,6 +59,7 @@ export function useTableState<TFilters extends object>(
     searchDebounce = 500,
     initialSearch = '',
     initialFilters = {},
+    initialSort = {},
     paginationType = 'offset',
   } = options;
 
@@ -68,15 +79,27 @@ export function useTableState<TFilters extends object>(
     }
   };
 
+  const clearFilters = () => {
+    filters.value = {} as TFilters;
+  };
+
   const itemsPerPage = ref(limit);
+
+  const sortKey = ref<string | undefined>(initialSort.sortKey);
+  const order = ref<'ASC' | 'DESC' | undefined>(initialSort.order);
+
+  const sort = (sorting: { sortKey?: string; order?: 'ASC' | 'DESC' }) => {
+    sortKey.value = sorting.sortKey;
+    order.value = sorting.order;
+  };
 
   // Pagination states
   const page = ref(1);
   const cursor = ref<string | null>(null);
 
-  // Reset pagination when search, filters, or itemsPerPage (limit) change
+  // Reset pagination when search, filters, itemsPerPage, or sorting change
   watch(
-    [debouncedSearch, filters, itemsPerPage],
+    [debouncedSearch, filters, itemsPerPage, sortKey, order],
     () => {
       page.value = 1;
       cursor.value = null;
@@ -88,6 +111,8 @@ export function useTableState<TFilters extends object>(
     const params: TableParams = {
       search: debouncedSearch.value || undefined,
       limit: itemsPerPage.value,
+      sortKey: sortKey.value || undefined,
+      order: order.value || undefined,
       ...filters.value,
       ...(query ? toValue(query) : {}),
     };
@@ -109,9 +134,13 @@ export function useTableState<TFilters extends object>(
     isDebouncing,
     filters: filters as Ref<TFilters>,
     setFilters,
+    clearFilters,
     itemsPerPage,
     baseParams,
     page,
     cursor,
+    sortKey,
+    order,
+    sort,
   };
 }

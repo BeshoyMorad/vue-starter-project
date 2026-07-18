@@ -1,12 +1,8 @@
 <script setup lang="ts" generic="TRow extends { id: number | string }">
   import { ref, computed, useTemplateRef, onMounted } from 'vue';
+  import type { HTMLAttributes } from 'vue';
   import { useInfiniteScroll } from '@vueuse/core';
-  import {
-    getCoreRowModel,
-    useVueTable,
-    type ColumnDef,
-    type SortingState,
-  } from '@tanstack/vue-table';
+  import { type ColumnDef } from '@tanstack/vue-table';
   import { cn } from '@/utils';
   import { Icon, Skeleton, EmptyPlaceholder } from '@/components';
   import {
@@ -18,6 +14,12 @@
   } from '@/components/ui/table';
   import TableHead from './TableHead.vue';
   import TableRow from './TableRow.vue';
+  import { useTableRowClick } from './useTableRowClick';
+  import { useDataTableState } from './useDataTableState';
+
+  defineOptions({
+    inheritAttrs: false,
+  });
 
   interface Props {
     columns: ColumnDef<TRow, unknown>[];
@@ -28,43 +30,32 @@
     height?: string;
     maxHeight?: string;
     skeletonRows?: number;
+    class?: HTMLAttributes['class'];
+    clickable?: boolean;
   }
 
   const props = withDefaults(defineProps<Props>(), {
     height: 'auto',
     maxHeight: '500px',
     skeletonRows: 10,
+    class: '',
+    clickable: false,
   });
   const emit = defineEmits<{
     (e: 'load-more'): void;
-    (e: 'sort', sorting: { sort_by?: string; sort_order?: 'asc' | 'desc' }): void;
+    (e: 'sort', sorting: { sortKey?: string; order?: 'ASC' | 'DESC' }): void;
+    (e: 'rowClick', row: TRow): void;
   }>();
 
-  const sorting = ref<SortingState>([]);
-  const table = useVueTable({
-    get data() {
-      return props.value;
-    },
-    get columns() {
-      return props.columns;
-    },
-    getCoreRowModel: getCoreRowModel(),
-    manualSorting: true,
-    state: {
-      get sorting() {
-        return sorting.value;
-      },
-    },
-    onSortingChange: (updaterOrValue) => {
-      sorting.value =
-        typeof updaterOrValue === 'function' ? updaterOrValue(sorting.value) : updaterOrValue;
+  const { isRowClickable, handleRowClick } = useTableRowClick<TRow>(
+    () => props.clickable || false,
+    (row) => emit('rowClick', row)
+  );
 
-      const currentSort = sorting.value[0];
-      emit('sort', {
-        sort_by: currentSort?.id,
-        sort_order: currentSort ? (currentSort.desc ? 'desc' : 'asc') : undefined,
-      });
-    },
+  const { table } = useDataTableState<TRow>({
+    value: () => props.value,
+    columns: () => props.columns,
+    onSort: (sorting) => emit('sort', sorting),
   });
 
   // VueUse Infinite Scroll Container Setup
@@ -72,8 +63,11 @@
   const scrollContainer = ref<HTMLElement | null>(null);
 
   onMounted(() => {
-    if (tableRef.value?.containerRef) {
-      scrollContainer.value = tableRef.value.containerRef;
+    if (tableRef.value?.$el) {
+      const scrollable: HTMLElement | null = tableRef.value.$el.querySelector(
+        '[data-slot="table-wrapper"]'
+      );
+      scrollContainer.value = scrollable || tableRef.value.$el;
     }
   });
 
@@ -82,9 +76,14 @@
   useInfiniteScroll(
     scrollContainer,
     () => {
-      if (canLoadMore.value) emit('load-more');
+      emit('load-more');
     },
-    { distance: 150 }
+    {
+      distance: 150,
+      canLoadMore() {
+        return canLoadMore.value;
+      },
+    }
   );
 </script>
 
@@ -96,7 +95,8 @@
         'rounded-md relative w-full',
         (props.maxHeight || props.height) && table.getRowModel().rows?.length
           ? 'overflow-y-auto'
-          : 'overflow-y-hidden'
+          : 'overflow-y-hidden',
+        props.class
       )
     "
     :style="{
@@ -104,7 +104,7 @@
       maxHeight: props.maxHeight,
     }"
   >
-    <TableHeader class="bg-bg-surface sticky top-0 z-20 shadow-sm">
+    <TableHeader class="bg-background-surface sticky top-0 z-20 shadow-sm">
       <TableHead :table="table" />
     </TableHeader>
 
@@ -123,6 +123,8 @@
           :key="row.id"
           :row="row"
           :index="index"
+          :class="cn(isRowClickable && 'hover:bg-default-hovered cursor-pointer transition-colors')"
+          @click="handleRowClick(row.original, $event)"
         />
       </template>
 

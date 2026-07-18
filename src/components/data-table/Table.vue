@@ -1,12 +1,6 @@
 <script setup lang="ts" generic="TRow extends { id: number | string }">
-  import { ref, computed } from 'vue';
   import { cn } from '@/utils';
-  import {
-    getCoreRowModel,
-    useVueTable,
-    type ColumnDef,
-    type SortingState,
-  } from '@tanstack/vue-table';
+  import { type ColumnDef } from '@tanstack/vue-table';
   import { Skeleton, EmptyPlaceholder } from '@/components';
   import {
     Table,
@@ -18,6 +12,8 @@
   import TableHead from './TableHead.vue';
   import TableRow from './TableRow.vue';
   import TablePagination from './TablePagination.vue';
+  import { useTableRowClick } from './useTableRowClick';
+  import { useDataTableState } from './useDataTableState';
 
   interface Props {
     columns: ColumnDef<TRow, unknown>[];
@@ -30,7 +26,7 @@
 
   const props = defineProps<Props>();
   const emit = defineEmits<{
-    (e: 'sort', sorting: { sort_by?: string; sort_order?: 'asc' | 'desc' }): void;
+    (e: 'sort', sorting: { sortKey?: string; order?: 'ASC' | 'DESC' }): void;
     (e: 'pageChange', page: number): void;
     (e: 'limitChange', limit: number): void;
     (e: 'next'): void;
@@ -38,45 +34,15 @@
     (e: 'rowClick', row: TRow): void;
   }>();
 
-  const isRowClickable = computed(() => props.clickable || false);
+  const { isRowClickable, handleRowClick } = useTableRowClick<TRow>(
+    () => props.clickable || false,
+    (row) => emit('rowClick', row)
+  );
 
-  const handleRowClick = (row: TRow, event: MouseEvent) => {
-    if (!isRowClickable.value) return;
-    const target = event.target as HTMLElement | null;
-    if (!target) return;
-    const isInteractive = target.closest(
-      'button, a, input, select, textarea, [role="menuitem"], [role="button"], svg, path'
-    );
-    if (isInteractive) return;
-
-    emit('rowClick', row);
-  };
-
-  const sorting = ref<SortingState>([]);
-  const table = useVueTable({
-    get data() {
-      return props.value;
-    },
-    get columns() {
-      return props.columns;
-    },
-    getCoreRowModel: getCoreRowModel(),
-    manualSorting: true,
-    state: {
-      get sorting() {
-        return sorting.value;
-      },
-    },
-    onSortingChange: (updaterOrValue) => {
-      sorting.value =
-        typeof updaterOrValue === 'function' ? updaterOrValue(sorting.value) : updaterOrValue;
-
-      const currentSort = sorting.value[0];
-      emit('sort', {
-        sort_by: currentSort?.id,
-        sort_order: currentSort ? (currentSort.desc ? 'desc' : 'asc') : undefined,
-      });
-    },
+  const { table } = useDataTableState<TRow>({
+    value: () => props.value,
+    columns: () => props.columns,
+    onSort: (sorting) => emit('sort', sorting),
   });
 </script>
 

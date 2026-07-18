@@ -20,9 +20,11 @@
     data-slot="table-container"
     :class="cn('bg-bg-surface relative w-full overflow-auto rounded-md', props.containerClass)"
   >
-    <table data-slot="table" :class="cn('w-full caption-bottom text-sm', props.class)">
-      <slot />
-    </table>
+    <div data-slot="table-wrapper" class="hide-scrollbar w-full overflow-x-auto">
+      <table data-slot="table" :class="cn('w-full caption-bottom text-sm', props.class)">
+        <slot />
+      </table>
+    </div>
 
     <slot name="footer" />
   </div>

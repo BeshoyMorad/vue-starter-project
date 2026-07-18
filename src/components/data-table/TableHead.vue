@@ -1,5 +1,5 @@
 <script setup lang="ts" generic="TRow extends { id: number | string }">
-  import { type Table } from '@tanstack/vue-table';
+  import { FlexRender, type Table } from '@tanstack/vue-table';
   import { TableHead, TableRow } from '@/components/ui/table';
   import { Icon } from '@/components';
 
@@ -26,7 +26,7 @@
           @click="header.column.getToggleSortingHandler()?.($event)"
         >
           <span>
-            {{ header.column.columnDef.header }}
+            <FlexRender :render="header.column.columnDef.header" :props="header.getContext()" />
           </span>
 
           <span v-if="header.column.getCanSort()" class="inline-flex flex-col items-center gap-1">

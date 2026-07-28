@@ -10,12 +10,7 @@
 >
   /* eslint-disable max-lines */
   import { computed, watch, type HtmlHTMLAttributes } from 'vue';
-  import {
-    useForwardPropsEmits,
-    type AcceptableValue,
-    type ComboboxRootEmits,
-    type ComboboxRootProps,
-  } from 'reka-ui';
+  import { useForwardProps, type AcceptableValue, type ComboboxRootProps } from 'reka-ui';
   import { Icon } from '@/components';
   import { cn } from '@/utils';
   import { reactiveOmit } from '@vueuse/core';
@@ -63,11 +58,9 @@
     searchable: false,
   });
 
-  const emits = defineEmits<
-    ComboboxRootEmits & {
-      selected: [value: Option | undefined];
-    }
-  >();
+  const emits = defineEmits<{
+    selected: [value: Option | undefined];
+  }>();
 
   const delegatedProps = reactiveOmit(
     props,
@@ -89,7 +82,7 @@
     'selectedItemsLabel'
   );
 
-  const forwarded = useForwardPropsEmits(delegatedProps, emits);
+  const forwarded = useForwardProps(delegatedProps);
   const modelValue = defineModel<IsMultiple extends true ? Value[] : Value>();
   const search = defineModel<string>('search', { default: '' });
 

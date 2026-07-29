@@ -6,6 +6,7 @@ export const paths = {
     root: 'dashboard',
     starter: 'starter',
     multiStepForm: 'multi-step-form',
+    virtualScrollExample: 'virtual-scroll-example',
   },
   errors: {
     notFound: 'not-found',

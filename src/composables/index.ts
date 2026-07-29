@@ -19,3 +19,4 @@ export type { UseMultiStepFormReturn } from './useMultiStepForm';
 export { useAuthRedirect } from './useAuthRedirect';
 export { useNetwork } from './useNetwork';
 export { useModal } from './useModal';
+export { useVirtualScroll } from './useVirtualScroll';

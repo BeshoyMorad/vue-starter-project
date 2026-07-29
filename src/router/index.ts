@@ -28,6 +28,12 @@ export const routes = [
         component: () => import('@/pages/dashboard/pages/MultiStepFormExample.vue'),
         meta: { title: 'Multi Step Form' },
       },
+      {
+        path: 'virtual-scroll-example',
+        name: paths.dashboard.virtualScrollExample,
+        component: () => import('@/pages/dashboard/pages/VirtualScrollExample.vue'),
+        meta: { title: 'Virtual Scroll Example' },
+      },
     ],
   },
   ...authRoutes,

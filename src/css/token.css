@@ -1,138 +1,138 @@
 @theme {
   /* Background Colors */
-  --color-bg-surface: #fff;
-  --color-bg-disabled: var(--color-neutral-200);
+  --color-bg-surface: light-dark(#fff, #000);
+  --color-bg-disabled: light-dark(var(--color-neutral-200), var(--color-neutral-800));
   --color-bg-transparent: transparent;
-  --color-bg-divider: var(--color-neutral-400);
-  --color-bg-modal: #fff;
+  --color-bg-divider: light-dark(var(--color-neutral-400), var(--color-neutral-600));
+  --color-bg-modal: light-dark(#fff, var(--color-neutral-900));
 
   /* neutral colors */
-  --color-bg-default: var(--color-neutral-100);
-  --color-bg-hovered: var(--color-neutral-200);
-  --color-bg-pressed: var(--color-neutral-300);
-  --color-bg-focused: var(--color-neutral-100);
-  --color-bg-loading: var(--color-neutral-300);
+  --color-bg-default: light-dark(var(--color-neutral-100), var(--color-neutral-900));
+  --color-bg-hovered: light-dark(var(--color-neutral-200), var(--color-neutral-800));
+  --color-bg-pressed: light-dark(var(--color-neutral-300), var(--color-neutral-700));
+  --color-bg-focused: light-dark(var(--color-neutral-100), var(--color-neutral-900));
+  --color-bg-loading: light-dark(var(--color-neutral-300), var(--color-neutral-700));
 
-  --color-bg-default-invert: var(--color-neutral-700);
-  --color-bg-hovered-invert: var(--color-neutral-800);
-  --color-bg-pressed-invert: var(--color-neutral-900);
-  --color-bg-focused-invert: var(--color-neutral-700);
-  --color-bg-loading-invert: var(--color-neutral-900);
+  --color-bg-default-invert: light-dark(var(--color-neutral-700), var(--color-neutral-300));
+  --color-bg-hovered-invert: light-dark(var(--color-neutral-800), var(--color-neutral-200));
+  --color-bg-pressed-invert: light-dark(var(--color-neutral-900), var(--color-neutral-100));
+  --color-bg-focused-invert: light-dark(var(--color-neutral-700), var(--color-neutral-300));
+  --color-bg-loading-invert: light-dark(var(--color-neutral-900), var(--color-neutral-100));
 
   /* primary colors */
-  --color-bg-primary-default: var(--color-primary-500);
-  --color-bg-primary-hovered: var(--color-primary-800);
-  --color-bg-primary-pressed: var(--color-primary-900);
-  --color-bg-primary-focused: var(--color-primary-700);
-  --color-bg-primary-loading: var(--color-primary-900);
+  --color-bg-primary-default: light-dark(var(--color-primary-500), var(--color-primary-300));
+  --color-bg-primary-hovered: light-dark(var(--color-primary-800), var(--color-primary-200));
+  --color-bg-primary-pressed: light-dark(var(--color-primary-900), var(--color-primary-100));
+  --color-bg-primary-focused: light-dark(var(--color-primary-700), var(--color-primary-300));
+  --color-bg-primary-loading: light-dark(var(--color-primary-900), var(--color-primary-100));
 
-  --color-bg-primary-default-invert: var(--color-primary-100);
-  --color-bg-primary-hovered-invert: var(--color-primary-200);
-  --color-bg-primary-pressed-invert: var(--color-primary-300);
-  --color-bg-primary-focused-invert: var(--color-primary-100);
-  --color-bg-primary-loading-invert: var(--color-primary-300);
+  --color-bg-primary-default-invert: light-dark(var(--color-primary-100), var(--color-primary-900));
+  --color-bg-primary-hovered-invert: light-dark(var(--color-primary-200), var(--color-primary-800));
+  --color-bg-primary-pressed-invert: light-dark(var(--color-primary-300), var(--color-primary-700));
+  --color-bg-primary-focused-invert: light-dark(var(--color-primary-100), var(--color-primary-900));
+  --color-bg-primary-loading-invert: light-dark(var(--color-primary-300), var(--color-primary-700));
 
   /* info colors */
-  --color-bg-info-default: var(--color-info-700);
-  --color-bg-info-hovered: var(--color-info-800);
-  --color-bg-info-pressed: var(--color-info-900);
-  --color-bg-info-focused: var(--color-info-700);
-  --color-bg-info-loading: var(--color-info-900);
+  --color-bg-info-default: light-dark(var(--color-info-700), var(--color-info-300));
+  --color-bg-info-hovered: light-dark(var(--color-info-800), var(--color-info-200));
+  --color-bg-info-pressed: light-dark(var(--color-info-900), var(--color-info-100));
+  --color-bg-info-focused: light-dark(var(--color-info-700), var(--color-info-300));
+  --color-bg-info-loading: light-dark(var(--color-info-900), var(--color-info-100));
 
-  --color-bg-info-default-invert: var(--color-info-100);
-  --color-bg-info-hovered-invert: var(--color-info-200);
-  --color-bg-info-pressed-invert: var(--color-info-300);
-  --color-bg-info-focused-invert: var(--color-info-100);
-  --color-bg-info-loading-invert: var(--color-info-300);
+  --color-bg-info-default-invert: light-dark(var(--color-info-100), var(--color-info-900));
+  --color-bg-info-hovered-invert: light-dark(var(--color-info-200), var(--color-info-800));
+  --color-bg-info-pressed-invert: light-dark(var(--color-info-300), var(--color-info-700));
+  --color-bg-info-focused-invert: light-dark(var(--color-info-100), var(--color-info-900));
+  --color-bg-info-loading-invert: light-dark(var(--color-info-300), var(--color-info-700));
 
   /* success colors */
-  --color-bg-success-default: var(--color-success-700);
-  --color-bg-success-hovered: var(--color-success-800);
-  --color-bg-success-pressed: var(--color-success-900);
-  --color-bg-success-focused: var(--color-success-700);
-  --color-bg-success-loading: var(--color-success-900);
+  --color-bg-success-default: light-dark(var(--color-success-700), var(--color-success-300));
+  --color-bg-success-hovered: light-dark(var(--color-success-800), var(--color-success-200));
+  --color-bg-success-pressed: light-dark(var(--color-success-900), var(--color-success-100));
+  --color-bg-success-focused: light-dark(var(--color-success-700), var(--color-success-300));
+  --color-bg-success-loading: light-dark(var(--color-success-900), var(--color-success-100));
 
-  --color-bg-success-default-invert: var(--color-success-100);
-  --color-bg-success-hovered-invert: var(--color-success-200);
-  --color-bg-success-pressed-invert: var(--color-success-300);
-  --color-bg-success-focused-invert: var(--color-success-100);
-  --color-bg-success-loading-invert: var(--color-success-300);
+  --color-bg-success-default-invert: light-dark(var(--color-success-100), var(--color-success-900));
+  --color-bg-success-hovered-invert: light-dark(var(--color-success-200), var(--color-success-800));
+  --color-bg-success-pressed-invert: light-dark(var(--color-success-300), var(--color-success-700));
+  --color-bg-success-focused-invert: light-dark(var(--color-success-100), var(--color-success-900));
+  --color-bg-success-loading-invert: light-dark(var(--color-success-300), var(--color-success-700));
 
   /* warning colors */
-  --color-bg-warning-default: var(--color-warning-700);
-  --color-bg-warning-hovered: var(--color-warning-800);
-  --color-bg-warning-pressed: var(--color-warning-900);
-  --color-bg-warning-focused: var(--color-warning-700);
-  --color-bg-warning-loading: var(--color-warning-900);
+  --color-bg-warning-default: light-dark(var(--color-warning-700), var(--color-warning-300));
+  --color-bg-warning-hovered: light-dark(var(--color-warning-800), var(--color-warning-200));
+  --color-bg-warning-pressed: light-dark(var(--color-warning-900), var(--color-warning-100));
+  --color-bg-warning-focused: light-dark(var(--color-warning-700), var(--color-warning-300));
+  --color-bg-warning-loading: light-dark(var(--color-warning-900), var(--color-warning-100));
 
-  --color-bg-warning-default-invert: var(--color-warning-100);
-  --color-bg-warning-hovered-invert: var(--color-warning-200);
-  --color-bg-warning-pressed-invert: var(--color-warning-300);
-  --color-bg-warning-focused-invert: var(--color-warning-100);
-  --color-bg-warning-loading-invert: var(--color-warning-300);
+  --color-bg-warning-default-invert: light-dark(var(--color-warning-100), var(--color-warning-900));
+  --color-bg-warning-hovered-invert: light-dark(var(--color-warning-200), var(--color-warning-800));
+  --color-bg-warning-pressed-invert: light-dark(var(--color-warning-300), var(--color-warning-700));
+  --color-bg-warning-focused-invert: light-dark(var(--color-warning-100), var(--color-warning-900));
+  --color-bg-warning-loading-invert: light-dark(var(--color-warning-300), var(--color-warning-700));
 
   /* danger colors */
-  --color-bg-danger-default: var(--color-danger-700);
-  --color-bg-danger-hovered: var(--color-danger-800);
-  --color-bg-danger-pressed: var(--color-danger-900);
-  --color-bg-danger-focused: var(--color-danger-700);
-  --color-bg-danger-loading: var(--color-danger-900);
+  --color-bg-danger-default: light-dark(var(--color-danger-700), var(--color-danger-300));
+  --color-bg-danger-hovered: light-dark(var(--color-danger-800), var(--color-danger-200));
+  --color-bg-danger-pressed: light-dark(var(--color-danger-900), var(--color-danger-100));
+  --color-bg-danger-focused: light-dark(var(--color-danger-700), var(--color-danger-300));
+  --color-bg-danger-loading: light-dark(var(--color-danger-900), var(--color-danger-100));
 
-  --color-bg-danger-default-invert: var(--color-danger-100);
-  --color-bg-danger-hovered-invert: var(--color-danger-200);
-  --color-bg-danger-pressed-invert: var(--color-danger-300);
-  --color-bg-danger-focused-invert: var(--color-danger-100);
-  --color-bg-danger-loading-invert: var(--color-danger-300);
+  --color-bg-danger-default-invert: light-dark(var(--color-danger-100), var(--color-danger-900));
+  --color-bg-danger-hovered-invert: light-dark(var(--color-danger-200), var(--color-danger-800));
+  --color-bg-danger-pressed-invert: light-dark(var(--color-danger-300), var(--color-danger-700));
+  --color-bg-danger-focused-invert: light-dark(var(--color-danger-100), var(--color-danger-900));
+  --color-bg-danger-loading-invert: light-dark(var(--color-danger-300), var(--color-danger-700));
 
   /* ------------------------------------------------------------ */
   /* Text colors */
-  --color-text-base: #fff;
-  --color-text-base-invert: var(--color-neutral-950);
+  --color-text-base: light-dark(#fff, var(--color-neutral-950));
+  --color-text-base-invert: light-dark(var(--color-neutral-950), #fff);
 
-  --color-text-default: var(--color-neutral-950);
-  --color-text-default-invert: #fff;
+  --color-text-default: light-dark(var(--color-neutral-950), #fff);
+  --color-text-default-invert: light-dark(#fff, var(--color-neutral-950));
 
-  --color-text-primary: var(--color-primary-500);
-  --color-text-primary-invert: var(--color-primary-100);
+  --color-text-primary: light-dark(var(--color-primary-500), var(--color-primary-300));
+  --color-text-primary-invert: light-dark(var(--color-primary-100), var(--color-primary-900));
 
-  --color-text-info: var(--color-info-700);
-  --color-text-info-invert: var(--color-info-100);
+  --color-text-info: light-dark(var(--color-info-700), var(--color-info-300));
+  --color-text-info-invert: light-dark(var(--color-info-100), var(--color-info-900));
 
-  --color-text-success: var(--color-success-700);
-  --color-text-success-invert: var(--color-success-100);
+  --color-text-success: light-dark(var(--color-success-700), var(--color-success-300));
+  --color-text-success-invert: light-dark(var(--color-success-100), var(--color-success-900));
 
-  --color-text-warning: var(--color-warning-700);
-  --color-text-warning-invert: var(--color-warning-100);
+  --color-text-warning: light-dark(var(--color-warning-700), var(--color-warning-300));
+  --color-text-warning-invert: light-dark(var(--color-warning-100), var(--color-warning-900));
 
-  --color-text-danger: var(--color-danger-700);
-  --color-text-danger-invert: var(--color-danger-100);
+  --color-text-danger: light-dark(var(--color-danger-700), var(--color-danger-300));
+  --color-text-danger-invert: light-dark(var(--color-danger-100), var(--color-danger-900));
 
-  --color-text-placeholder: var(--color-neutral-500);
-  --color-text-placeholder-invert: var(--color-neutral-500);
+  --color-text-placeholder: light-dark(var(--color-neutral-500), var(--color-neutral-500));
+  --color-text-placeholder-invert: light-dark(var(--color-neutral-500), var(--color-neutral-500));
 
-  --color-text-caption: var(--color-neutral-600);
-  --color-text-caption-invert: var(--color-neutral-100);
+  --color-text-caption: light-dark(var(--color-neutral-600), var(--color-neutral-400));
+  --color-text-caption-invert: light-dark(var(--color-neutral-100), var(--color-neutral-900));
 
-  --color-text-link: var(--color-blue-700);
-  --color-text-link-invert: var(--color-blue-100);
+  --color-text-link: light-dark(var(--color-blue-700), var(--color-blue-300));
+  --color-text-link-invert: light-dark(var(--color-blue-100), var(--color-blue-900));
 
-  --color-text-visited: var(--color-purple-700);
-  --color-text-visited-invert: var(--color-purple-100);
+  --color-text-visited: light-dark(var(--color-purple-700), var(--color-purple-300));
+  --color-text-visited-invert: light-dark(var(--color-purple-100), var(--color-purple-900));
 
-  --color-text-loading: var(--color-neutral-700);
-  --color-text-loading-invert: var(--color-neutral-100);
+  --color-text-loading: light-dark(var(--color-neutral-700), var(--color-neutral-300));
+  --color-text-loading-invert: light-dark(var(--color-neutral-100), var(--color-neutral-900));
 
-  --color-text-disabled: var(--color-neutral-400);
+  --color-text-disabled: light-dark(var(--color-neutral-400), var(--color-neutral-600));
 
   /* ------------------------------------------------------------ */
   /* Border Colors */
-  --color-border-base: var(--color-gray-200);
-  --color-border-default: var(--color-neutral-300);
-  --color-border-primary: var(--color-primary-500);
-  --color-border-info: var(--color-info-500);
-  --color-border-success: var(--color-success-500);
-  --color-border-warning: var(--color-warning-500);
-  --color-border-danger: var(--color-danger-500);
-  --color-border-ring: var(--color-blue-500);
-  --color-border-disabled: var(--color-neutral-200);
+  --color-border-base: light-dark(var(--color-gray-200), var(--color-gray-950));
+  --color-border-default: light-dark(var(--color-neutral-300), var(--color-neutral-600));
+  --color-border-primary: light-dark(var(--color-primary-500), var(--color-primary-300));
+  --color-border-info: light-dark(var(--color-info-500), var(--color-info-300));
+  --color-border-success: light-dark(var(--color-success-500), var(--color-success-300));
+  --color-border-warning: light-dark(var(--color-warning-500), var(--color-warning-300));
+  --color-border-danger: light-dark(var(--color-danger-500), var(--color-danger-300));
+  --color-border-ring: light-dark(var(--color-blue-500), var(--color-blue-700));
+  --color-border-disabled: light-dark(var(--color-neutral-200), var(--color-neutral-700));
 }

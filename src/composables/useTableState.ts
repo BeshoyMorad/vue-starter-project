@@ -40,6 +40,9 @@ export interface TableStateReturn<TFilters extends object> {
   filters: Ref<TFilters>;
   setFilters: (newFilters: Partial<TFilters>) => void;
   clearFilters: () => void;
+  hasSearch: ComputedRef<boolean>;
+  hasFilters: ComputedRef<boolean>;
+  hasActiveFilters: ComputedRef<boolean>;
   itemsPerPage: Ref<number>;
   baseParams: ComputedRef<TableParams>;
   page: Ref<number>;
@@ -128,6 +131,22 @@ export function useTableState<TFilters extends object>(
     return params;
   });
 
+  const hasSearch = computed(() => {
+    return search.value.trim().length > 0 || debouncedSearch.value.trim().length > 0;
+  });
+
+  const hasFilters = computed(() => {
+    const filterEntries = Object.entries(filters.value as Record<string, unknown>);
+    return filterEntries.some(([_, val]) => {
+      if (val === undefined || val === null || val === '') return false;
+      if (Array.isArray(val)) return val.length > 0;
+      if (typeof val === 'object') return Object.keys(val as object).length > 0;
+      return true;
+    });
+  });
+
+  const hasActiveFilters = computed(() => hasSearch.value || hasFilters.value);
+
   return {
     search,
     debouncedSearch,
@@ -135,6 +154,9 @@ export function useTableState<TFilters extends object>(
     filters: filters as Ref<TFilters>,
     setFilters,
     clearFilters,
+    hasSearch,
+    hasFilters,
+    hasActiveFilters,
     itemsPerPage,
     baseParams,
     page,

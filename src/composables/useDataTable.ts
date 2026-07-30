@@ -22,6 +22,14 @@ export interface UseTableOptions<
   queryOptions?: object;
 }
 
+export type DataTableState =
+  | 'loading'
+  | 'empty'
+  | 'search-empty'
+  | 'filtered-empty'
+  | 'success'
+  | 'error';
+
 export type UseDataTableReturn<
   TData,
   TFilters extends object = object,
@@ -30,6 +38,10 @@ export type UseDataTableReturn<
   Omit<UseQueryReturnType<unknown, TError>, 'data' | 'meta'> & {
     data: ComputedRef<TData[]>;
     meta: ComputedRef<Meta | CursorMeta | null>;
+    isEmpty: ComputedRef<boolean>;
+    isSearchEmpty: ComputedRef<boolean>;
+    isFilteredEmpty: ComputedRef<boolean>;
+    tableState: ComputedRef<DataTableState>;
     goToNext: () => void;
     goToPrev: () => void;
     goToPage: (page: number) => void;
@@ -69,6 +81,32 @@ export function useDataTable<TData = unknown, TFilters extends object = object, 
 
   const data = computed<TData[]>(() => rawResponse.value?.data ?? []);
 
+  const isEmpty = computed(() => {
+    if (query.isLoading.value) return false;
+    return data.value.length === 0 && !state.hasSearch.value && !state.hasFilters.value;
+  });
+
+  const isSearchEmpty = computed(() => {
+    if (query.isLoading.value) return false;
+    return data.value.length === 0 && state.hasSearch.value && !state.hasFilters.value;
+  });
+
+  const isFilteredEmpty = computed(() => {
+    if (query.isLoading.value) return false;
+    return data.value.length === 0 && state.hasFilters.value;
+  });
+
+  const tableState = computed<DataTableState>(() => {
+    if (query.isLoading.value) return 'loading';
+    if (query.isError.value) return 'error';
+    if (data.value.length === 0) {
+      if (state.hasFilters.value) return 'filtered-empty';
+      if (state.hasSearch.value) return 'search-empty';
+      return 'empty';
+    }
+    return 'success';
+  });
+
   const goToNext = () => {
     if (paginationType === 'cursor') {
       const next = (meta.value as CursorMeta | null)?.nextCursor;
@@ -103,6 +141,10 @@ export function useDataTable<TData = unknown, TFilters extends object = object, 
     ...state,
     data,
     meta,
+    isEmpty, // Data is empty and no search or filters are applied
+    isSearchEmpty, // Data is empty and search is applied
+    isFilteredEmpty, // Data is empty and filters are applied
+    tableState,
     goToNext,
     goToPrev,
     goToPage,

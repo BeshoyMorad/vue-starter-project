@@ -32,6 +32,8 @@
     skeletonRows?: number;
     class?: HTMLAttributes['class'];
     clickable?: boolean;
+    isFilteredEmpty?: boolean;
+    isSearchEmpty?: boolean;
   }
 
   const props = withDefaults(defineProps<Props>(), {
@@ -130,7 +132,21 @@
 
       <UITableRow v-else-if="!loading">
         <TableCell :colspan="columns.length">
-          <EmptyPlaceholder />
+          <slot name="empty">
+            <EmptyPlaceholder
+              v-if="isSearchEmpty"
+              icon="hugeicons--search-remove"
+              title="No Results Found"
+              description="No data matches your current search."
+            />
+            <EmptyPlaceholder
+              v-else-if="isFilteredEmpty"
+              icon="hugeicons--search-remove"
+              title="No Results Found"
+              description="No data matches your current filters."
+            />
+            <EmptyPlaceholder v-else />
+          </slot>
         </TableCell>
       </UITableRow>
     </TableBody>

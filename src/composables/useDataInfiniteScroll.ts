@@ -21,14 +21,26 @@ export interface UseDataInfiniteScrollOptions<
   queryOptions?: object;
 }
 
+export type InfiniteScrollDataState =
+  | 'loading'
+  | 'empty'
+  | 'search-empty'
+  | 'filtered-empty'
+  | 'success'
+  | 'error';
+
 export type UseDataInfiniteScrollReturn<
   TData,
   TFilters extends object = object,
   TError = Error,
 > = TableStateReturn<TFilters> &
-  Omit<UseInfiniteQueryReturnType<unknown, TError>, 'data' | 'meta'> & {
+  Omit<UseInfiniteQueryReturnType<unknown, TError>, 'data' | 'meta' | 'hasNextPage'> & {
     data: ComputedRef<TData[]>;
     meta: ComputedRef<Meta | CursorMeta | null | undefined>;
+    isEmpty: ComputedRef<boolean>;
+    isSearchEmpty: ComputedRef<boolean>;
+    isFilteredEmpty: ComputedRef<boolean>;
+    tableState: ComputedRef<InfiniteScrollDataState>;
     hasMore: Ref<boolean>;
     changeLimit: (limit: number) => void;
   };
@@ -93,6 +105,32 @@ export function useDataInfiniteScroll<
     return (rawMeta as Meta | CursorMeta) ?? undefined;
   });
 
+  const isEmpty = computed(() => {
+    if (query.isLoading.value) return false;
+    return data.value.length === 0 && !state.hasSearch.value && !state.hasFilters.value;
+  });
+
+  const isSearchEmpty = computed(() => {
+    if (query.isLoading.value) return false;
+    return data.value.length === 0 && state.hasSearch.value && !state.hasFilters.value;
+  });
+
+  const isFilteredEmpty = computed(() => {
+    if (query.isLoading.value) return false;
+    return data.value.length === 0 && state.hasFilters.value;
+  });
+
+  const tableState = computed<InfiniteScrollDataState>(() => {
+    if (query.isLoading.value) return 'loading';
+    if (query.isError.value) return 'error';
+    if (data.value.length === 0) {
+      if (state.hasFilters.value) return 'filtered-empty';
+      if (state.hasSearch.value) return 'search-empty';
+      return 'empty';
+    }
+    return 'success';
+  });
+
   const changeLimit = (newLimit: number) => {
     state.itemsPerPage.value = newLimit;
   };
@@ -101,9 +139,13 @@ export function useDataInfiniteScroll<
     ...state,
     data,
     meta,
+    isEmpty, // Data is empty and no search or filters are applied
+    isSearchEmpty, // Data is empty and search is applied
+    isFilteredEmpty, // Data is empty and filters are applied
+    tableState,
     fetchNextPage,
     hasMore: hasNextPage,
     changeLimit,
     ...query,
-  } as unknown as UseDataInfiniteScrollReturn<TData, TFilters, TError>;
+  };
 }

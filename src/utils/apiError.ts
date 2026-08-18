@@ -1,5 +1,5 @@
 import { isAxiosError } from 'axios';
-import type { SubmissionContext, GenericObject } from 'vee-validate';
+import type { GenericObject } from 'vee-validate';
 
 const DEFAULT_MESSAGE = 'Something went wrong. Please try again.';
 
@@ -19,6 +19,14 @@ function isFieldErrors(errors: unknown): errors is Record<string, string | strin
       typeof value === 'string' ||
       (Array.isArray(value) && value.every((v) => typeof v === 'string'))
   );
+}
+
+export function getApiError(err: unknown) {
+  if (isAxiosError<ApiErrorResponse>(err)) {
+    return err.response?.data;
+  }
+
+  return;
 }
 
 export function getApiErrorMessage(err: unknown, fallback = DEFAULT_MESSAGE): string {
@@ -50,15 +58,14 @@ export function getApiFieldErrors(err: unknown): Record<string, string | string[
  */
 export function applyApiErrorToForm<TValues extends GenericObject>(
   err: unknown,
-  ctx: SubmissionContext<TValues> | undefined,
+  setErrors: (errors: Record<string, string | string[]>) => void,
   fallbackField?: Extract<keyof TValues, string>
 ): void {
-  if (!ctx) {
+  if (!setErrors) {
     return;
   }
 
   const fieldErrors = getApiFieldErrors(err);
-  const setErrors = ctx.setErrors as unknown as (errors: Record<string, string | string[]>) => void;
 
   if (fieldErrors) {
     setErrors(fieldErrors);

@@ -1,5 +1,9 @@
 import dayjs from 'dayjs';
 
+// ==============================================================================
+// Currency
+// ==============================================================================
+
 const DEFAULT_LOCALE = 'en-US';
 const DEFAULT_CURRENCY = 'USD';
 
@@ -29,7 +33,20 @@ export function formatCurrency(
   }).format(value);
 }
 
-export type FormatDateMode = 'date' | 'datetime' | 'month';
+// ==============================================================================
+// Date Time
+// ==============================================================================
+
+export function convertToLocalDate(date: Date | string) {
+  const dateString = String(date);
+  if (dateString.endsWith('Z')) {
+    return new Date(dateString);
+  }
+
+  return new Date(`${dateString}Z`);
+}
+
+export type FormatDateMode = 'date' | 'datetime' | 'month' | 'apiDate' | 'time';
 
 export interface FormatDateOptions {
   mode?: FormatDateMode;
@@ -39,6 +56,8 @@ const DATE_FORMAT_MAP: Record<FormatDateMode, string> = {
   date: 'DD MMM, YYYY',
   month: 'MMM, YYYY',
   datetime: 'DD MMM YYYY, hh:mm a',
+  time: 'HH:mm A',
+  apiDate: 'YYYY-MM-DD',
 };
 
 export function formatDate(
@@ -46,7 +65,7 @@ export function formatDate(
   options?: FormatDateOptions
 ): string {
   if (dateStr == null || dateStr === '') return '—';
-  const date = dayjs(dateStr);
+  const date = dayjs(convertToLocalDate(dateStr));
   if (!date.isValid()) return '—';
   const { mode = 'date' } = options ?? {};
   return date.format(DATE_FORMAT_MAP[mode]);
@@ -74,13 +93,17 @@ export function formatTime(
     second,
     hour12 = true,
   } = options ?? {};
-  return date.toLocaleTimeString(locale, {
+  return convertToLocalDate(date).toLocaleTimeString(locale, {
     hour,
     minute,
     ...(second !== undefined && { second }),
     hour12,
   });
 }
+
+// ==============================================================================
+// Percentage
+// ==============================================================================
 
 export interface FormatPercentageOptions {
   locale?: string;
@@ -105,6 +128,10 @@ export function formatPercentage(
   }).format(value / 100);
 }
 
+// ==============================================================================
+// Number
+// ==============================================================================
+
 export interface FormatNumberOptions {
   locale?: string;
   minimumFractionDigits?: number;
@@ -125,6 +152,10 @@ export function formatNumber(
   }).format(value);
 }
 
+// ==============================================================================
+// List
+// ==============================================================================
+
 export interface FormatListOptions {
   locale?: string;
   type?: Intl.ListFormatType;
@@ -141,6 +172,10 @@ export function formatList(
   const { locale = DEFAULT_LOCALE, type = 'conjunction', style = 'long' } = options ?? {};
   return new Intl.ListFormat(locale, { type, style }).format(list);
 }
+
+// ==============================================================================
+// File Size
+// ==============================================================================
 
 export function formatFileSize(
   bytes: number,
@@ -168,4 +203,64 @@ export function formatFileSize(
   const value = bytes / Math.pow(base, exponent);
 
   return `${value.toFixed(decimals)} ${units[exponent]}`;
+}
+
+// ==============================================================================
+// Subscript Zeros
+// ==============================================================================
+
+const SUBSCRIPTS = ['₀', '₁', '₂', '₃', '₄', '₅', '₆', '₇', '₈', '₉'];
+
+function toSubscript(num: number): string {
+  return String(num)
+    .split('')
+    .map((digit) => SUBSCRIPTS[parseInt(digit, 10)] || digit)
+    .join('');
+}
+
+export interface FormatSubscriptZerosOptions {
+  maxDigits?: number;
+  html?: boolean;
+}
+
+export function formatSubscriptZeros(
+  valueStr: string | number,
+  options?: FormatSubscriptZerosOptions
+): string {
+  const num = Number(valueStr);
+  if (isNaN(num) || num === 0) return String(valueStr);
+
+  const { maxDigits = 4, html = false } = options ?? {};
+
+  // First convert to a high precision fixed string to calculate zero count
+  const str = num.toFixed(18).replace(/0+$/, '');
+  const match = str.match(/^0\.(0{4,})([1-9]\d*)$/);
+
+  if (match) {
+    const zeroCount = match[1].length;
+
+    // Round to (zeroCount + maxDigits) decimal places
+    const roundedStr = num.toFixed(zeroCount + maxDigits).replace(/0+$/, '');
+    const roundedMatch = roundedStr.match(/^0\.(0{4,})([1-9]\d*)$/);
+
+    if (roundedMatch) {
+      const newZeroCount = roundedMatch[1].length;
+      const remainingDigits = roundedMatch[2];
+      if (html) {
+        return `0.0<sub class="text-sm font-semibold align-baseline relative -bottom-1 mx-0.5">${newZeroCount}</sub>${remainingDigits}`;
+      }
+      return `0.0${toSubscript(newZeroCount)}${remainingDigits}`;
+    }
+    return roundedStr;
+  }
+
+  // Fallback for normal decimals (e.g. 0.00123)
+  if (str.includes('.')) {
+    const parts = str.split('.');
+    if (parts[1].length > maxDigits) {
+      return num.toFixed(maxDigits).replace(/0+$/, '');
+    }
+  }
+
+  return str;
 }

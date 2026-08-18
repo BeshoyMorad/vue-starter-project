@@ -6,7 +6,11 @@
   import { Icon, Button } from '@/components';
   import { createMediaValue } from '@/composables/useFormMedia';
   import { error } from '@/utils/toast';
-  import { DEFAULT_ALLOWED_TYPES, MIME_TO_EXTENSION } from './constants';
+  import {
+    DEFAULT_ALLOWED_IMAGE_TYPES,
+    MIME_TO_EXTENSION,
+    isImageMimeType,
+  } from '@/constants/file-upload';
   import ImageCropperDialog from './ImageCropperDialog.vue';
 
   defineOptions({
@@ -23,6 +27,7 @@
     allowedTypes?: string[];
     crop?: boolean;
     cropAspectRatio?: number;
+    maxSizeMb?: number;
   }
 
   const props = withDefaults(defineProps<Props>(), {
@@ -34,6 +39,7 @@
     allowedTypes: undefined,
     crop: false,
     cropAspectRatio: undefined,
+    maxSizeMb: 10,
   });
 
   const emits = defineEmits<{
@@ -47,6 +53,7 @@
 
   // DOM References
   const fileInputRef = ref<HTMLInputElement | null>(null);
+  const isDragging = ref(false);
 
   // Internal Media State
   const localMedia = ref<MediaValue>(createMediaValue(null));
@@ -74,15 +81,17 @@
   );
 
   const displayHint = computed(() => {
-    const types = props.allowedTypes || DEFAULT_ALLOWED_TYPES;
+    const types = props.allowedTypes || DEFAULT_ALLOWED_IMAGE_TYPES;
     const extensions = types.map((t) => MIME_TO_EXTENSION[t] || t.split('/')[1] || t);
     if (extensions.length === 0) return '';
     if (extensions.length === 1) return `Allowed file type: ${extensions[0]}.`;
     const allButLast = extensions.slice(0, -1).join(', ');
-    return `Allowed file types: ${allButLast}, and ${extensions[extensions.length - 1]}.`;
+    return `Allowed file types: ${allButLast}, and ${extensions[extensions.length - 1]}. Max ${props.maxSizeMb}MB.`;
   });
 
-  const acceptAttribute = computed(() => (props.allowedTypes || DEFAULT_ALLOWED_TYPES).join(','));
+  const acceptAttribute = computed(() =>
+    (props.allowedTypes || DEFAULT_ALLOWED_IMAGE_TYPES).join(',')
+  );
 
   const computedAspectRatio = computed(() => {
     if (props.cropAspectRatio !== undefined) {
@@ -113,38 +122,33 @@
     fileInputRef.value?.click();
   };
 
-  const handleFileSelection = (event: Event) => {
-    const target = event.target as HTMLInputElement;
-    const file = target.files?.[0];
-    if (!file) return;
+  const processFile = (file: File) => {
+    if (props.disabled) return;
 
     // 1. Restrict file name characters
-    const invalidNamePattern = /[%<>:"'|?*\\/#&+\s]/;
+    const invalidNamePattern = /[%<>:"'|?*\\/#&+]/;
     if (invalidNamePattern.test(file.name)) {
       error(
-        'File name contains invalid characters. Avoid spaces or special characters like %, <, >, :, ", |, ?, *, \\, /, #, &, +.'
+        'File name contains invalid characters. Avoid characters like %, <, >, :, ", |, ?, *, \\, /, #, &, +.'
       );
-      target.value = '';
       return;
     }
 
-    // 2. Restrict file size (10MB limit)
-    const MAX_FILE_SIZE = 10 * 1024 * 1024;
+    // 2. Restrict file size
+    const MAX_FILE_SIZE = props.maxSizeMb * 1024 * 1024;
     if (file.size > MAX_FILE_SIZE) {
-      error('File size exceeds the 10MB limit.');
-      target.value = '';
+      error(`File size exceeds the ${props.maxSizeMb}MB limit.`);
       return;
     }
 
     // 3. Restrict file type
-    const types = props.allowedTypes || DEFAULT_ALLOWED_TYPES;
+    const types = props.allowedTypes || DEFAULT_ALLOWED_IMAGE_TYPES;
     if (!types.includes(file.type)) {
       error('Invalid file type.');
-      target.value = '';
       return;
     }
 
-    if (props.crop) {
+    if (props.crop && isImageMimeType(file.type)) {
       selectedFileMeta.value = { name: file.name, type: file.type };
       const reader = new FileReader();
       reader.onload = (e) => {
@@ -152,7 +156,6 @@
         cropperVisible.value = true;
       };
       reader.readAsDataURL(file);
-      target.value = '';
       return;
     }
 
@@ -168,13 +171,41 @@
       initialUrl: localMedia.value.initialUrl,
       isChanged: true,
       wasRemoved: true, // Mark initialUrl as needing removal since it's replaced
+      fileName: file.name,
     };
 
     localMedia.value = updatedMedia;
     emits('update:modelValue', updatedMedia);
+  };
+
+  const handleFileSelection = (event: Event) => {
+    const target = event.target as HTMLInputElement;
+    const file = target.files?.[0];
+    if (!file) return;
+
+    processFile(file);
 
     // Reset input value so change event fires again if selecting the same file
     target.value = '';
+  };
+
+  const handleDrop = (event: DragEvent) => {
+    isDragging.value = false;
+    if (props.disabled) return;
+    const file = event.dataTransfer?.files?.[0];
+    if (file) {
+      processFile(file);
+    }
+  };
+
+  const handleDragOver = (event: DragEvent) => {
+    if (props.disabled) return;
+    event.preventDefault();
+    isDragging.value = true;
+  };
+
+  const handleDragLeave = () => {
+    isDragging.value = false;
   };
 
   const handleCrop = (blob: Blob) => {
@@ -232,7 +263,13 @@
 </script>
 
 <template>
-  <div class="w-fit" :data-test-id="testId">
+  <div
+    class="w-fit"
+    :data-test-id="testId"
+    @dragover="handleDragOver"
+    @dragleave="handleDragLeave"
+    @drop.prevent="handleDrop"
+  >
     <!-- Hidden input -->
     <input
       ref="fileInputRef"
@@ -249,7 +286,10 @@
       :display-hint="displayHint"
       :disabled="disabled"
       :local-media="localMedia"
+      :is-dragging="isDragging"
       :trigger-file-input="triggerFileInput"
+      :process-file="processFile"
+      :handle-drop="handleDrop"
       :clear-media="clearMedia"
     >
       <!-- Default Preset: Horizontal Layout -->
@@ -261,7 +301,7 @@
                 'relative flex size-full items-center justify-center overflow-hidden rounded-full border-[1.5px] transition-all duration-300',
                 hasMedia
                   ? 'bg-background-surface'
-                  : 'bg-background hover:bg-default-hovered cursor-pointer border-dashed',
+                  : 'hover:bg-default-hovered cursor-pointer border-dashed bg-transparent',
                 props.ariaInvalid
                   ? 'border-border-danger'
                   : hasMedia
@@ -292,7 +332,7 @@
 
             <template v-else>
               <!-- Circular Placeholder Icon -->
-              <Icon icon="hugeicons--image-add-01" class="text-text-disabled size-8" />
+              <Icon icon="hugeicons--image-add-01" class="text-foreground-disabled size-8" />
             </template>
           </div>
 
@@ -373,8 +413,8 @@
           <template v-else>
             <!-- Placeholder / Drag & Drop view -->
             <div class="flex flex-col items-center justify-center p-4 text-center select-none">
-              <Icon icon="hugeicons--image-upload" class="text-text-disabled mb-2 size-6" />
-              <span class="text-text-default text-xs font-medium">{{ placeholder }}</span>
+              <Icon icon="hugeicons--image-upload" class="text-foreground-disabled mb-2 size-6" />
+              <span class="text-foreground text-xs font-medium">{{ placeholder }}</span>
             </div>
           </template>
         </div>

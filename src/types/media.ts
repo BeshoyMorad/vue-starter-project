@@ -5,6 +5,7 @@ export interface MediaValue {
   initialUrl: string | null; // The initial URL from the server (if edit mode)
   isChanged: boolean; // Whether the user modified the field (selected new or removed)
   wasRemoved: boolean; // Whether the initial URL was removed or replaced
+  fileName?: string; // Display name, used for non-image files and existing server files
 }
 
 export interface MediaPayloadItem {

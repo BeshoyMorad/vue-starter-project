@@ -22,7 +22,7 @@ export function isMediaValue(val: unknown): val is MediaValue {
 /**
  * Normalizes an initial media URL/ID into a clean MediaValue structure.
  */
-export function createMediaValue(initialUrl?: string | null): MediaValue {
+export function createMediaValue(initialUrl?: string | null, fileName?: string): MediaValue {
   return {
     file: null,
     tempUrl: '',
@@ -30,11 +30,29 @@ export function createMediaValue(initialUrl?: string | null): MediaValue {
     initialUrl: initialUrl || null,
     isChanged: false,
     wasRemoved: false,
+    fileName,
   };
 }
 
 /**
- * Recursively scans an object for MediaValue instances and executes a callback on each.
+ * Builds the initial MediaValue[] for a multi FileUpload field in edit mode,
+ * from a list of existing server URLs (optionally with display names).
+ */
+export function createMediaValueList(
+  items: (string | { url: string; fileName?: string })[]
+): MediaValue[] {
+  return items.map((item) => {
+    const isObj = typeof item === 'object';
+    return createMediaValue(isObj ? item.url : item, isObj ? item.fileName : undefined);
+  });
+}
+
+/**
+ * Recursively scans an object (or array) for MediaValue instances and executes
+ * a callback on each. Supports both single MediaValue fields and MediaValue[]
+ * fields (e.g. a multi file upload), producing bracket-notation paths like
+ * `attachments[0]` for array items so paths stay compatible with vee-validate's
+ * setFieldValue / lodash-style path setters.
  */
 function walkMediaValues(
   obj: unknown,
@@ -42,11 +60,23 @@ function walkMediaValues(
     mediaVal: MediaValue,
     key: string,
     path: string,
-    parent: Record<string, unknown>
+    parent: Record<string, unknown> | unknown[]
   ) => void,
   path = ''
 ): void {
   if (!obj || typeof obj !== 'object') {
+    return;
+  }
+
+  if (Array.isArray(obj)) {
+    obj.forEach((item, idx) => {
+      const currentPath = `${path}[${idx}]`;
+      if (isMediaValue(item)) {
+        callback(item, String(idx), currentPath, obj);
+      } else if (item && typeof item === 'object') {
+        walkMediaValues(item, callback, currentPath);
+      }
+    });
     return;
   }
 
@@ -56,7 +86,8 @@ function walkMediaValues(
     const currentPath = path ? `${path}.${key}` : key;
     if (isMediaValue(val)) {
       callback(val, key, currentPath, record);
-    } else if (val && typeof val === 'object' && !Array.isArray(val)) {
+    } else if (val && typeof val === 'object') {
+      // Handles both nested objects and arrays of MediaValue (or arrays of objects containing them)
       walkMediaValues(val, callback, currentPath);
     }
   }
@@ -68,6 +99,7 @@ export interface ExtractMediaPayloadOptions {
 
 /**
  * Extracts lists for mediaIdsToAdd and mediaUrlsToRemove for the API payload.
+ * Works for both single MediaValue fields and MediaValue[] (multi file) fields.
  */
 export function extractMediaPayload(
   values: object,
@@ -127,6 +159,7 @@ export function serializeMediaValues(values: Record<string, unknown>): Record<st
 /**
  * Composable to manage the state of uploaded/selected files in forms.
  * Prevents redundant uploads, tracks deletions, and formats payloads.
+ * Works for both single MediaValue fields and MediaValue[] (multi file) fields.
  */
 export function useFormMedia() {
   const { mutateAsync: uploadImageMut } = useUploadImage();

@@ -20,5 +20,7 @@ export const Field = {
   DatePicker: defineAsyncComponent(() => import('./date-picker/DatePicker.vue')),
   Phone: defineAsyncComponent(() => import('./phone/PhoneInput.vue')),
   ImageUpload: defineAsyncComponent(() => import('./image-upload/ImageUpload.vue')),
+  FileUpload: defineAsyncComponent(() => import('./file-upload/FileUpload.vue')),
   TagsInput: defineAsyncComponent(() => import('./tags-input/TagsInput.vue')),
+  Editor: defineAsyncComponent(() => import('./editor/Editor.vue')),
 };

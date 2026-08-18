@@ -10,6 +10,7 @@ export type { StorageServiceType, UploadImagePayload } from './useUploadImage';
 export {
   useFormMedia,
   createMediaValue,
+  createMediaValueList,
   extractMediaPayload,
   serializeMediaValues,
 } from './useFormMedia';

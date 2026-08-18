@@ -4,7 +4,7 @@
   import { cn } from '@/utils';
   import { useMultiStepForm } from '@/composables/useMultiStepForm';
   import StepIndicator from './StepIndicator.vue';
-  import type { StepDefinition } from './types.ts';
+  import type { StepDefinition, FormPersistenceOption, FormPersistenceConfig } from './types.ts';
   import type { GenericObject } from 'vee-validate';
   import type { HTMLAttributes } from 'vue';
 
@@ -20,6 +20,14 @@
     loading?: boolean;
     /** CSS class applied to the form body area. */
     bodyClass?: HTMLAttributes['class'];
+    /**
+     * Persist form state and step in session storage (or local storage).
+     * Can be:
+     * - `true`: enables session persistence using a key derived from testId
+     * - `string`: custom storage key
+     * - `FormPersistenceConfig`: custom configuration object
+     */
+    persist?: FormPersistenceOption;
   }
 
   interface Emits {
@@ -35,11 +43,22 @@
     submitLabel = 'Submit',
     loading = false,
     bodyClass = '',
+    persist = undefined,
   } = defineProps<Props>();
 
   const emit = defineEmits<Emits>();
 
   const formId = `${useId()}-multi-step-form`;
+
+  const resolvePersistOption = (
+    opt?: FormPersistenceOption
+  ): string | FormPersistenceConfig | undefined => {
+    if (!opt) return undefined;
+    if (opt === true) {
+      return `${testId}-form-session`;
+    }
+    return opt;
+  };
 
   const {
     currentStep,
@@ -53,9 +72,11 @@
     goTo,
     submit,
     form,
+    clearStorage,
   } = useMultiStepForm({
     steps,
     initialValues,
+    persist: resolvePersistOption(persist),
   });
 
   // ── Handlers ───────────────────────────────────────────────────────────────
@@ -98,6 +119,7 @@
     back,
     goTo,
     submit,
+    clearStorage,
   });
 </script>
 

@@ -3,7 +3,7 @@
   import { MultiStepForm, Field, Button, PageWrapper } from '@/components';
   import { paths } from '@/router/paths';
   import { success } from '@/utils/toast';
-  import { phoneSchema } from '@/utils/yup-schemas';
+  import { phoneSchema } from '@/utils/yupSchemas';
   import * as yup from 'yup';
   import type { StepDefinition } from '@/components';
   import type { GenericObject } from 'vee-validate';
@@ -133,6 +133,7 @@
         test-id="wizard-demo"
         :steps="steps"
         :loading="isSubmitting"
+        :persist="{ key: 'demo-wizard-form', excludeFields: ['password'] }"
         body-class="space-y-6 pt-4"
         @submit="onSubmit"
       >

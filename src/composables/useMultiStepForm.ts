@@ -1,8 +1,12 @@
-import { computed, ref, type Ref } from 'vue';
+import { computed, ref, watch, type Ref } from 'vue';
 import { useForm, type GenericObject, type FormContext } from 'vee-validate';
 import { toTypedSchema } from '@vee-validate/yup';
 import * as yup from 'yup';
-import type { MultiStepFormOptions } from '@/components/form/multi-step-form/types';
+import type {
+  MultiStepFormOptions,
+  FormPersistenceConfig,
+  StorageType,
+} from '@/components/form/multi-step-form/types';
 
 export interface UseMultiStepFormReturn {
   /** The underlying VeeValidate form context (exposes values, errors, setFieldValue, etc.). */
@@ -27,6 +31,150 @@ export interface UseMultiStepFormReturn {
    * Returns `true` if submission was triggered.
    */
   submit: (onSubmit: (values: GenericObject) => void | Promise<void>) => Promise<boolean>;
+  /** Clear persisted form state from storage. */
+  clearStorage: () => void;
+}
+
+// ─── Persistence Helpers ───────────────────────────────────────────────────────
+
+function resolvePersistenceConfig(
+  persist?: string | FormPersistenceConfig
+): FormPersistenceConfig | null {
+  if (!persist) return null;
+  if (typeof persist === 'string') {
+    return { key: persist, storage: 'session', persistStep: true, clearOnSubmit: true };
+  }
+  return { storage: 'session', persistStep: true, clearOnSubmit: true, ...persist };
+}
+
+function getStorage(storageType: StorageType = 'session'): Storage | null {
+  if (typeof window === 'undefined') return null;
+  try {
+    return storageType === 'local' ? window.localStorage : window.sessionStorage;
+  } catch {
+    return null;
+  }
+}
+
+function sanitizeForStorage(val: unknown): unknown {
+  if (val === null || val === undefined) return val;
+  if (typeof val === 'function' || typeof val === 'symbol') return undefined;
+  if (typeof val !== 'object') return val;
+
+  if (typeof File !== 'undefined' && val instanceof File) return undefined;
+  if (typeof Blob !== 'undefined' && val instanceof Blob) return undefined;
+  if (typeof FileList !== 'undefined' && val instanceof FileList) return undefined;
+
+  if (Array.isArray(val)) {
+    return val.map(sanitizeForStorage).filter((item) => item !== undefined);
+  }
+
+  const result: Record<string, unknown> = {};
+  for (const [key, propVal] of Object.entries(val as Record<string, unknown>)) {
+    const sanitized = sanitizeForStorage(propVal);
+    if (sanitized !== undefined) result[key] = sanitized;
+  }
+  return result;
+}
+
+function loadPersistedData(config: FormPersistenceConfig | null): {
+  values?: GenericObject;
+  step?: number;
+} | null {
+  if (!config?.key) return null;
+  const storage = getStorage(config.storage);
+  if (!storage) return null;
+
+  try {
+    const raw = storage.getItem(config.key);
+    if (!raw) return null;
+    const parsed = JSON.parse(raw);
+    return typeof parsed === 'object' && parsed !== null ? parsed : null;
+  } catch {
+    return null;
+  }
+}
+
+function saveToStorage(
+  config: FormPersistenceConfig | null,
+  values: GenericObject,
+  step: number
+): void {
+  if (!config?.key) return;
+  const storage = getStorage(config.storage);
+  if (!storage) return;
+
+  try {
+    let valuesToSave = { ...values };
+    if (config.excludeFields?.length) {
+      for (const field of config.excludeFields) delete valuesToSave[field];
+    }
+    if (config.beforeSave) valuesToSave = config.beforeSave(valuesToSave);
+
+    const sanitizedValues = sanitizeForStorage(valuesToSave) as GenericObject;
+    const payload: { values: GenericObject; step?: number } = { values: sanitizedValues ?? {} };
+    if (config.persistStep) payload.step = step;
+
+    storage.setItem(config.key, JSON.stringify(payload));
+  } catch {
+    // Ignore storage write errors (e.g. quota exceeded)
+  }
+}
+
+function removePersistedData(config: FormPersistenceConfig | null): void {
+  if (!config?.key) return;
+  const storage = getStorage(config.storage);
+  if (!storage) return;
+  try {
+    storage.removeItem(config.key);
+  } catch {
+    // Ignore storage removal errors
+  }
+}
+
+function setupPersistenceWatcher(
+  config: FormPersistenceConfig | null,
+  form: FormContext<GenericObject>,
+  currentStep: Ref<number>
+): void {
+  if (!config) return;
+  watch(
+    [() => form.values, () => currentStep.value],
+    ([newValues, newStep]) => {
+      saveToStorage(config, newValues, newStep);
+    },
+    { deep: true }
+  );
+}
+
+function resolveInitialStepState(
+  config: FormPersistenceConfig | null,
+  persistedStep: number | undefined,
+  steps: MultiStepFormOptions['steps'],
+  values: GenericObject
+): { initialStep: number; initialCompleted: Set<number> } {
+  const completed = new Set<number>();
+
+  if (
+    !config?.persistStep ||
+    typeof persistedStep !== 'number' ||
+    persistedStep <= 0 ||
+    persistedStep >= steps.length
+  ) {
+    return { initialStep: 0, initialCompleted: completed };
+  }
+
+  let activeStep = 0;
+  for (let i = 0; i < persistedStep; i++) {
+    const isStepValid = steps[i].schema.isValidSync(values);
+    if (!isStepValid) {
+      return { initialStep: i, initialCompleted: completed };
+    }
+    completed.add(i);
+    activeStep = i + 1;
+  }
+
+  return { initialStep: activeStep, initialCompleted: completed };
 }
 
 // ─── Helpers ───────────────────────────────────────────────────────────────────
@@ -64,11 +212,9 @@ function findFirstStepWithError(
   fallback: number
 ): number {
   const errorFields = new Set(Object.keys(errors).filter((k) => errors[k]));
-
   for (let i = 0; i < options.steps.length; i++) {
     if (options.steps[i].fields.some((f) => errorFields.has(f))) return i;
   }
-
   return fallback;
 }
 
@@ -89,11 +235,8 @@ async function validateAndNavigateToStep(
       const isValid = await validateStepFields(form, steps[i].fields);
       if (!isValid) {
         const nextCompleted = new Set(completedSteps.value);
-        for (let j = i; j < totalSteps; j++) {
-          nextCompleted.delete(j);
-        }
+        for (let j = i; j < totalSteps; j++) nextCompleted.delete(j);
         completedSteps.value = nextCompleted;
-
         currentStep.value = i;
         return;
       }
@@ -111,7 +254,9 @@ function createNavigation(
   currentStep: Ref<number>,
   isFirstStep: Ref<boolean>,
   isLastStep: Ref<boolean>,
-  completedSteps: Ref<Set<number>>
+  completedSteps: Ref<Set<number>>,
+  persistConfig: FormPersistenceConfig | null,
+  clearStorage: () => void
 ) {
   const { steps } = options;
 
@@ -144,7 +289,10 @@ function createNavigation(
     }
 
     completedSteps.value = new Set(steps.map((_, i) => i));
-    await form.handleSubmit(async (values) => onSubmit(values))();
+    await form.handleSubmit(async (values) => {
+      await onSubmit(values);
+      if (persistConfig?.clearOnSubmit !== false) clearStorage();
+    })();
     return true;
   };
 
@@ -152,30 +300,49 @@ function createNavigation(
 }
 
 export function useMultiStepForm(options: MultiStepFormOptions): UseMultiStepFormReturn {
-  const { steps, initialValues } = options;
+  const { steps, initialValues, persist } = options;
+
+  const persistConfig = resolvePersistenceConfig(persist);
+  const persistedData = loadPersistedData(persistConfig);
+  const effectiveInitialValues = { ...initialValues, ...(persistedData?.values ?? {}) };
 
   const form = useForm<GenericObject>({
     validationSchema: toTypedSchema(buildCombinedSchema(steps)),
-    initialValues,
+    initialValues: effectiveInitialValues,
     keepValuesOnUnmount: true,
   });
 
-  const currentStep = ref(0);
+  const { initialStep, initialCompleted } = resolveInitialStepState(
+    persistConfig,
+    persistedData?.step,
+    steps,
+    effectiveInitialValues
+  );
+
+  const currentStep = ref(initialStep);
+  const completedSteps = ref<Set<number>>(initialCompleted);
   const totalSteps = steps.length;
-  const completedSteps = ref<Set<number>>(new Set());
 
   const isFirstStep = computed(() => currentStep.value === 0);
   const isLastStep = computed(() => currentStep.value === totalSteps - 1);
   const progress = computed(() => Math.round(((currentStep.value + 1) / totalSteps) * 100));
 
-  const { next, back, goTo, submit } = createNavigation(
+  const clearStorage = (): void => {
+    removePersistedData(persistConfig);
+  };
+
+  const navigation = createNavigation(
     form,
     options,
     currentStep,
     isFirstStep,
     isLastStep,
-    completedSteps
+    completedSteps,
+    persistConfig,
+    clearStorage
   );
+
+  setupPersistenceWatcher(persistConfig, form, currentStep);
 
   return {
     form,
@@ -185,9 +352,7 @@ export function useMultiStepForm(options: MultiStepFormOptions): UseMultiStepFor
     isLastStep,
     progress,
     completedSteps,
-    next,
-    back,
-    goTo,
-    submit,
+    ...navigation,
+    clearStorage,
   };
 }

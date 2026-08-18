@@ -1,7 +1,7 @@
 <script setup lang="ts">
   import { ref } from 'vue';
   import Icon from '@/components/icon/Icon.vue';
-  import { copyToClipboard } from '@/utils/copyToClipboard';
+  import { copyToClipboard } from '@/utils/clipboard';
 
   const props = withDefaults(
     defineProps<{

@@ -16,7 +16,7 @@
   import { Form } from 'vee-validate';
   import { toTypedSchema } from '@vee-validate/yup';
   import * as yup from 'yup';
-  import { phoneSchema } from '@/utils/yup-schemas';
+  import { phoneSchema } from '@/utils/yupSchemas';
   import { useDarkTheme, useFormMedia, extractMediaPayload } from '@/composables';
   import { info, success } from '@/utils/toast';
   import { ref } from 'vue';
@@ -79,7 +79,7 @@
       gender: yup.string().required('Gender is required'),
       country: yup.string().required('Country is required'),
       userId: yup.number().required('User is required'),
-      phone: phoneSchema().required('Phone number is required'),
+      phone: phoneSchema('phone').required('Phone number is required'),
       logo: yup
         .mixed<MediaValue>()
         .required('Logo is required')

@@ -1,0 +1,64 @@
+{
+  "common": {
+    "save": "Save",
+    "cancel": "Cancel",
+    "delete": "Delete",
+    "edit": "Edit",
+    "search": "Search...",
+    "loading": "Loading...",
+    "submit": "Submit",
+    "confirm": "Confirm",
+    "back": "Back",
+    "next": "Next",
+    "language": "Language",
+    "selectLanguage": "Select language",
+    "activeLanguage": "Current Language",
+    "ltr": "Left-to-Right",
+    "rtl": "Right-to-Left",
+    "direction": "Direction"
+  },
+  "nav": {
+    "dashboard": "Dashboard",
+    "starter": "Starter",
+    "multiStepForm": "Multi-Step Form",
+    "virtualScroll": "Virtual Scroll",
+    "localization": "Localization Demo"
+  },
+  "demo": {
+    "title": "Localization & Internationalization (i18n)",
+    "subtitle": "High-performance, lazy-loaded, type-safe localization with seamless RTL & LTR support.",
+    "quickSwitch": "Quick Language Switcher",
+    "features": {
+      "title": "Core Architecture Highlights",
+      "lazyLoading": "Lazy Loaded Chunks: Only the active language bundle is loaded at startup. Extra languages are fetched on demand.",
+      "typeSafety": "Full TypeScript Autocompletion: Translation keys are validated by the compiler via schema augmentation.",
+      "rtlSupport": "Dynamic RTL / LTR: Automatically synchronizes document direction, typography, and layout.",
+      "dayjsSync": "Dayjs & Intl Integration: Date, time, relative time, and currency formats update dynamically."
+    },
+    "interpolation": {
+      "title": "Dynamic Interpolation & Variables",
+      "greeting": "Hello, {name}! Welcome back to your workspace.",
+      "userStats": "You have {count} unread notifications and {points} loyalty points."
+    },
+    "pluralization": {
+      "title": "Pluralization Support",
+      "description": "Vue i18n handles singular, zero, and plural forms cleanly:",
+      "apples": "no apples | one apple | {count} apples",
+      "members": "no members | {count} member | {count} members"
+    },
+    "formatting": {
+      "title": "Number & Date/Time Formatting",
+      "currency": "Formatted Currency",
+      "percent": "Formatted Percentage",
+      "dateShort": "Short Date",
+      "dateLong": "Long Date",
+      "relativeTime": "Relative Time (Dayjs)"
+    },
+    "howToUse": {
+      "title": "Developer Guide: How to Use in Components",
+      "step1Title": "1. In Script (Composition API)",
+      "step2Title": "2. In Template",
+      "step3Title": "3. Switching Language Programmatically"
+    }
+  }
+}

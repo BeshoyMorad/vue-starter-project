@@ -135,6 +135,12 @@
       >
         View Virtual Scroll Example
       </RouterLink>
+      <RouterLink
+        :to="{ name: paths.dashboard.localizationExample }"
+        class="bg-bg-primary-default text-text-base hover:bg-bg-primary-default/90 inline-flex h-9 items-center justify-center rounded-md px-4 py-2 text-sm font-medium transition-all"
+      >
+        View Localization Example
+      </RouterLink>
     </div>
     <div>
       <h1 class="mb-2 text-3xl font-bold">Buttons</h1>

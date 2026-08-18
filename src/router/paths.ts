@@ -7,6 +7,7 @@ export const paths = {
     starter: 'starter',
     multiStepForm: 'multi-step-form',
     virtualScrollExample: 'virtual-scroll-example',
+    localizationExample: 'localization-example',
   },
   errors: {
     notFound: 'not-found',

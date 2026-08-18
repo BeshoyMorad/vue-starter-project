@@ -34,6 +34,12 @@ export const routes = [
         component: () => import('@/pages/dashboard/pages/VirtualScrollExample.vue'),
         meta: { title: 'Virtual Scroll Example' },
       },
+      {
+        path: 'localization-example',
+        name: paths.dashboard.localizationExample,
+        component: () => import('@/pages/dashboard/pages/LocalizationExample.vue'),
+        meta: { title: 'Localization Example' },
+      },
     ],
   },
   ...authRoutes,

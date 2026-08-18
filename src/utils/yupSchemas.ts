@@ -1,3 +1,4 @@
+import type { MediaValue } from '@/types/media';
 import parsePhoneNumberFromString from 'libphonenumber-js';
 import * as yup from 'yup';
 
@@ -40,4 +41,24 @@ export function passwordSchema(fieldName: string = 'Password') {
     .string()
     .required(`${fieldName} is required`)
     .matches(PASSWORD_REGEX, PASSWORD_MESSAGE);
+}
+
+export function requiredMediaSchema(message = 'Image is required') {
+  return yup.mixed().test('required-media', message, (val) => {
+    if (!val || typeof val !== 'object') return false;
+    const media = val as MediaValue;
+    return Boolean(media.file || media.mediaId || (media.initialUrl && !media.wasRemoved));
+  });
+}
+
+export function optionalMediaSchema(message = 'Invalid media') {
+  return yup
+    .mixed()
+    .test('optional-media', message, (val) => {
+      if (!val) return true;
+      if (typeof val !== 'object') return false;
+      return true;
+    })
+    .nullable()
+    .optional();
 }

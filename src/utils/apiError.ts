@@ -68,7 +68,17 @@ export function applyApiErrorToForm<TValues extends GenericObject>(
   const fieldErrors = getApiFieldErrors(err);
 
   if (fieldErrors) {
-    setErrors(fieldErrors);
+    const normalizedErrors: Record<string, string> = {};
+    for (const [key, val] of Object.entries(fieldErrors)) {
+      if (Array.isArray(val)) {
+        if (val.length > 0) {
+          normalizedErrors[key] = val[0];
+        }
+      } else if (typeof val === 'string') {
+        normalizedErrors[key] = val;
+      }
+    }
+    setErrors(normalizedErrors);
     return;
   }
 

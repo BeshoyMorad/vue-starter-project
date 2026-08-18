@@ -4,7 +4,7 @@
   import { cn } from '@/utils';
   import { useMultiStepForm } from '@/composables/useMultiStepForm';
   import StepIndicator from './StepIndicator.vue';
-  import type { StepDefinition, FormPersistenceOption, FormPersistenceConfig } from './types.ts';
+  import type { StepDefinition, FormPersistenceOption, FormPersistenceConfig } from './types';
   import type { GenericObject } from 'vee-validate';
   import type { HTMLAttributes } from 'vue';
 
@@ -18,6 +18,7 @@
     backLabel?: string;
     submitLabel?: string;
     loading?: boolean;
+    showStepper?: boolean;
     /** CSS class applied to the form body area. */
     bodyClass?: HTMLAttributes['class'];
     /**
@@ -42,6 +43,7 @@
     backLabel = 'Back',
     submitLabel = 'Submit',
     loading = false,
+    showStepper = true,
     bodyClass = '',
     persist = undefined,
   } = defineProps<Props>();
@@ -72,6 +74,8 @@
     goTo,
     submit,
     form,
+    goToStepWithError,
+    handleApiError,
     clearStorage,
   } = useMultiStepForm({
     steps,
@@ -119,6 +123,8 @@
     back,
     goTo,
     submit,
+    goToStepWithError,
+    handleApiError,
     clearStorage,
   });
 </script>
@@ -127,6 +133,7 @@
   <div :data-test-id="testId" class="flex w-full flex-col gap-6">
     <!-- Header / Step indicator -->
     <slot
+      v-if="showStepper"
       name="header"
       :current-step="currentStep"
       :total-steps="totalSteps"
@@ -151,11 +158,11 @@
       @submit.prevent="onFormSubmit"
     >
       <!--
-        Render only the active step's slot.
+        Render only the active step's slot with v-show to preserve field state and errors.
         Slot names: #step-0, #step-1, #step-2, etc.
       -->
       <template v-for="(step, index) in steps" :key="index">
-        <div v-if="index === currentStep">
+        <div v-show="index === currentStep">
           <slot :name="`step-${index}`" :step="step" :index="index" />
         </div>
       </template>

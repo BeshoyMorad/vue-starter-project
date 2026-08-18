@@ -1,3 +1,4 @@
+/* eslint-disable max-lines */
 import { computed, ref, watch, type Ref } from 'vue';
 import { useForm, type GenericObject, type FormContext } from 'vee-validate';
 import { toTypedSchema } from '@vee-validate/yup';
@@ -7,6 +8,8 @@ import type {
   FormPersistenceConfig,
   StorageType,
 } from '@/components/form/multi-step-form/types';
+import { applyApiErrorToForm, getApiFieldErrors } from '@/utils/apiError';
+import { isMediaValue } from '@/composables/useFormMedia';
 
 export interface UseMultiStepFormReturn {
   /** The underlying VeeValidate form context (exposes values, errors, setFieldValue, etc.). */
@@ -31,6 +34,17 @@ export interface UseMultiStepFormReturn {
    * Returns `true` if submission was triggered.
    */
   submit: (onSubmit: (values: GenericObject) => void | Promise<void>) => Promise<boolean>;
+  /**
+   * Navigates to the first step containing an active error in the form.
+   */
+  goToStepWithError: (errors?: Record<string, unknown>) => void;
+  /**
+   * Applies an API error response to form fields and navigates to the first step with an error.
+   */
+  handleApiError: <TValues extends GenericObject>(
+    err: unknown,
+    fallbackField?: Extract<keyof TValues, string>
+  ) => void;
   /** Clear persisted form state from storage. */
   clearStorage: () => void;
 }
@@ -64,6 +78,17 @@ function sanitizeForStorage(val: unknown): unknown {
   if (typeof File !== 'undefined' && val instanceof File) return undefined;
   if (typeof Blob !== 'undefined' && val instanceof Blob) return undefined;
   if (typeof FileList !== 'undefined' && val instanceof FileList) return undefined;
+
+  if (isMediaValue(val)) {
+    if (val.mediaId || (val.initialUrl && !val.wasRemoved)) {
+      return {
+        ...val,
+        file: null,
+        tempUrl: '',
+      };
+    }
+    return undefined;
+  }
 
   if (Array.isArray(val)) {
     return val.map(sanitizeForStorage).filter((item) => item !== undefined);
@@ -208,10 +233,10 @@ async function validateStepFields(
  */
 function findFirstStepWithError(
   options: MultiStepFormOptions,
-  errors: Record<string, string | undefined>,
+  errors: Record<string, unknown>,
   fallback: number
 ): number {
-  const errorFields = new Set(Object.keys(errors).filter((k) => errors[k]));
+  const errorFields = new Set(Object.keys(errors).filter((k) => Boolean(errors[k])));
   for (let i = 0; i < options.steps.length; i++) {
     if (options.steps[i].fields.some((f) => errorFields.has(f))) return i;
   }
@@ -248,6 +273,7 @@ async function validateAndNavigateToStep(
 
 // ─── Navigation factory ────────────────────────────────────────────────────────
 
+// eslint-disable-next-line max-lines-per-function
 function createNavigation(
   form: FormContext<GenericObject>,
   options: MultiStepFormOptions,
@@ -296,7 +322,26 @@ function createNavigation(
     return true;
   };
 
-  return { next, back, goTo, submit };
+  const goToStepWithError = (errors?: Record<string, unknown>): void => {
+    const errorMap = errors ?? form.errors.value;
+    const stepWithError = findFirstStepWithError(options, errorMap, currentStep.value);
+    currentStep.value = stepWithError;
+  };
+
+  const handleApiError = <TValues extends GenericObject>(
+    err: unknown,
+    fallbackField?: Extract<keyof TValues, string>
+  ): void => {
+    applyApiErrorToForm(err, form.setErrors, fallbackField);
+    const fieldErrors = getApiFieldErrors(err);
+    if (fieldErrors) {
+      goToStepWithError(fieldErrors);
+    } else {
+      goToStepWithError();
+    }
+  };
+
+  return { next, back, goTo, submit, goToStepWithError, handleApiError };
 }
 
 export function useMultiStepForm(options: MultiStepFormOptions): UseMultiStepFormReturn {

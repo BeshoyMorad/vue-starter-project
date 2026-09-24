@@ -2,6 +2,7 @@
   import { ref, onErrorCaptured, nextTick, type ComponentPublicInstance } from 'vue';
   import { ExceptionState } from '@/components';
   import { config } from '@/config/env';
+  import fallbackImage from '@/assets/images/internal-server-error.png';
 
   interface Props {
     fallbackTitle?: string;
@@ -83,7 +84,7 @@
 
   <ExceptionState
     v-else
-    image="@/assets/images/internal-server-error.png"
+    :image="fallbackImage"
     :title="fallbackTitle"
     :description="fallbackDescription"
     button-label="Try again"

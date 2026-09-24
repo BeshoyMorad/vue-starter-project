@@ -32,5 +32,5 @@ try {
 export const config = {
   apiBaseUrl: validatedEnv.VITE_API_BASE_URL,
   env: validatedEnv.VITE_APP_ENV,
-  enableDevtools: validatedEnv.VITE_ENABLE_DEVTOOLS === 'true',
+  enableDevtools: Boolean(validatedEnv.VITE_ENABLE_DEVTOOLS),
 } as const;

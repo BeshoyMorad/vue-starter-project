@@ -66,7 +66,8 @@
       <div class="flex items-center justify-end gap-3">
         <Button
           :test-id="TEST_IDS.imageCropperDialog.cancelButton"
-          variant="outline"
+          variant="ghost"
+          outline
           class="min-w-28 rounded-lg"
           type="button"
           @click="handleCancel"

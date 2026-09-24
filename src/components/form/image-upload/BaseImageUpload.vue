@@ -352,7 +352,7 @@
         <div class="flex flex-col items-start gap-1.5">
           <Button
             type="button"
-            variant="outline"
+            variant="ghost"
             :disabled="disabled"
             icon="hugeicons--upload-01"
             icon-size="sm"

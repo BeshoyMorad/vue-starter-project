@@ -86,7 +86,8 @@
           <div class="flex flex-wrap items-center gap-3 pt-2">
             <Button
               test-id="toggle-lang-en-btn"
-              variant="outline"
+              variant="ghost"
+              outline
               size="sm"
               :loading="isLoadingLocale"
               :class="{
@@ -98,7 +99,8 @@
             </Button>
             <Button
               test-id="toggle-lang-ar-btn"
-              variant="outline"
+              variant="ghost"
+              outline
               size="sm"
               :loading="isLoadingLocale"
               :class="{
@@ -220,13 +222,25 @@
             <div class="flex items-center gap-3">
               <span class="text-text-secondary text-xs font-medium">Quantity:</span>
               <div class="flex items-center gap-2">
-                <Button test-id="dec-apples" variant="outline" size="sm" @click="decrementApples">
+                <Button
+                  test-id="dec-apples"
+                  variant="ghost"
+                  outline
+                  size="sm"
+                  @click="decrementApples"
+                >
                   -
                 </Button>
                 <span class="text-text-primary min-w-8 text-center font-bold">{{
                   appleCount
                 }}</span>
-                <Button test-id="inc-apples" variant="outline" size="sm" @click="incrementApples">
+                <Button
+                  test-id="inc-apples"
+                  variant="ghost"
+                  outline
+                  size="sm"
+                  @click="incrementApples"
+                >
                   +
                 </Button>
               </div>

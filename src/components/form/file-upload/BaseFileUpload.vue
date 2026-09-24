@@ -282,7 +282,7 @@
       <div class="flex flex-col items-start gap-3">
         <Button
           type="button"
-          variant="outline"
+          variant="ghost"
           :disabled="disabled || isAtMax"
           icon="hugeicons--upload-01"
           icon-size="sm"

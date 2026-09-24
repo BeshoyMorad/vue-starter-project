@@ -121,7 +121,7 @@
           >{{ JSON.stringify(submittedValues, null, 2) }}</pre
         >
         <div class="flex justify-end pt-2">
-          <Button test-id="reset-form-button" variant="outline" @click="handleReset">
+          <Button test-id="reset-form-button" variant="ghost" outline @click="handleReset">
             Fill Again
           </Button>
         </div>

@@ -1,7 +1,7 @@
+import router from '@/router';
 import { defineStore } from 'pinia';
 import { StorageSerializers, useLocalStorage } from '@vueuse/core';
 import { ACCESS_TOKEN_STORAGE_KEY, REFRESH_TOKEN_STORAGE_KEY } from '@/lib/api/token';
-import { useRouter } from 'vue-router';
 import { paths } from '@/router/paths';
 
 const USER_STORAGE_KEY = 'user';
@@ -13,8 +13,6 @@ export const useAuthStore = defineStore('auth', () => {
   const user = useLocalStorage<unknown>(USER_STORAGE_KEY, null, {
     serializer: StorageSerializers.object,
   });
-
-  const router = useRouter();
 
   // const isAuthenticated = computed(() => !!accessToken.value);
 

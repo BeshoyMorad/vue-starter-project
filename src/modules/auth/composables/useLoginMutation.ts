@@ -31,7 +31,7 @@ export const useLoginMutation = () => {
       handleRedirect();
     },
     onError: (error: unknown, variables) => {
-      applyApiErrorToForm(error, variables.ctx, 'password');
+      applyApiErrorToForm(error, variables.ctx.setErrors, 'password');
     },
   });
 };

@@ -101,7 +101,7 @@
         "
         :disabled="disabled"
         :test-id="testId"
-        variant="outline"
+        variant="ghost"
       >
         <Icon icon="hugeicons--calendar-01" class="text-text-disabled mr-2 size-5" />
 

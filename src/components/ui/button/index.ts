@@ -31,7 +31,7 @@ export const buttonVariants = cva(
         right: 'flex-row-reverse',
       },
       outline: {
-        true: ' border-1',
+        true: 'border border-border-base',
       },
     },
     compoundVariants: [

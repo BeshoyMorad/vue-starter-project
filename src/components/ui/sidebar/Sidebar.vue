@@ -53,7 +53,7 @@
 
 <template>
   <aside
-    class="bg-bg-surface border-primary-600/35 relative flex h-full h-screen w-64 shrink-0 flex-col border-r border-l"
+    class="bg-bg-surface border-primary-600/35 relative flex h-screen w-64 shrink-0 flex-col border-r border-l"
   >
     <div class="px-4 pt-3">
       <Field.Text

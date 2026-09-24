@@ -2,7 +2,8 @@
   import { Icon, Button } from '.';
 
   defineProps<{
-    icon: string;
+    icon?: string;
+    image?: string;
     title: string;
     description: string;
     buttonLabel?: string;
@@ -12,7 +13,13 @@
 
 <template>
   <div class="bg-background flex min-h-screen flex-col items-center justify-center p-8 text-center">
-    <Icon :icon="icon" class="mb-10 size-60" />
+    <img
+      v-if="image"
+      :src="image"
+      alt="Exception state"
+      class="mb-10 max-h-60 w-auto object-contain"
+    />
+    <Icon v-else-if="icon" :icon="icon" class="mb-10 size-60" />
 
     <div class="mb-6 max-w-4xl space-y-2 text-center">
       <h1 class="text-foreground-default text-4xl-line-height font-semibold">

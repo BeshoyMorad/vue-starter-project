@@ -1,75 +1,77 @@
 <script setup lang="ts">
+  import { ref } from 'vue';
+  import Sidebar from '@/components/ui/sidebar/Sidebar.vue';
   import { paths } from '@/router/paths';
-  import { LanguageSwitcher } from '@/components';
-  import { useAppLocale } from '@/composables/useAppLocale';
+  import { useDarkTheme } from '@/composables';
+  import Button from '@/components/ui/button/Button.vue';
+  import Icon from '@/components/icon/Icon.vue';
 
-  const { t } = useAppLocale();
+  const isSidebarOpen = ref(false);
+  const { toggleDark } = useDarkTheme();
+
+  const toggleSidebar = () => {
+    isSidebarOpen.value = !isSidebarOpen.value;
+  };
+
+  const closeSidebar = () => {
+    isSidebarOpen.value = false;
+  };
 </script>
 
 <template>
-  <div class="bg-surface-secondary flex h-screen flex-col overflow-hidden">
-    <header
-      class="border-border-secondary bg-surface-primary flex shrink-0 items-center justify-between border-b px-6 py-3 shadow-xs"
+  <div class="flex h-screen w-full overflow-hidden">
+    <aside
+      class="fixed inset-y-0 left-0 z-50 w-64 shrink-0 -translate-x-full transition-transform duration-300 lg:static lg:translate-x-0"
+      :class="{ 'translate-x-0': isSidebarOpen }"
     >
-      <div class="flex items-center gap-6">
-        <RouterLink
-          :to="{ name: paths.dashboard.root }"
-          class="text-text-primary flex items-center gap-2 text-base font-bold"
-        >
-          <span
-            class="bg-primary-600 inline-flex size-7 items-center justify-center rounded-lg text-xs font-bold text-white"
-          >
-            V
-          </span>
-          <span>Vue Starter</span>
-        </RouterLink>
+      <Sidebar @close="closeSidebar" />
+    </aside>
 
-        <nav class="hidden items-center gap-2 md:flex">
-          <RouterLink
-            :to="{ name: paths.dashboard.root }"
-            class="text-text-secondary hover:bg-surface-secondary hover:text-text-primary rounded-md px-3 py-1.5 text-xs font-medium transition-colors"
-            active-class="bg-surface-secondary text-primary-600 font-semibold"
+    <div class="flex min-h-0 min-w-0 flex-1 flex-col">
+      <header
+        class="bg-bg-surface border-primary-600/35 flex h-16 shrink-0 items-center justify-between px-4 backdrop-blur-sm sm:px-6"
+      >
+        <div class="flex min-w-0 items-center gap-4">
+          <button
+            type="button"
+            class="text-text-primary flex size-9 shrink-0 items-center justify-center rounded-lg lg:hidden"
+            @click="toggleSidebar"
           >
-            {{ t('nav.dashboard') }}
-          </RouterLink>
-          <RouterLink
-            :to="{ name: paths.dashboard.starter }"
-            class="text-text-secondary hover:bg-surface-secondary hover:text-text-primary rounded-md px-3 py-1.5 text-xs font-medium transition-colors"
-            active-class="bg-surface-secondary text-primary-600 font-semibold"
-          >
-            {{ t('nav.starter') }}
-          </RouterLink>
-          <RouterLink
-            :to="{ name: paths.dashboard.multiStepForm }"
-            class="text-text-secondary hover:bg-surface-secondary hover:text-text-primary rounded-md px-3 py-1.5 text-xs font-medium transition-colors"
-            active-class="bg-surface-secondary text-primary-600 font-semibold"
-          >
-            {{ t('nav.multiStepForm') }}
-          </RouterLink>
-          <RouterLink
-            :to="{ name: paths.dashboard.virtualScrollExample }"
-            class="text-text-secondary hover:bg-surface-secondary hover:text-text-primary rounded-md px-3 py-1.5 text-xs font-medium transition-colors"
-            active-class="bg-surface-secondary text-primary-600 font-semibold"
-          >
-            {{ t('nav.virtualScroll') }}
-          </RouterLink>
-          <RouterLink
-            :to="{ name: paths.dashboard.localizationExample }"
-            class="text-text-secondary hover:bg-surface-secondary hover:text-text-primary rounded-md px-3 py-1.5 text-xs font-medium transition-colors"
-            active-class="bg-surface-secondary text-primary-600 font-semibold"
-          >
-            {{ t('nav.localization') }}
-          </RouterLink>
-        </nav>
-      </div>
+            ☰
+          </button>
 
-      <div class="flex items-center gap-3">
-        <LanguageSwitcher />
-      </div>
-    </header>
+          <div class="flex h-16 shrink-0 items-center px-2 sm:px-5">
+            <RouterLink
+              :to="{ name: paths.dashboard.root }"
+              class="text-text-primary flex items-center gap-1.5 text-sm font-semibold"
+            >
+              <span
+                class="flex size-8 shrink-0 items-center justify-center rounded-full text-xs font-bold text-white"
+              >
+                <img src="@/assets/images/logo.png" alt="" />
+              </span>
 
-    <main class="flex min-h-0 flex-1 flex-col overflow-y-auto p-6">
-      <RouterView />
-    </main>
+              <span class="hidden font-semibold lg:block"> Vue Starter </span>
+            </RouterLink>
+          </div>
+        </div>
+
+        <Button test-id="" variant="ghost" size="icon" class="shrink-0" @click="toggleDark()">
+          <Icon icon="hugeicons--dark-mode" class="size-7" />
+        </Button>
+      </header>
+
+      <div
+        v-if="isSidebarOpen"
+        class="fixed inset-0 z-40 bg-black/30 backdrop-blur-sm"
+        @click="isSidebarOpen = false"
+      />
+
+      <main class="bg-bg-surface min-h-0 min-w-0 flex-1 overflow-auto">
+        <div class="w-full px-4 py-6 sm:px-6 lg:px-8">
+          <RouterView />
+        </div>
+      </main>
+    </div>
   </div>
 </template>

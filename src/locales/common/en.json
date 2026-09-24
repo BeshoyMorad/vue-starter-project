@@ -22,7 +22,8 @@
     "starter": "Starter",
     "multiStepForm": "Multi-Step Form",
     "virtualScroll": "Virtual Scroll",
-    "localization": "Localization Demo"
+    "localization": "Localization Demo",
+    "demo": "Demo"
   },
   "demo": {
     "title": "Localization & Internationalization (i18n)",

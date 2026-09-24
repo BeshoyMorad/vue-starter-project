@@ -1,4 +1,4 @@
-<script setup lang="ts" generic="TRow extends { id: number | string }">
+<script setup lang="ts" generic="TRow">
   import { FlexRender, type Table } from '@tanstack/vue-table';
   import { TableHead, TableRow } from '@/components/ui/table';
   import { Icon } from '@/components';

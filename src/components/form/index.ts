@@ -5,6 +5,7 @@ import { defineAsyncComponent } from 'vue';
 // ── Primitive Form Fields (Synchronous) ─────────────────────────────────────
 import InputText from './input-text/InputText.vue';
 import Textarea from './textarea/Textarea.vue';
+import TextAreaWithMedia from './textarea/TextAreaWithMedia.vue';
 import InputNumber from './input-number/InputNumber.vue';
 import InputPassword from './input-password/InputPassword.vue';
 import InputOtp from './input-otp/InputOtp.vue';
@@ -27,6 +28,7 @@ import EditorSkeleton from './editor/EditorSkeleton.vue';
 export const Field = {
   Text: InputText,
   Textarea: Textarea,
+  TextareaWithMedia: TextAreaWithMedia,
   Number: InputNumber,
   Password: InputPassword,
   Otp: InputOtp,

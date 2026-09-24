@@ -126,7 +126,7 @@
 
   /* ------------------------------------------------------------ */
   /* Border Colors */
-  --color-border-base: light-dark(var(--color-gray-200), var(--color-gray-950));
+  --color-border-base: light-dark(var(--color-gray-400), var(--color-gray-500));
   --color-border-default: light-dark(var(--color-neutral-300), var(--color-neutral-600));
   --color-border-primary: light-dark(var(--color-primary-500), var(--color-primary-300));
   --color-border-info: light-dark(var(--color-info-500), var(--color-info-300));

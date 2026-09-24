@@ -15,7 +15,6 @@
     maxHeight?: string;
     class?: HTMLAttributes['class'];
     hideScrollbar?: boolean;
-
     /** Enable virtual scrolling for large datasets */
     virtual?: boolean;
     /** Array of items required when virtual is true */

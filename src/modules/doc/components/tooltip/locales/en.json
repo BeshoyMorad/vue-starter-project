@@ -1,0 +1,27 @@
+{
+  "tooltip": {
+    "title": "Tooltip",
+    "description": "A popup that displays additional information when the user hovers over an element.",
+    "import": {
+      "title": "Import",
+      "description": "Import the Tooltip component to use it in your application.",
+      "codeHeader": "Import"
+    },
+    "examples": {
+      "title": "Examples",
+      "description": "Explore the different ways to use the Tooltip component.",
+      "basic": {
+        "name": "Basic Tooltip",
+        "description": "A basic tooltip with a trigger element and custom content.",
+        "trigger": "tooltip",
+        "content": "data here"
+      }
+    },
+    "preview": "Preview",
+    "howToUse": {
+      "title": "How to Use",
+      "description": "Copy and use this example in your application.",
+      "codeHeader": "<template>"
+    }
+  }
+}

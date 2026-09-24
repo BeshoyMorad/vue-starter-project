@@ -13,7 +13,7 @@
     variant?: ButtonVariants['variant'];
     size?: ButtonVariants['size'];
     class?: HTMLAttributes['class'];
-
+    outline?: boolean;
     disabled?: boolean;
     loading?: boolean;
 
@@ -30,7 +30,7 @@
     variant: 'default',
     size: 'default',
     class: undefined,
-
+    outline: false,
     disabled: false,
     loading: false,
     icon: undefined,
@@ -55,7 +55,7 @@
     :data-size="size"
     :as-child="asChild"
     :aria-busy="loading ? 'true' : undefined"
-    :class="cn(buttonVariants({ variant, size, iconPosition }), props.class)"
+    :class="cn(buttonVariants({ variant, size, iconPosition, outline }), props.class)"
   >
     <Icon
       v-if="loading"

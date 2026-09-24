@@ -22,7 +22,8 @@
     "starter": "البداية",
     "multiStepForm": "نموذج متعدد الخطوات",
     "virtualScroll": "التمرير الافتراضي",
-    "localization": "تجربة تعدد اللغات"
+    "localization": "تجربة تعدد اللغات",
+    "demo": "تجربة"
   },
   "demo": {
     "title": "نظام الترجمة وتعدد اللغات (i18n)",

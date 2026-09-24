@@ -1,5 +1,4 @@
 /* eslint-disable max-lines-per-function */
-import { computed, type ComputedRef } from 'vue';
 import {
   keepPreviousData,
   useQuery,
@@ -13,6 +12,7 @@ import {
   type TableStateReturn,
   type TableParams,
 } from './useTableState';
+import { computed, type ComputedRef } from 'vue';
 
 export interface UseTableOptions<
   TFilters extends object = object,
@@ -20,6 +20,7 @@ export interface UseTableOptions<
   queryKey: QueryKey;
   endpoint: string;
   queryOptions?: object;
+  extractData?: (data: unknown) => unknown[];
 }
 
 export type DataTableState =
@@ -42,10 +43,12 @@ export type UseDataTableReturn<
     isSearchEmpty: ComputedRef<boolean>;
     isFilteredEmpty: ComputedRef<boolean>;
     tableState: ComputedRef<DataTableState>;
+    dynamicQueryKey: ComputedRef<QueryKey>;
     goToNext: () => void;
     goToPrev: () => void;
     goToPage: (page: number) => void;
     changeLimit: (limit: number) => void;
+    extraData: ComputedRef<unknown>;
   };
 
 export function useDataTable<TData = unknown, TFilters extends object = object, TError = Error>(
@@ -79,7 +82,17 @@ export function useDataTable<TData = unknown, TFilters extends object = object, 
     return (rawMeta as Meta | CursorMeta) ?? null;
   });
 
-  const data = computed<TData[]>(() => rawResponse.value?.data ?? []);
+  const data = computed<TData[]>(() => {
+    const rawData = rawResponse.value?.data;
+    if (rawData == null) return [];
+    return options.extractData
+      ? (options.extractData(rawData) as TData[])
+      : (rawData as unknown as TData[]);
+  });
+
+  const extraData = computed(() => {
+    return rawResponse.value?.data ?? null;
+  });
 
   const isEmpty = computed(() => {
     if (query.isLoading.value) return false;
@@ -139,6 +152,7 @@ export function useDataTable<TData = unknown, TFilters extends object = object, 
 
   return {
     ...state,
+    dynamicQueryKey,
     data,
     meta,
     isEmpty, // Data is empty and no search or filters are applied
@@ -149,6 +163,7 @@ export function useDataTable<TData = unknown, TFilters extends object = object, 
     goToPrev,
     goToPage,
     changeLimit,
+    extraData,
     ...query,
   };
 }

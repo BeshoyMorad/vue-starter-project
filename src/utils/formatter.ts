@@ -50,6 +50,7 @@ export type FormatDateMode = 'date' | 'datetime' | 'month' | 'apiDate' | 'time';
 
 export interface FormatDateOptions {
   mode?: FormatDateMode;
+  skipConvert?: boolean;
 }
 
 const DATE_FORMAT_MAP: Record<FormatDateMode, string> = {
@@ -65,7 +66,7 @@ export function formatDate(
   options?: FormatDateOptions
 ): string {
   if (dateStr == null || dateStr === '') return '—';
-  const date = dayjs(convertToLocalDate(dateStr));
+  const date = dayjs(options?.skipConvert ? dateStr : convertToLocalDate(dateStr));
   if (!date.isValid()) return '—';
   const { mode = 'date' } = options ?? {};
   return date.format(DATE_FORMAT_MAP[mode]);
@@ -263,4 +264,48 @@ export function formatSubscriptZeros(
   }
 
   return str;
+}
+
+// ==============================================================================
+// Plain Decimal String
+// ==============================================================================
+
+/**
+ * Converts a numeric value or string to a plain decimal representation,
+ * expanding scientific notation (e.g. "1e-7" -> "0.0000001", "1.5e-5" -> "0.000015").
+ */
+export function toPlainDecimalString(val: string | number | null | undefined): string {
+  if (val == null) return '';
+  const str = typeof val === 'string' ? val.trim() : String(val);
+  if (!str || isNaN(Number(str))) return str;
+  if (!/[eE]/.test(str)) return str;
+
+  const [mantissa, exponentStr] = str.split(/[eE]/);
+  const exponent = Number(exponentStr);
+  const isNegative = mantissa.startsWith('-');
+  const absMantissa = isNegative ? mantissa.slice(1) : mantissa;
+
+  const [integerPart, decimalPart = ''] = absMantissa.split('.');
+  const digits = integerPart + decimalPart;
+
+  let result: string;
+  if (exponent < 0) {
+    const leadingZeros = Math.abs(exponent) - integerPart.length;
+    if (leadingZeros >= 0) {
+      result = `0.${'0'.repeat(leadingZeros)}${digits}`;
+    } else {
+      const splitPos = integerPart.length + exponent;
+      result = `${digits.slice(0, splitPos)}.${digits.slice(splitPos)}`;
+    }
+  } else {
+    const trailingZeros = exponent - decimalPart.length;
+    if (trailingZeros >= 0) {
+      result = `${digits}${'0'.repeat(trailingZeros)}`;
+    } else {
+      const splitPos = integerPart.length + exponent;
+      result = `${digits.slice(0, splitPos)}.${digits.slice(splitPos)}`;
+    }
+  }
+
+  return (isNegative ? '-' : '') + result;
 }

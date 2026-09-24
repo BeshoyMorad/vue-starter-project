@@ -16,7 +16,8 @@ const VARIANTS = {
     method: toast.info,
     defaultTitle: 'Info',
     defaultBody: 'Information',
-    icon: 'hugeicons--info',
+    icon: 'hugeicons--information-circle',
+
     iconClass: 'self-start mt-1 bg-blue-600 p-1.5 rounded-md !size-6 !justify-center !items-center',
     closeClass: 'hover:!bg-blue-600 hover:!border-blue-600',
   },

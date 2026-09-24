@@ -3,7 +3,7 @@ import type { ColumnDef } from '@tanstack/vue-table';
 import type { AssetVault } from '@/modules/assets/types';
 import { EntityAvatar, StatusBadge, WalletAddress } from '@/components';
 import AssetActions from '@/modules/assets/components/AssetActions.vue';
-import { formatStatus } from '@/utils/format-status';
+import { formatStatus } from '@/utils/formatStatus';
 
 export const assetColumns: ColumnDef<AssetVault, unknown>[] = [
   {

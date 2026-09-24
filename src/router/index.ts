@@ -2,7 +2,11 @@ import { createRouter, createWebHistory } from 'vue-router';
 import { paths } from './paths';
 import { authGuard } from './guards';
 import { authRoutes } from '@/modules/auth/auth.routes';
+import { componentsRoutes } from '@/modules/doc/components/components.routes';
 import { handleOffline } from '@/composables/useNetwork';
+import { formsRoutes } from '@/modules/doc/forms/forms.routes';
+import { composablesRoutes } from '@/modules/doc/composables/composables.routes';
+import { docRoutes } from '@/modules/doc/documentation/doc.routes';
 
 export const routes = [
   {
@@ -13,33 +17,22 @@ export const routes = [
       {
         path: '',
         name: paths.dashboard.root,
-        component: () => import('@/pages/dashboard/pages/Index.vue'),
+        component: () => import('@/modules/doc/documentation/pages/index.vue'),
         meta: { title: 'Dashboard' },
       },
       {
-        path: 'starter',
-        name: paths.dashboard.starter,
-        component: () => import('@/modules/starter/pages/StarterDashboard.vue'),
-        meta: { title: 'Starter' },
+        path: 'assets',
+        name: paths.dashboard.assets,
+        component: () => import('@/modules/assets/pages/Index.vue'),
+        meta: {
+          title: 'assets',
+          sidebar: true,
+        },
       },
-      {
-        path: 'multi-step-form',
-        name: paths.dashboard.multiStepForm,
-        component: () => import('@/pages/dashboard/pages/MultiStepFormExample.vue'),
-        meta: { title: 'Multi Step Form' },
-      },
-      {
-        path: 'virtual-scroll-example',
-        name: paths.dashboard.virtualScrollExample,
-        component: () => import('@/pages/dashboard/pages/VirtualScrollExample.vue'),
-        meta: { title: 'Virtual Scroll Example' },
-      },
-      {
-        path: 'localization-example',
-        name: paths.dashboard.localizationExample,
-        component: () => import('@/pages/dashboard/pages/LocalizationExample.vue'),
-        meta: { title: 'Localization Example' },
-      },
+      ...docRoutes,
+      ...componentsRoutes,
+      ...formsRoutes,
+      ...composablesRoutes,
     ],
   },
   ...authRoutes,
@@ -49,6 +42,7 @@ export const routes = [
     component: () => import('@/pages/errors/AccessDenied.vue'),
     meta: {
       title: 'Access Denied',
+      sidebar: false,
     },
   },
   {
@@ -57,6 +51,7 @@ export const routes = [
     component: () => import('@/pages/errors/InternalServerError.vue'),
     meta: {
       title: 'Internal Server Error',
+      sidebar: false,
     },
   },
   {
@@ -65,6 +60,7 @@ export const routes = [
     component: () => import('@/pages/errors/NoInternet.vue'),
     meta: {
       title: 'No Internet Connection',
+      sidebar: false,
     },
   },
   {
@@ -72,6 +68,7 @@ export const routes = [
     component: () => import('@/pages/errors/NotFound.vue'),
     meta: {
       title: 'Page Not Found',
+      sidebar: false,
     },
   },
 ];

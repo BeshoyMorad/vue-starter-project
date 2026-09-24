@@ -1,0 +1,54 @@
+{
+  "title": "Button",
+  "description": "A reusable button component that provides consistent styling and behavior across the application.",
+  "import": {
+    "title": "Import",
+    "description": "Import the Button component from the shared components library.",
+    "codeHeader": "<script>"
+  },
+  "variants": {
+    "title": "Variants",
+    "description": "Choose the appropriate variant based on the action's importance and meaning.",
+    "default": {
+      "name": "Default",
+      "description": "Use for the primary action."
+    },
+    "danger": {
+      "name": "Danger",
+      "description": "Use for destructive or dangerous actions."
+    },
+    "success": {
+      "name": "Success",
+      "description": "Use for successful or positive actions."
+    },
+    "warning": {
+      "name": "Warning",
+      "description": "Use when the user should pay attention before continuing."
+    },
+    "ghost": {
+      "name": "Ghost",
+      "description": "Use for low-emphasis actions."
+    },
+    "link": {
+      "name": "Link",
+      "description": "Use when the action should visually behave like a link."
+    }
+  },
+  "outline": {
+    "title": "Outline",
+    "description": "Applies an outlined style for secondary or less prominent actions.",
+    "default": {
+      "name": "false",
+      "description": "Pass the outline prop as a boolean value (true or false). When true, it applies an outlined style for secondary."
+    },
+
+    "on": "Active",
+    "off": "Inactive"
+  },
+  "preview": "Preview",
+  "howToUse": {
+    "title": "How to use",
+    "description": "Use the code below to apply this style.",
+    "codeHeader": "<template>"
+  }
+}

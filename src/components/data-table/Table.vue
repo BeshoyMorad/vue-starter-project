@@ -1,4 +1,4 @@
-<script setup lang="ts" generic="TRow extends { id: number | string }">
+<script setup lang="ts" generic="TRow">
   import { cn } from '@/utils';
   import { type ColumnDef } from '@tanstack/vue-table';
   import { Skeleton, EmptyPlaceholder } from '@/components';

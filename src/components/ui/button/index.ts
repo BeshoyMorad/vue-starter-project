@@ -15,7 +15,6 @@ export const buttonVariants = cva(
           'bg-bg-success-default text-text-base hover:bg-bg-success-default/90 focus-visible:ring-bg-success-default/20',
         warning:
           'bg-bg-warning-default text-text-base hover:bg-bg-warning-default/90 focus-visible:ring-bg-warning-default/20',
-        outline: 'border shadow-xs hover:bg-bg-hovered',
         ghost: 'hover:bg-bg-hovered text-text-default',
         link: 'text-text-primary underline-offset-4 hover:underline',
       },
@@ -31,11 +30,37 @@ export const buttonVariants = cva(
         left: '',
         right: 'flex-row-reverse',
       },
+      outline: {
+        true: ' border-1',
+      },
     },
+    compoundVariants: [
+      {
+        variant: 'default',
+        outline: true,
+        class: 'bg-bg-primary-default/10 text-text-primary hover:bg-bg-primary-default/20',
+      },
+      {
+        variant: 'danger',
+        outline: true,
+        class: 'bg-bg-danger-default/10 text-text-danger hover:bg-bg-danger-default/20',
+      },
+      {
+        variant: 'success',
+        outline: true,
+        class: 'bg-bg-success-default/10 text-text-success hover:bg-bg-success-default/20',
+      },
+      {
+        variant: 'warning',
+        outline: true,
+        class: 'bg-bg-warning-default/10 text-text-warning hover:bg-bg-warning-default/20',
+      },
+    ],
     defaultVariants: {
       variant: 'default',
       size: 'default',
       iconPosition: 'left',
+      outline: false,
     },
   }
 );

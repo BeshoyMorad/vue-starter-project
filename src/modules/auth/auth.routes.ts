@@ -12,7 +12,10 @@ export const authRoutes = [
         path: 'login',
         name: paths.auth.login,
         component: () => import('./Login.vue'),
-        meta: { title: 'Sign In' },
+        meta: {
+          title: 'Sign In',
+          sidebar: false,
+        },
       },
     ],
   },

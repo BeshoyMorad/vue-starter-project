@@ -5,9 +5,9 @@ const envSchema = yup.object({
   VITE_API_BASE_URL: yup.string().url('VITE_API_BASE_URL must be a valid URL').required(),
   VITE_APP_ENV: yup.string().oneOf(['development', 'production', 'staging']).default('development'),
   VITE_ENABLE_DEVTOOLS: yup
-    .string()
+    .boolean()
     .transform((val) => String(val) === 'true')
-    .default('false'),
+    .default(false),
 });
 
 // 2. Validate the raw import.meta.env object

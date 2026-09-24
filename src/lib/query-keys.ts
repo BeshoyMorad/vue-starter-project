@@ -6,6 +6,12 @@ export const QUERY_KEYS = {
   auth: {
     profile: () => ['auth.profile'] as const,
   },
+
+  users: {
+    all: () => ['users'] as const,
+    list: () => [...QUERY_KEYS.users.all(), 'list'] as const,
+    details: (id: number | string) => [...QUERY_KEYS.users.all(), 'details', String(id)] as const,
+  },
   corporates: {
     all: () => ['corporates'] as const,
     list: () => [...QUERY_KEYS.corporates.all(), 'list'] as const,

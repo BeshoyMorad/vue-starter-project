@@ -1,0 +1,70 @@
+{
+  "table": {
+    "title": "Table",
+    "description": "A flexible table component for displaying structured data with sorting and pagination support.",
+
+    "preview": "Preview",
+
+    "import": {
+      "title": "Import",
+      "description": "Import the Table component from the shared components library.",
+      "codeHeader": "Import"
+    },
+
+    "howToUse": {
+      "title": "How to use",
+      "description": "Use the Table component by providing columns, data, and the required pagination metadata.",
+      "codeHeaderScript": "<script>",
+      "codeHeaderTempelate": "<template>"
+    },
+    "definition": {
+      "title": "Definition",
+      "description": "Define your table data and columns, then pass them to the Table component.",
+      "howToUseDescription": "Define the data rows and column configuration, then pass them using the value and columns props."
+    },
+
+    "pagination": {
+      "title": "Offset Pagination",
+      "description": "Use standard pagination when your API returns page-based metadata such as the current page, total pages, and total items."
+    },
+
+    "cursorPagination": {
+      "title": "Cursor Pagination",
+      "description": "Use cursor pagination when your API uses cursors to navigate between result sets instead of page numbers."
+    },
+
+    "props": {
+      "title": "Props",
+      "description": "The Table component accepts the following props to control its data, appearance, and pagination behavior.",
+
+      "name": "Prop",
+      "type": "Type",
+      "descriptionColumn": "Description",
+
+      "columns": "Defines the columns displayed in the table.",
+      "value": "The data rows displayed in the table.",
+      "loading": "Displays a loading state while the table data is being loaded.",
+      "meta": "Provides pagination metadata for standard or cursor-based pagination.",
+      "limitOptions": "Defines the available options for the number of rows displayed per page.",
+      "clickable": "Makes table rows clickable and enables the rowClick event.",
+      "isFilteredEmpty": "Displays the filtered empty state when filtering returns no results.",
+      "isSearchEmpty": "Displays the search empty state when searching returns no results."
+    },
+
+    "events": {
+      "title": "Events",
+      "description": "The Table component emits events when the user interacts with sorting, pagination, or table rows.",
+
+      "name": "Event",
+      "payload": "Payload",
+      "descriptionColumn": "Description",
+
+      "sort": "Emitted when the user changes the sorting of a column.",
+      "pageChange": "Emitted when the user changes the current page.",
+      "limitChange": "Emitted when the user changes the number of rows displayed per page.",
+      "next": "Emitted when the user requests the next set of data.",
+      "prev": "Emitted when the user requests the previous set of data.",
+      "rowClick": "Emitted when the user clicks a table row and provides the clicked row as the payload."
+    }
+  }
+}

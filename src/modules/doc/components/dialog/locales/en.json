@@ -1,0 +1,40 @@
+{
+  "dialog": {
+    "title": "Dialogs",
+    "description": "Dialog components for displaying content, confirmations, and forms in an overlay.",
+
+    "variants": {
+      "title": "Dialog Variants",
+      "description": "Explore the different dialog components and how to use them.",
+
+      "dialog": {
+        "name": "Dialog",
+        "description": "A general-purpose dialog for displaying custom content with optional header and footer."
+      },
+
+      "confirm": {
+        "name": "Confirm Dialog",
+        "description": "A dialog used to ask the user to confirm an action before proceeding."
+      },
+
+      "form": {
+        "name": "Form Dialog",
+        "description": "A dialog designed to contain and submit forms in an overlay."
+      }
+    },
+
+    "import": {
+      "title": "Import",
+      "description": "Import the dialog component you want to use.",
+      "codeHeader": "Import"
+    },
+
+    "preview": "Preview",
+
+    "howToUse": {
+      "title": "How to Use",
+      "description": "Copy and use this example in your application.",
+      "codeHeader": "<template>"
+    }
+  }
+}

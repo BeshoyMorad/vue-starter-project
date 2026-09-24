@@ -1,13 +1,13 @@
+import { refDebounced } from '@vueuse/core';
 import {
-  ref,
   computed,
-  watch,
+  ref,
   toValue,
+  watch,
+  type ComputedRef,
   type MaybeRefOrGetter,
   type Ref,
-  type ComputedRef,
 } from 'vue';
-import { refDebounced } from '@vueuse/core';
 
 export interface TableParams {
   page?: number;
@@ -20,16 +20,19 @@ export interface TableParams {
   [key: string]: unknown;
 }
 
+export interface TableSort {
+  sortKey?: string;
+  order?: 'ASC' | 'DESC';
+}
+
 export interface TableStateOptions<TFilters extends object> {
   query?: MaybeRefOrGetter<TFilters>;
   limit?: number;
   searchDebounce?: number;
   initialSearch?: string;
   initialFilters?: object;
-  initialSort?: {
-    sortKey?: string;
-    order?: 'ASC' | 'DESC';
-  };
+  flatFilters?: boolean;
+  initialSort?: TableSort;
   paginationType?: 'offset' | 'cursor' | 'none';
 }
 
@@ -49,7 +52,7 @@ export interface TableStateReturn<TFilters extends object> {
   cursor: Ref<string | null>;
   sortKey: Ref<string | undefined>;
   order: Ref<'ASC' | 'DESC' | undefined>;
-  sort: (sorting: { sortKey?: string; order?: 'ASC' | 'DESC' }) => void;
+  sort: (sorting: TableSort) => void;
 }
 
 // eslint-disable-next-line max-lines-per-function
@@ -64,6 +67,7 @@ export function useTableState<TFilters extends object>(
     initialFilters = {},
     initialSort = {},
     paginationType = 'offset',
+    flatFilters = false,
   } = options;
 
   const search = ref(initialSearch);
@@ -91,7 +95,7 @@ export function useTableState<TFilters extends object>(
   const sortKey = ref<string | undefined>(initialSort.sortKey);
   const order = ref<'ASC' | 'DESC' | undefined>(initialSort.order);
 
-  const sort = (sorting: { sortKey?: string; order?: 'ASC' | 'DESC' }) => {
+  const sort = (sorting: TableSort) => {
     sortKey.value = sorting.sortKey;
     order.value = sorting.order;
   };
@@ -116,9 +120,19 @@ export function useTableState<TFilters extends object>(
       limit: itemsPerPage.value,
       sortKey: sortKey.value || undefined,
       order: order.value || undefined,
-      ...filters.value,
       ...(query ? toValue(query) : {}),
     };
+
+    Object.entries(filters.value).forEach(([key, value]) => {
+      // Allow false/0, but don't allow null/undefined/empty string
+      if (value !== undefined && value !== null && value !== '') {
+        if (flatFilters) {
+          params[key] = value;
+        } else {
+          params[`filters[${key}]`] = value;
+        }
+      }
+    });
 
     if (paginationType === 'cursor') {
       if (cursor.value !== null) {

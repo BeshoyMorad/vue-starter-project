@@ -2,7 +2,7 @@ import type { MediaValue } from '@/types/media';
 import parsePhoneNumberFromString from 'libphonenumber-js';
 import * as yup from 'yup';
 
-const PASSWORD_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&/])[A-Za-z\d@$!%*?&/]{8,}$/;
+const PASSWORD_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^A-Za-z0-9]).{8,}$/;
 const PASSWORD_MESSAGE =
   'Password must be at least 8 characters, include uppercase, lowercase, number and special character';
 

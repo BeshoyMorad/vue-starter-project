@@ -19,6 +19,7 @@ export interface UseDataInfiniteScrollOptions<
   queryKey: MaybeRefOrGetter<QueryKey>;
   endpoint: MaybeRefOrGetter<string>;
   queryOptions?: object;
+  extractData?: (data: unknown) => unknown[];
 }
 
 export type InfiniteScrollDataState =
@@ -42,6 +43,8 @@ export type UseDataInfiniteScrollReturn<
     isFilteredEmpty: ComputedRef<boolean>;
     tableState: ComputedRef<InfiniteScrollDataState>;
     hasMore: Ref<boolean>;
+    extraData: ComputedRef<unknown>;
+    dynamicQueryKey: ComputedRef<QueryKey>;
     changeLimit: (limit: number) => void;
   };
 
@@ -86,10 +89,10 @@ export function useDataInfiniteScroll<
     getNextPageParam: (lastPage) => {
       if (paginationType === 'cursor') {
         const meta = (lastPage as CursorPaginatedResponse<TData>).meta;
-        return meta.nextCursor ?? undefined;
+        return meta?.nextCursor ?? undefined;
       } else {
         const meta = (lastPage as OffsetPaginatedResponse<TData>).meta;
-        return meta.hasNextPage ? meta.currentPage + 1 : undefined;
+        return meta?.hasNextPage ? meta.currentPage + 1 : undefined;
       }
     },
     initialPageParam: (paginationType === 'cursor' ? null : 1) as string | null | number,
@@ -98,7 +101,14 @@ export function useDataInfiniteScroll<
     ...(options.queryOptions ?? {}),
   });
 
-  const data = computed<TData[]>(() => rawPages.value?.pages.flatMap((p) => p.data) ?? []);
+  const data = computed<TData[]>(
+    () =>
+      rawPages.value?.pages.flatMap((p) => {
+        return options.extractData
+          ? (options.extractData(p.data) as TData[])
+          : (p.data as unknown as TData[]);
+      }) ?? []
+  );
 
   const meta = computed(() => {
     const rawMeta = rawPages.value?.pages.at(0)?.meta;
@@ -135,6 +145,10 @@ export function useDataInfiniteScroll<
     state.itemsPerPage.value = newLimit;
   };
 
+  const extraData = computed(() => {
+    return rawPages.value?.pages.at(0)?.data ?? null;
+  });
+
   return {
     ...state,
     data,
@@ -143,8 +157,10 @@ export function useDataInfiniteScroll<
     isSearchEmpty, // Data is empty and search is applied
     isFilteredEmpty, // Data is empty and filters are applied
     tableState,
+    dynamicQueryKey,
     fetchNextPage,
     hasMore: hasNextPage,
+    extraData,
     changeLimit,
     ...query,
   };

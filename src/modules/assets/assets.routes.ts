@@ -4,7 +4,8 @@ import type { RouteRecordRaw } from 'vue-router';
 export const assetsRoutes: RouteRecordRaw[] = [
   {
     path: '/assets',
-    name: paths.assets.root,
+    name: paths.dashboard.assets,
+
     component: () => import('./pages/Index.vue'),
     meta: { title: 'Assets' },
   },

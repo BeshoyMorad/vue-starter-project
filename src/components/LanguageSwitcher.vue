@@ -19,13 +19,7 @@
 <template>
   <DropdownMenu>
     <DropdownMenuTrigger as-child>
-      <Button
-        variant="outline"
-        size="sm"
-        test-id="language-switcher-trigger"
-        :loading="isLoadingLocale"
-        class="border-border-secondary bg-surface-primary text-text-primary hover:bg-surface-secondary inline-flex items-center gap-2 px-3 py-1.5 text-sm font-medium shadow-xs transition-all"
-      >
+      <Button outline size="sm" test-id="language-switcher-trigger" :loading="isLoadingLocale">
         <span class="text-base leading-none">{{ currentLocaleMeta.flag }}</span>
         <span>{{ currentLocaleMeta.nativeLabel }}</span>
         <span class="text-text-disabled text-xs uppercase"

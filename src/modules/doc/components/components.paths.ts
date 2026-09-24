@@ -1,0 +1,17 @@
+export const componentsPaths = {
+  root: 'root',
+  overview: 'components',
+  button: 'button',
+  tooltip: 'tooltip',
+  textInput: 'text-input',
+  dialog: 'dialog',
+  table: 'table',
+  textArea: 'text-area',
+  avatar: 'avatar',
+  toaster: 'toaster',
+  accordion: 'accordion',
+  dropDownMenu: 'dropdown-menu',
+  skeleton: 'skeleton',
+  icon: 'icon',
+  infiniteScroll: 'infinite-scroll',
+};

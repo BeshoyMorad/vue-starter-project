@@ -38,7 +38,7 @@
 
   const props = withDefaults(defineProps<Props>(), {
     height: 'auto',
-    maxHeight: '500px',
+    maxHeight: '20px',
     skeletonRows: 10,
     class: '',
     clickable: false,
@@ -67,7 +67,7 @@
   onMounted(() => {
     if (tableRef.value?.$el) {
       const scrollable: HTMLElement | null = tableRef.value.$el.querySelector(
-        '[data-slot="table-wrapper"]'
+        '[data-slot="table-container"]'
       );
       scrollContainer.value = scrollable || tableRef.value.$el;
     }
@@ -81,7 +81,7 @@
       emit('load-more');
     },
     {
-      distance: 150,
+      distance: 20,
       canLoadMore() {
         return canLoadMore.value;
       },

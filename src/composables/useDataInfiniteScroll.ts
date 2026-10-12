@@ -77,17 +77,17 @@ export function useDataInfiniteScroll<
   });
 
   const isEmpty = computed(() => {
-    if (query.isLoading.value) return false;
+    if (query.isLoading.value || query.isError.value) return false;
     return data.value.length === 0 && !state.hasSearch.value && !state.hasFilters.value;
   });
 
   const isSearchEmpty = computed(() => {
-    if (query.isLoading.value) return false;
+    if (query.isLoading.value || query.isError.value) return false;
     return data.value.length === 0 && state.hasSearch.value && !state.hasFilters.value;
   });
 
   const isFilteredEmpty = computed(() => {
-    if (query.isLoading.value) return false;
+    if (query.isLoading.value || query.isError.value) return false;
     return data.value.length === 0 && state.hasFilters.value;
   });
 

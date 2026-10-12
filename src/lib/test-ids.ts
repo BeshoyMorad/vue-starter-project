@@ -14,6 +14,7 @@ export const TEST_IDS = {
       previous: 'table-pagination-previous',
       next: 'table-pagination-next',
     },
+    retry: 'table-pagination-retry',
   },
   toast: {
     status: 'toast-status',

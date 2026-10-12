@@ -36,7 +36,6 @@ export const formsRoutes = [
           sidebar: true,
         },
       },
-
       {
         path: 'password-input',
         name: formsPaths.password,
@@ -151,6 +150,15 @@ export const formsRoutes = [
         component: () => import('@/modules/doc/forms/image-upload/pages/index.vue'),
         meta: {
           title: 'Image Upload',
+          sidebar: true,
+        },
+      },
+      {
+        path: 'color-input',
+        name: formsPaths.color,
+        component: () => import('@/modules/doc/forms/color-field/pages/index.vue'),
+        meta: {
+          title: 'Color Input',
           sidebar: true,
         },
       },

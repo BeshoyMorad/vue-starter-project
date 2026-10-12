@@ -16,5 +16,6 @@ export const formsPaths = {
   radioGroup: 'radio-group',
   ImageUpload: 'image-upload',
   tags: 'tags-input',
+  color: 'color-input',
   multiStepForm: 'multi-step-form',
 };

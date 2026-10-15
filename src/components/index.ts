@@ -32,4 +32,5 @@ export * from './ui/pagination';
 export * from './ui/popover';
 export * from './ui/skeleton';
 export * from './ui/sonner';
+export * from './ui/chart';
 export * from './form';

@@ -55,6 +55,15 @@ export const docRoutes = [
           sidebar: true,
         },
       },
+      {
+        path: 'charts',
+        name: documentationPaths.charts,
+        component: () => import('@/modules/doc/ChartsDoc.vue'),
+        meta: {
+          title: 'Charts',
+          sidebar: true,
+        },
+      },
     ],
   },
 ] as RouteRecordRaw[];

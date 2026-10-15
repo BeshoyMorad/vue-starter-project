@@ -36,3 +36,89 @@
   line-height: 1.5;
   letter-spacing: -0.01em;
 }
+
+/* Unovis Chart & Tooltip resets (mapping directly to existing neutral tokens) */
+:root {
+  --vis-tooltip-background-color: transparent !important;
+  --vis-tooltip-border-color: transparent !important;
+  --vis-tooltip-text-color: inherit !important;
+  --vis-tooltip-shadow-color: transparent !important;
+  --vis-tooltip-backdrop-filter: none !important;
+  --vis-tooltip-padding: 0px !important;
+  --vis-tooltip-box-shadow: none !important;
+
+  --vis-axis-grid-color: var(--color-neutral-200);
+  --vis-axis-grid-line-dasharray: 4 4;
+  --vis-axis-tick-color: var(--color-neutral-300);
+  --vis-axis-domain-color: var(--color-neutral-300);
+  --vis-axis-domain-line-dasharray: none;
+  --vis-axis-domain-line-width: 1px;
+  --vis-axis-tick-label-color: var(--color-neutral-500);
+  --vis-axis-tick-label-font-size: 12px;
+  --vis-donut-background-color: var(--color-neutral-100);
+  --vis-crosshair-line-stroke-color: var(--color-neutral-300);
+  --vis-text-color: var(--color-neutral-500);
+}
+
+[data-theme='dark'],
+.dark {
+  --vis-axis-grid-color: var(--color-neutral-800);
+  --vis-axis-tick-color: var(--color-neutral-700);
+  --vis-axis-domain-color: var(--color-neutral-700);
+  --vis-axis-domain-line-dasharray: none;
+  --vis-axis-domain-line-width: 1px;
+  --vis-axis-tick-label-color: var(--color-neutral-400);
+  --vis-donut-background-color: var(--color-neutral-800);
+  --vis-crosshair-line-stroke-color: var(--color-neutral-700);
+  --vis-text-color: var(--color-neutral-400);
+}
+
+/* Left & bottom axis domain lines (crisp, solid, never hidden) */
+path.domain,
+.domain {
+  stroke: var(--vis-axis-domain-color, var(--color-neutral-300)) !important;
+  stroke-width: 1px !important;
+  stroke-dasharray: none !important;
+  opacity: 1 !important;
+  visibility: visible !important;
+  display: block !important;
+}
+
+/* Chart grid lines: hide horizontal grid lines when data-show-grid is false */
+[data-show-grid='false'] {
+  --vis-axis-grid-color: transparent !important;
+  --vis-dark-axis-grid-color: transparent !important;
+  --vis-axis-grid-opacity: 0 !important;
+}
+
+[data-show-grid='false'] g[class*='grid'],
+[data-show-grid='false'] g[class*='-grid'] {
+  display: none !important;
+  opacity: 0 !important;
+  visibility: hidden !important;
+}
+
+[data-show-grid='false'] g[class*='grid'] line,
+[data-show-grid='false'] g[class*='-grid'] line {
+  display: none !important;
+  opacity: 0 !important;
+  stroke: transparent !important;
+}
+
+/* Donut chart inactive slice dimming */
+svg path[unovis-pattern-index] {
+  transition:
+    opacity 0.25s ease,
+    fill 0.25s ease;
+}
+
+svg path[unovis-pattern-index][data-inactive='true'] {
+  opacity: var(--vis-donut-filter-opacity, 0.2) !important;
+}
+
+.unovis-tooltip {
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  padding: 0 !important;
+}

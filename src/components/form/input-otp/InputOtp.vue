@@ -1,15 +1,8 @@
 <script setup lang="ts">
-  import { useVModel } from '@vueuse/core';
-  import {
-    FormField,
-    FormItem,
-    FormLabel,
-    FormControl,
-    FormDescription,
-    FormMessage,
-  } from '@/components/ui/form';
-  import type { InputOtpProps } from './types';
+  import { computed, useAttrs } from 'vue';
+  import { FieldShell, useFieldModel } from '@/components/form/shared';
   import BaseInputOtp from './BaseInputOtp.vue';
+  import type { InputOtpProps } from './types';
 
   defineOptions({
     inheritAttrs: false,
@@ -21,8 +14,8 @@
     length: 6,
     integerOnly: false,
     disabled: false,
-    label: undefined,
     name: undefined,
+    label: undefined,
     description: undefined,
     containerClass: undefined,
   });
@@ -31,44 +24,32 @@
     (e: 'update:modelValue', value: string): void;
   }>();
 
-  const modelValue = useVModel(props, 'modelValue', emits, {
-    passive: true,
-    defaultValue: props.defaultValue ?? '',
-  });
+  const modelValue = useFieldModel(props, emits, '');
+  const attrs = useAttrs();
+  const attrId = computed(() => (typeof attrs.id === 'string' ? attrs.id : undefined));
 </script>
 
 <template>
-  <template v-if="name">
-    <FormField v-slot="{ componentField }" :name="name">
-      <FormItem :class="containerClass">
-        <FormLabel v-if="label">{{ label }}</FormLabel>
+  <FieldShell
+    :id="attrId"
+    :name="name"
+    :label="label"
+    :description="description"
+    :container-class="containerClass"
+  >
+    <template v-if="$slots['label-action']" #label-action>
+      <slot name="label-action" />
+    </template>
 
-        <FormControl>
-          <BaseInputOtp
-            v-bind="{ ...$attrs, ...componentField }"
-            :disabled="disabled"
-            :integer-only="integerOnly"
-            :length="length"
-            :test-id="testId"
-          />
-        </FormControl>
-
-        <FormDescription v-if="description">{{ description }}</FormDescription>
-
-        <FormMessage />
-      </FormItem>
-    </FormField>
-  </template>
-
-  <template v-else>
-    <BaseInputOtp
-      v-model="modelValue"
-      v-bind="$attrs"
-      :class="containerClass"
-      :disabled="disabled"
-      :integer-only="integerOnly"
-      :length="length"
-      :test-id="testId"
-    />
-  </template>
+    <template #default="{ componentField }">
+      <BaseInputOtp
+        v-model="modelValue"
+        v-bind="{ ...$attrs, ...componentField }"
+        :disabled="disabled"
+        :integer-only="integerOnly"
+        :length="length"
+        :test-id="testId"
+      />
+    </template>
+  </FieldShell>
 </template>

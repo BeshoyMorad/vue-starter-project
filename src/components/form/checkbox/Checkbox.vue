@@ -1,14 +1,7 @@
 <script setup lang="ts">
-  import { useVModel } from '@vueuse/core';
-  import {
-    FormField,
-    FormItem,
-    FormControl,
-    FormDescription,
-    FormMessage,
-  } from '@/components/ui/form';
-  import type { CheckboxProps } from './types';
+  import { FieldShell, useFieldModel, useBaseSlots } from '@/components/form/shared';
   import BaseCheckbox from './BaseCheckbox.vue';
+  import type { CheckboxProps } from './types';
 
   defineOptions({
     inheritAttrs: false,
@@ -21,9 +14,9 @@
     shape: 'square',
     disabled: false,
     readonly: false,
-    label: undefined,
     id: undefined,
     name: undefined,
+    label: undefined,
     description: undefined,
     containerClass: undefined,
   });
@@ -32,49 +25,33 @@
     (e: 'update:modelValue', value: boolean): void;
   }>();
 
-  const modelValue = useVModel(props, 'modelValue', emits, {
-    passive: true,
-    defaultValue: props.defaultValue ?? false,
-  });
+  const modelValue = useFieldModel(props, emits, false);
+  const baseSlots = useBaseSlots();
 </script>
 
 <template>
-  <template v-if="name">
-    <FormField v-slot="{ componentField, errorMessage }" :name="name">
-      <FormItem :class="containerClass">
-        <FormControl>
-          <BaseCheckbox
-            :id="id"
-            :aria-invalid="!!errorMessage"
-            :disabled="disabled"
-            :label="label"
-            :readonly="readonly"
-            :shape="shape"
-            :size="size"
-            :test-id="testId"
-            v-bind="componentField"
-          />
-        </FormControl>
-
-        <FormDescription v-if="description">{{ description }}</FormDescription>
-
-        <FormMessage />
-      </FormItem>
-    </FormField>
-  </template>
-
-  <template v-else>
-    <BaseCheckbox
-      :id="id"
-      v-model="modelValue"
-      v-bind="$attrs"
-      :class="containerClass"
-      :disabled="disabled"
-      :label="label"
-      :readonly="readonly"
-      :shape="shape"
-      :size="size"
-      :test-id="testId"
-    />
-  </template>
+  <FieldShell
+    :id="id"
+    label-mode="none"
+    :name="name"
+    :description="description"
+    :container-class="containerClass"
+  >
+    <template #default="{ componentField }">
+      <BaseCheckbox
+        v-model="modelValue"
+        v-bind="{ ...$attrs, ...componentField }"
+        :disabled="disabled"
+        :label="label"
+        :readonly="readonly"
+        :shape="shape"
+        :size="size"
+        :test-id="testId"
+      >
+        <template v-for="slotName in baseSlots" :key="slotName" #[slotName]="slotProps">
+          <slot :name="slotName" v-bind="slotProps ?? {}" />
+        </template>
+      </BaseCheckbox>
+    </template>
+  </FieldShell>
 </template>

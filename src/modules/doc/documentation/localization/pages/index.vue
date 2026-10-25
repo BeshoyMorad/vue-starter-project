@@ -1,11 +1,12 @@
 ```vue
 <script setup lang="ts">
   import { computed, ref } from 'vue';
+  import { useI18n } from 'vue-i18n';
   import dayjs from 'dayjs';
 
   import Card from '@/components/card/ExampleCard.vue';
   import { Button, LanguageSwitcher } from '@/components';
-  import { useAppLocale } from '@/composables/useAppLocale';
+  import { FALLBACK_LOCALE, SUPPORTED_LOCALES, type LocaleCode } from '@/locales/config';
 
   import {
     LOCALIZATION_DOM,
@@ -17,7 +18,13 @@
     LOCALIZATION_PROJECT_STRUCTURE,
   } from '../constants/constants';
 
-  const { t, d, n, currentLocale, currentLocaleMeta, isRTL } = useAppLocale();
+  const { t, d, n, locale } = useI18n();
+
+  const currentLocale = computed(() => locale.value as LocaleCode);
+  const currentLocaleMeta = computed(
+    () => SUPPORTED_LOCALES[currentLocale.value] || SUPPORTED_LOCALES[FALLBACK_LOCALE]
+  );
+  const isRTL = computed(() => currentLocaleMeta.value.direction === 'rtl');
 
   // Interactive demo states
   const customName = ref('Alex');

@@ -1,13 +1,6 @@
 <script setup lang="ts">
-  import { useVModel } from '@vueuse/core';
-  import {
-    FormField,
-    FormItem,
-    FormLabel,
-    FormControl,
-    FormDescription,
-    FormMessage,
-  } from '@/components/ui/form';
+  import { computed, useAttrs } from 'vue';
+  import { FieldShell, useBaseSlots, useFieldModel } from '@/components/form/shared';
   import type { InputTextProps } from './types';
   import BaseInputText from './BaseInputText.vue';
 
@@ -31,44 +24,37 @@
     (e: 'update:modelValue', value: string | number): void;
   }>();
 
-  const modelValue = useVModel(props, 'modelValue', emits, {
-    passive: true,
-    defaultValue: props.defaultValue,
-  });
+  const modelValue = useFieldModel(props, emits);
+  const baseSlots = useBaseSlots();
+  const attrs = useAttrs();
+  const attrId = computed(() => (typeof attrs.id === 'string' ? attrs.id : undefined));
 </script>
 
 <template>
-  <template v-if="name">
-    <FormField v-slot="{ componentField }" :name="name">
-      <FormItem :class="containerClass">
-        <FormLabel v-if="label">{{ label }}</FormLabel>
+  <FieldShell
+    :id="attrId"
+    :name="name"
+    :label="label"
+    :description="description"
+    :container-class="containerClass"
+  >
+    <template v-if="$slots['label-action']" #label-action>
+      <slot name="label-action" />
+    </template>
 
-        <FormControl>
-          <BaseInputText
-            v-bind="{ ...$attrs, ...componentField }"
-            :test-id="testId"
-            :icon="icon"
-            :icon-position="iconPosition"
-            :loading="loading"
-          />
-        </FormControl>
-
-        <FormDescription v-if="description">{{ description }}</FormDescription>
-
-        <FormMessage />
-      </FormItem>
-    </FormField>
-  </template>
-
-  <template v-else>
-    <BaseInputText
-      v-model="modelValue"
-      v-bind="$attrs"
-      :class="containerClass"
-      :test-id="testId"
-      :icon="icon"
-      :icon-position="iconPosition"
-      :loading="loading"
-    />
-  </template>
+    <template #default="{ componentField }">
+      <BaseInputText
+        v-model="modelValue"
+        v-bind="{ ...$attrs, ...componentField }"
+        :test-id="testId"
+        :icon="icon"
+        :icon-position="iconPosition"
+        :loading="loading"
+      >
+        <template v-for="slotName in baseSlots" :key="slotName" #[slotName]="slotProps">
+          <slot :name="slotName" v-bind="slotProps ?? {}" />
+        </template>
+      </BaseInputText>
+    </template>
+  </FieldShell>
 </template>

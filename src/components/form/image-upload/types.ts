@@ -15,12 +15,4 @@ export interface BaseImageUploadProps extends BaseFormFieldProps {
   maxSizeMb?: number;
 }
 
-export interface ImageUploadProps extends BaseFormFieldProps, FormFieldValidationProps {
-  modelValue?: MediaValue | null;
-  disabled?: boolean;
-  placeholder?: string;
-  sizePreset?: ImageUploadSizePreset;
-  allowedTypes?: string[];
-  crop?: boolean;
-  cropAspectRatio?: number;
-}
+export type ImageUploadProps = Omit<BaseImageUploadProps, 'ariaInvalid'> & FormFieldValidationProps;

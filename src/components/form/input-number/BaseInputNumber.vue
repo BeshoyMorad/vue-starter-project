@@ -1,5 +1,5 @@
 <script setup lang="ts">
-  import { computed, useSlots } from 'vue';
+  import { computed, useAttrs, useSlots } from 'vue';
   import { useVModel } from '@vueuse/core';
   import { cn } from '@/utils';
   import {
@@ -92,6 +92,12 @@
       }
     );
   });
+
+  const attrs = useAttrs();
+  const rootClass = computed(() => attrs.class);
+  const inputAttrs = computed(() => {
+    return Object.fromEntries(Object.entries(attrs).filter(([key]) => key !== 'class'));
+  });
 </script>
 
 <template>
@@ -102,10 +108,10 @@
     :step="step"
     :disabled="disabled"
     :format-options="formatOptions"
-    :class="cn('w-full')"
+    :class="cn('w-full', rootClass)"
   >
     <NumberFieldContent>
-      <NumberFieldDecrement v-if="!hideSteppers" :test-id="`${testId}-decrement`" />
+      <NumberFieldDecrement v-if="!hideSteppers" :data-test-id="`${testId}-decrement`" />
 
       <!-- Left slot or icon/loading -->
       <span v-if="hasLeftIcon" :class="leftIconClass">
@@ -120,7 +126,7 @@
         </slot>
       </span>
 
-      <NumberFieldInput v-bind="$attrs" :class="inputClass" :test-id="testId" />
+      <NumberFieldInput v-bind="inputAttrs" :class="inputClass" :data-test-id="testId" />
 
       <!-- Right slot or icon/loading -->
       <span v-if="hasRightIcon" :class="rightIconClass">
@@ -135,7 +141,7 @@
         </slot>
       </span>
 
-      <NumberFieldIncrement v-if="!hideSteppers" :test-id="`${testId}-increment`" />
+      <NumberFieldIncrement v-if="!hideSteppers" :data-test-id="`${testId}-increment`" />
     </NumberFieldContent>
   </NumberField>
 </template>

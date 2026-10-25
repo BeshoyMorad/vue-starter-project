@@ -1,15 +1,8 @@
 <script setup lang="ts">
-  import { useVModel } from '@vueuse/core';
-  import {
-    FormField,
-    FormItem,
-    FormLabel,
-    FormControl,
-    FormDescription,
-    FormMessage,
-  } from '@/components/ui/form';
-  import type { InputColorProps } from './types';
+  import { computed, useAttrs } from 'vue';
+  import { FieldShell, useFieldModel, useBaseSlots } from '@/components/form/shared';
   import BaseInputColor from './BaseInputColor.vue';
+  import type { InputColorProps } from './types';
 
   defineOptions({
     inheritAttrs: false,
@@ -21,10 +14,6 @@
     placeholder: '#3b82f6',
     disabled: false,
     readonly: false,
-    name: undefined,
-    label: undefined,
-    description: undefined,
-    containerClass: undefined,
     showPresets: true,
     showCustomPicker: true,
     showEyeDropper: false,
@@ -41,74 +30,39 @@
     inputClass: undefined,
     triggerClass: undefined,
     wheelClass: undefined,
+    name: undefined,
+    label: undefined,
+    description: undefined,
+    containerClass: undefined,
   });
 
   const emits = defineEmits<{
     (e: 'update:modelValue', value: string): void;
   }>();
 
-  const modelValue = useVModel(props, 'modelValue', emits, {
-    passive: true,
-    defaultValue: props.defaultValue,
-  });
+  const modelValue = useFieldModel(props, emits);
+  const attrs = useAttrs();
+  const attrId = computed(() => (typeof attrs.id === 'string' ? attrs.id : undefined));
+  const baseSlots = useBaseSlots();
 </script>
 
 <template>
-  <template v-if="name">
-    <FormField v-slot="{ componentField, errorMessage }" :name="name">
-      <FormItem :class="containerClass">
-        <FormLabel v-if="label">
-          {{ label }}
-          <span v-if="required" class="text-danger-500 ml-0.5">*</span>
-        </FormLabel>
+  <FieldShell
+    :id="attrId"
+    :name="name"
+    :label="label"
+    :description="description"
+    :container-class="containerClass"
+    :required="required"
+  >
+    <template v-if="$slots['label-action']" #label-action>
+      <slot name="label-action" />
+    </template>
 
-        <FormControl>
-          <BaseInputColor
-            v-bind="{ ...$attrs, ...componentField }"
-            :test-id="testId"
-            :placeholder="placeholder"
-            :disabled="disabled"
-            :readonly="readonly"
-            :required="required"
-            :validate="validate"
-            :error-message="errorMessage || props.errorMessage"
-            :aria-invalid="Boolean(errorMessage) || props.ariaInvalid || undefined"
-            :presets="presets"
-            :show-presets="showPresets"
-            :show-custom-picker="showCustomPicker"
-            :show-eye-dropper="showEyeDropper"
-            :show-copy="showCopy"
-            :variant="variant"
-            :shape="shape"
-            :show-input="showInput"
-            :wrapper-class="wrapperClass"
-            :input-class="inputClass"
-            :trigger-class="triggerClass"
-            :wheel-class="wheelClass"
-          >
-            <template v-for="(_, slotName) in $slots" #[slotName]="slotProps">
-              <slot :name="slotName" v-bind="slotProps" />
-            </template>
-          </BaseInputColor>
-        </FormControl>
-
-        <FormDescription v-if="description">{{ description }}</FormDescription>
-
-        <FormMessage />
-      </FormItem>
-    </FormField>
-  </template>
-
-  <template v-else>
-    <div :class="containerClass" class="w-full space-y-1.5">
-      <label v-if="label" class="text-text-default text-sm leading-none font-medium">
-        {{ label }}
-        <span v-if="required" class="text-danger-500 ml-0.5">*</span>
-      </label>
-
+    <template #default="{ componentField, errorMessage: fieldError }">
       <BaseInputColor
         v-model="modelValue"
-        v-bind="$attrs"
+        v-bind="{ ...$attrs, ...componentField }"
         :test-id="testId"
         :placeholder="placeholder"
         :disabled="disabled"
@@ -116,7 +70,7 @@
         :required="required"
         :validate="validate"
         :error-message="errorMessage"
-        :aria-invalid="ariaInvalid"
+        :aria-invalid="Boolean(fieldError) || ariaInvalid || undefined"
         :presets="presets"
         :show-presets="showPresets"
         :show-custom-picker="showCustomPicker"
@@ -130,14 +84,10 @@
         :trigger-class="triggerClass"
         :wheel-class="wheelClass"
       >
-        <template v-for="(_, slotName) in $slots" #[slotName]="slotProps">
-          <slot :name="slotName" v-bind="slotProps" />
+        <template v-for="slotName in baseSlots" :key="slotName" #[slotName]="slotProps">
+          <slot :name="slotName" v-bind="slotProps ?? {}" />
         </template>
       </BaseInputColor>
-
-      <p v-if="description" class="text-text-secondary text-xs">
-        {{ description }}
-      </p>
-    </div>
-  </template>
+    </template>
+  </FieldShell>
 </template>

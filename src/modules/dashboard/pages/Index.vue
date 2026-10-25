@@ -160,7 +160,7 @@
       <Button test-id="" variant="link">link</Button>
     </div>
 
-    <Button>
+    <Button test-id="dashboard-tooltip-button">
       <Tooltip>
         <template #trigger>
           <p>tooltip</p>

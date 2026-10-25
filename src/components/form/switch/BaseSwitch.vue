@@ -1,5 +1,6 @@
 <script setup lang="ts">
-  import { computed, useAttrs, useId, useSlots } from 'vue';
+  import { useFieldId } from '@/components/form/shared';
+  import { useSlots } from 'vue';
   import { useVModel } from '@vueuse/core';
   import { Switch } from '@/components/ui/switch';
   import { cva } from 'class-variance-authority';
@@ -43,13 +44,8 @@
   });
 
   const slots = useSlots();
-  const attrs = useAttrs();
 
-  const resolvedId = computed(() => {
-    if (props.id) return props.id;
-    if (typeof attrs.id === 'string') return attrs.id;
-    return useId();
-  });
+  const resolvedId = useFieldId(props);
 </script>
 
 <template>
@@ -60,7 +56,7 @@
       v-bind="$attrs"
       :disabled="disabled || readonly"
       :size="size"
-      :test-id="testId"
+      :data-test-id="testId"
     />
 
     <label

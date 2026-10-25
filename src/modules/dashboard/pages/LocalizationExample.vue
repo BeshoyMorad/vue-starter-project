@@ -1,13 +1,24 @@
 <script setup lang="ts">
   /* eslint-disable max-lines */
   import { ref, computed } from 'vue';
-  import { useAppLocale } from '@/composables/useAppLocale';
+  import { useI18n } from 'vue-i18n';
   import { Button, LanguageSwitcher, PageWrapper } from '@/components';
+  import { FALLBACK_LOCALE, SUPPORTED_LOCALES, type LocaleCode } from '@/locales/config';
   import dayjs from 'dayjs';
   import { paths } from '@/router/paths';
 
-  const { t, d, n, currentLocale, currentLocaleMeta, isRTL, setLocale, isLoadingLocale } =
-    useAppLocale();
+  // Global scope, so setLocale() updates the whole app, not just this page
+  const { t, d, n, locale } = useI18n({ useScope: 'global' });
+
+  const currentLocale = computed(() => locale.value as LocaleCode);
+  const currentLocaleMeta = computed(
+    () => SUPPORTED_LOCALES[currentLocale.value] || SUPPORTED_LOCALES[FALLBACK_LOCALE]
+  );
+  const isRTL = computed(() => currentLocaleMeta.value.direction === 'rtl');
+
+  const setLocale = (newLocale: LocaleCode) => {
+    locale.value = newLocale;
+  };
 
   // Interactive demo states
   const customName = ref('Alex');
@@ -89,7 +100,6 @@
               variant="ghost"
               outline
               size="sm"
-              :loading="isLoadingLocale"
               :class="{
                 'border-primary-500 bg-primary-50 text-primary-700': currentLocale === 'en',
               }"
@@ -102,7 +112,6 @@
               variant="ghost"
               outline
               size="sm"
-              :loading="isLoadingLocale"
               :class="{
                 'border-primary-500 bg-primary-50 text-primary-700': currentLocale === 'ar',
               }"
@@ -345,9 +354,9 @@
           <div class="bg-surface-secondary border-border-secondary space-y-2 rounded-lg border p-4">
             <h3 class="text-text-primary font-semibold">{{ t('demo.howToUse.step1Title') }}</h3>
             <pre class="text-text-secondary overflow-x-auto font-mono text-[11px]">
-import { useAppLocale } from '@/composables';
+import { useI18n } from 'vue-i18n';
 
-const { t, d, n, currentLocale, isRTL } = useAppLocale();
+const { t, d, n, locale } = useI18n();
 const label = t('common.save');
             </pre>
           </div>
@@ -366,10 +375,10 @@ const label = t('common.save');
           <div class="bg-surface-secondary border-border-secondary space-y-2 rounded-lg border p-4">
             <h3 class="text-text-primary font-semibold">{{ t('demo.howToUse.step3Title') }}</h3>
             <pre class="text-text-secondary overflow-x-auto font-mono text-[11px]">
-const { setLocale } = useAppLocale();
+const { locale } = useI18n({ useScope: 'global' });
 
 // Switches to Arabic & updates DOM dir="rtl"
-await setLocale('ar');
+locale.value = 'ar';
             </pre>
           </div>
         </div>

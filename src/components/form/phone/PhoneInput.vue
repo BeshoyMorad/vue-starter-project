@@ -1,15 +1,8 @@
 <script setup lang="ts">
-  import { useVModel } from '@vueuse/core';
-  import {
-    FormField,
-    FormItem,
-    FormLabel,
-    FormControl,
-    FormDescription,
-    FormMessage,
-  } from '@/components/ui/form';
-  import type { PhoneInputProps } from './types';
+  import { computed, useAttrs } from 'vue';
+  import { FieldShell, useFieldModel } from '@/components/form/shared';
   import BasePhoneInput from './BasePhoneInput.vue';
+  import type { PhoneInputProps } from './types';
 
   defineOptions({
     inheritAttrs: false,
@@ -31,49 +24,33 @@
     (e: 'update:modelValue', value: string): void;
   }>();
 
-  const modelValue = useVModel(props, 'modelValue', emits, {
-    passive: true,
-    defaultValue: '',
-  });
+  const modelValue = useFieldModel(props, emits, '');
+  const attrs = useAttrs();
+  const attrId = computed(() => (typeof attrs.id === 'string' ? attrs.id : undefined));
 </script>
 
 <template>
-  <template v-if="name">
-    <FormField v-slot="{ value, handleChange, errorMessage }" :name="name">
-      <FormItem :class="containerClass">
-        <FormLabel v-if="label">{{ label }}</FormLabel>
+  <FieldShell
+    :id="attrId"
+    :name="name"
+    :label="label"
+    :description="description"
+    :container-class="containerClass"
+  >
+    <template v-if="$slots['label-action']" #label-action>
+      <slot name="label-action" />
+    </template>
 
-        <FormControl>
-          <BasePhoneInput
-            :test-id="testId"
-            :default-country="defaultCountry"
-            :placeholder="placeholder"
-            :disabled="disabled"
-            :show-clear="showClear"
-            :aria-invalid="!!errorMessage"
-            :model-value="(value as string) ?? ''"
-            v-bind="$attrs"
-            @update:model-value="handleChange"
-          />
-        </FormControl>
-
-        <FormDescription v-if="description">{{ description }}</FormDescription>
-
-        <FormMessage />
-      </FormItem>
-    </FormField>
-  </template>
-
-  <template v-else>
-    <BasePhoneInput
-      v-model="modelValue"
-      v-bind="$attrs"
-      :test-id="testId"
-      :default-country="defaultCountry"
-      :placeholder="placeholder"
-      :disabled="disabled"
-      :show-clear="showClear"
-      :class="containerClass"
-    />
-  </template>
+    <template #default="{ componentField }">
+      <BasePhoneInput
+        v-model="modelValue"
+        v-bind="{ ...$attrs, ...componentField }"
+        :default-country="defaultCountry"
+        :disabled="disabled"
+        :placeholder="placeholder"
+        :show-clear="showClear"
+        :test-id="testId"
+      />
+    </template>
+  </FieldShell>
 </template>

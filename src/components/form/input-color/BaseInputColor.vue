@@ -296,7 +296,7 @@
           <button
             type="button"
             :disabled="disabled || readonly"
-            :data-testid="`${testId}-wheel-trigger`"
+            :data-test-id="`${testId}-wheel-trigger`"
             title="Choose color"
             :class="
               cn(
@@ -340,7 +340,7 @@
 
       <!-- Second Circle: Displays the color (no function) -->
       <div
-        :data-testid="`${testId}-display`"
+        :data-test-id="`${testId}-display`"
         :class="
           cn(
             'size-8 shrink-0 rounded-full border border-neutral-300 shadow-xs dark:border-neutral-700',
@@ -359,7 +359,7 @@
         :disabled="disabled"
         :readonly="readonly"
         :aria-invalid="isColorInvalid ? 'true' : undefined"
-        :data-testid="testId"
+        :data-test-id="testId"
         v-bind="$attrs"
         :class="
           cn(
@@ -384,7 +384,7 @@
           <button
             type="button"
             :disabled="disabled"
-            :data-testid="`${testId}-swatch-trigger`"
+            :data-test-id="`${testId}-swatch-trigger`"
             :class="
               cn(
                 'group focus:ring-primary-500 relative flex size-8 shrink-0 cursor-pointer items-center justify-center border border-neutral-300 shadow-xs transition-transform hover:scale-110 focus:ring-2 focus:outline-none active:scale-95 disabled:cursor-not-allowed disabled:opacity-50 dark:border-neutral-700',
@@ -424,7 +424,7 @@
         :disabled="disabled"
         :readonly="readonly"
         :aria-invalid="isColorInvalid ? 'true' : undefined"
-        :data-testid="testId"
+        :data-test-id="testId"
         v-bind="$attrs"
         :class="
           cn(
@@ -458,7 +458,7 @@
                 <button
                   type="button"
                   :disabled="disabled"
-                  :data-testid="`${testId}-swatch-trigger`"
+                  :data-test-id="`${testId}-swatch-trigger`"
                   :class="
                     cn(
                       'group focus:ring-primary-500 relative flex size-6 shrink-0 cursor-pointer items-center justify-center border shadow-xs transition-transform hover:scale-105 focus:ring-2 focus:outline-none disabled:cursor-not-allowed disabled:opacity-50',
@@ -507,7 +507,7 @@
           :disabled="disabled"
           :readonly="readonly"
           :aria-invalid="isColorInvalid ? 'true' : undefined"
-          :data-testid="testId"
+          :data-test-id="testId"
           v-bind="$attrs"
           :class="
             cn(
@@ -540,7 +540,7 @@
               type="button"
               tabindex="-1"
               :disabled="disabled || readonly"
-              :data-testid="`${testId}-eyedropper`"
+              :data-test-id="`${testId}-eyedropper`"
               title="Pick color from screen"
               class="text-text-secondary hover:text-text-default flex size-7 items-center justify-center rounded-md transition-colors hover:bg-neutral-100 focus:outline-none disabled:opacity-40 dark:hover:bg-neutral-800"
               @click="openEyeDropper"
@@ -552,7 +552,7 @@
               v-if="showCopy"
               type="button"
               tabindex="-1"
-              :data-testid="`${testId}-copy`"
+              :data-test-id="`${testId}-copy`"
               title="Copy color hex"
               class="text-text-secondary hover:text-text-default flex size-7 items-center justify-center rounded-md transition-colors hover:bg-neutral-100 focus:outline-none dark:hover:bg-neutral-800"
               @click="copyColor"

@@ -33,7 +33,9 @@
       <button
         type="button"
         class="text-text-disabled hover:text-text-default flex cursor-pointer items-center justify-center focus:outline-none"
-        :test-id="`${testId}-toggle`"
+        :aria-label="showPassword ? 'Hide password' : 'Show password'"
+        :aria-pressed="showPassword"
+        :data-test-id="`${testId}-toggle`"
         @click="showPassword = !showPassword"
       >
         <Icon

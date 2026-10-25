@@ -9,12 +9,13 @@
     image: string | null;
     aspectRatio?: number;
     header?: string;
+    mimeType?: string;
   }
 
   const props = withDefaults(defineProps<Props>(), {
     aspectRatio: undefined,
-    stencilComponent: undefined,
     header: 'Crop Image',
+    mimeType: 'image/jpeg',
   });
 
   const emit = defineEmits<{
@@ -34,7 +35,7 @@
           emit('crop', blob);
           visible.value = false;
         }
-      }, 'image/jpeg');
+      }, props.mimeType);
     }
   };
 

@@ -1,15 +1,8 @@
 <script setup lang="ts">
-  import { useVModel } from '@vueuse/core';
-  import {
-    FormField,
-    FormItem,
-    FormLabel,
-    FormControl,
-    FormDescription,
-    FormMessage,
-  } from '@/components/ui/form';
-  import BaseImageUpload from './BaseImageUpload.vue';
+  import { computed, useAttrs } from 'vue';
+  import { FieldShell, useFieldModel } from '@/components/form/shared';
   import type { MediaValue } from '@/types/media';
+  import BaseImageUpload from './BaseImageUpload.vue';
   import type { ImageUploadProps } from './types';
 
   defineOptions({
@@ -24,6 +17,7 @@
     allowedTypes: undefined,
     crop: false,
     cropAspectRatio: undefined,
+    maxSizeMb: undefined,
     name: undefined,
     label: undefined,
     description: undefined,
@@ -34,53 +28,36 @@
     (e: 'update:modelValue', value: MediaValue | null): void;
   }>();
 
-  const modelValue = useVModel(props, 'modelValue', emits, {
-    passive: true,
-    defaultValue: null,
-  });
+  const modelValue = useFieldModel(props, emits, null);
+  const attrs = useAttrs();
+  const attrId = computed(() => (typeof attrs.id === 'string' ? attrs.id : undefined));
 </script>
 
 <template>
-  <template v-if="name">
-    <FormField v-slot="{ value, handleChange, errorMessage }" :name="name">
-      <FormItem :class="containerClass">
-        <FormLabel v-if="label">{{ label }}</FormLabel>
+  <FieldShell
+    :id="attrId"
+    :name="name"
+    :label="label"
+    :description="description"
+    :container-class="containerClass"
+  >
+    <template v-if="$slots['label-action']" #label-action>
+      <slot name="label-action" />
+    </template>
 
-        <FormControl>
-          <BaseImageUpload
-            :test-id="testId"
-            :disabled="disabled"
-            :placeholder="placeholder"
-            :size-preset="sizePreset"
-            :allowed-types="allowedTypes"
-            :aria-invalid="!!errorMessage"
-            :model-value="value"
-            :crop="crop"
-            :crop-aspect-ratio="cropAspectRatio"
-            v-bind="$attrs"
-            @update:model-value="handleChange"
-          />
-        </FormControl>
-
-        <FormDescription v-if="description">{{ description }}</FormDescription>
-
-        <FormMessage />
-      </FormItem>
-    </FormField>
-  </template>
-
-  <template v-else>
-    <BaseImageUpload
-      v-model="modelValue"
-      v-bind="$attrs"
-      :test-id="testId"
-      :disabled="disabled"
-      :placeholder="placeholder"
-      :size-preset="sizePreset"
-      :allowed-types="allowedTypes"
-      :crop="crop"
-      :crop-aspect-ratio="cropAspectRatio"
-      :class="containerClass"
-    />
-  </template>
+    <template #default="{ componentField }">
+      <BaseImageUpload
+        v-model="modelValue"
+        v-bind="{ ...$attrs, ...componentField }"
+        :allowed-types="allowedTypes"
+        :crop="crop"
+        :crop-aspect-ratio="cropAspectRatio"
+        :disabled="disabled"
+        :max-size-mb="maxSizeMb"
+        :placeholder="placeholder"
+        :size-preset="sizePreset"
+        :test-id="testId"
+      />
+    </template>
+  </FieldShell>
 </template>

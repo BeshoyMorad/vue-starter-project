@@ -1,15 +1,8 @@
 <script setup lang="ts">
-  import { useVModel } from '@vueuse/core';
-  import {
-    FormField,
-    FormItem,
-    FormLabel,
-    FormControl,
-    FormDescription,
-    FormMessage,
-  } from '@/components/ui/form';
-  import type { CheckboxGroupProps } from './types';
+  import { computed, useAttrs } from 'vue';
+  import { FieldShell, useFieldModel } from '@/components/form/shared';
   import BaseCheckboxGroup from './BaseCheckboxGroup.vue';
+  import type { CheckboxGroupProps } from './types';
 
   defineOptions({
     inheritAttrs: false,
@@ -22,8 +15,8 @@
     size: 'default',
     shape: 'square',
     disabled: false,
-    label: undefined,
     name: undefined,
+    label: undefined,
     description: undefined,
     containerClass: undefined,
   });
@@ -32,49 +25,34 @@
     (e: 'update:modelValue', value: unknown[]): void;
   }>();
 
-  const modelValue = useVModel(props, 'modelValue', emits, {
-    passive: true,
-    defaultValue: props.defaultValue ?? [],
-  });
+  const modelValue = useFieldModel(props, emits, []);
+  const attrs = useAttrs();
+  const attrId = computed(() => (typeof attrs.id === 'string' ? attrs.id : undefined));
 </script>
 
 <template>
-  <template v-if="name">
-    <FormField v-slot="{ componentField, errorMessage }" :name="name">
-      <FormItem :class="containerClass">
-        <FormLabel v-if="label">{{ label }}</FormLabel>
+  <FieldShell
+    :id="attrId"
+    :name="name"
+    :label="label"
+    :description="description"
+    :container-class="containerClass"
+  >
+    <template v-if="$slots['label-action']" #label-action>
+      <slot name="label-action" />
+    </template>
 
-        <FormControl>
-          <BaseCheckboxGroup
-            :aria-invalid="!!errorMessage"
-            :disabled="disabled"
-            :layout="layout"
-            :options="options"
-            :shape="shape"
-            :size="size"
-            :test-id="testId"
-            v-bind="componentField"
-          />
-        </FormControl>
-
-        <FormDescription v-if="description">{{ description }}</FormDescription>
-
-        <FormMessage />
-      </FormItem>
-    </FormField>
-  </template>
-
-  <template v-else>
-    <BaseCheckboxGroup
-      v-model="modelValue"
-      v-bind="$attrs"
-      :class="containerClass"
-      :disabled="disabled"
-      :layout="layout"
-      :options="options"
-      :shape="shape"
-      :size="size"
-      :test-id="testId"
-    />
-  </template>
+    <template #default="{ componentField }">
+      <BaseCheckboxGroup
+        v-model="modelValue"
+        v-bind="{ ...$attrs, ...componentField }"
+        :disabled="disabled"
+        :layout="layout"
+        :options="options"
+        :shape="shape"
+        :size="size"
+        :test-id="testId"
+      />
+    </template>
+  </FieldShell>
 </template>

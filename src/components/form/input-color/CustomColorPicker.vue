@@ -153,7 +153,7 @@
     <!-- 2D Saturation & Brightness Palette -->
     <div
       ref="saturationBoxRef"
-      :data-testid="`${testId}-saturation-box`"
+      :data-test-id="`${testId}-saturation-box`"
       class="relative h-28 w-full cursor-crosshair overflow-hidden rounded-md border border-neutral-200 shadow-inner select-none dark:border-neutral-800"
       :style="{ backgroundColor: `hsl(${internalHue}, 100%, 50%)` }"
       @pointerdown="handleSaturationPointerDown"
@@ -177,7 +177,7 @@
     <!-- 1D Hue Rainbow Slider -->
     <div
       ref="hueSliderRef"
-      :data-testid="`${testId}-hue-slider`"
+      :data-test-id="`${testId}-hue-slider`"
       class="relative h-3 w-full cursor-pointer rounded-full border border-neutral-200 shadow-2xs select-none dark:border-neutral-800"
       style="
         background: linear-gradient(

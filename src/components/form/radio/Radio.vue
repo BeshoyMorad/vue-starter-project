@@ -1,14 +1,7 @@
 <script setup lang="ts">
-  import { useVModel } from '@vueuse/core';
-  import {
-    FormField,
-    FormItem,
-    FormControl,
-    FormDescription,
-    FormMessage,
-  } from '@/components/ui/form';
-  import type { RadioProps } from './types';
+  import { FieldShell, useFieldModel } from '@/components/form/shared';
   import BaseRadio from './BaseRadio.vue';
+  import type { RadioProps } from './types';
 
   defineOptions({
     inheritAttrs: false,
@@ -19,9 +12,9 @@
     defaultValue: undefined,
     value: '',
     disabled: false,
-    label: undefined,
     id: undefined,
     name: undefined,
+    label: undefined,
     description: undefined,
     containerClass: undefined,
   });
@@ -30,49 +23,26 @@
     (e: 'update:modelValue', value: string): void;
   }>();
 
-  const modelValue = useVModel(props, 'modelValue', emits, {
-    passive: true,
-    defaultValue: props.defaultValue,
-  });
+  const modelValue = useFieldModel(props, emits);
 </script>
 
 <template>
-  <template v-if="name">
-    <FormField
-      v-slot="{ value: fieldValue, handleChange, errorMessage }"
-      v-model="modelValue"
-      :name="name"
-    >
-      <FormItem :class="containerClass">
-        <FormControl>
-          <BaseRadio
-            :id="id"
-            :aria-invalid="!!errorMessage"
-            :disabled="disabled"
-            :label="label"
-            :model-value="fieldValue"
-            :test-id="testId"
-            :value="props.value"
-            @update:model-value="handleChange"
-          />
-        </FormControl>
-
-        <FormDescription v-if="description">{{ description }}</FormDescription>
-
-        <FormMessage />
-      </FormItem>
-    </FormField>
-  </template>
-
-  <template v-else>
-    <BaseRadio
-      v-model="modelValue"
-      v-bind="$attrs"
-      :class="containerClass"
-      :disabled="disabled"
-      :label="label"
-      :test-id="testId"
-      :value="value"
-    />
-  </template>
+  <FieldShell
+    :id="id"
+    label-mode="none"
+    :name="name"
+    :description="description"
+    :container-class="containerClass"
+  >
+    <template #default="{ componentField }">
+      <BaseRadio
+        v-model="modelValue"
+        v-bind="{ ...$attrs, ...componentField }"
+        :disabled="disabled"
+        :label="label"
+        :test-id="testId"
+        :value="value"
+      />
+    </template>
+  </FieldShell>
 </template>

@@ -13,13 +13,4 @@ export interface BaseEditorProps extends BaseFormFieldProps {
   invalid?: boolean;
 }
 
-export interface EditorProps extends BaseFormFieldProps, FormFieldValidationProps {
-  modelValue?: string;
-  defaultValue?: string;
-  placeholder?: string;
-  disabled?: boolean;
-  readonly?: boolean;
-  minHeight?: string;
-  maxHeight?: string;
-  class?: HTMLAttributes['class'];
-}
+export type EditorProps = Omit<BaseEditorProps, 'invalid'> & FormFieldValidationProps;

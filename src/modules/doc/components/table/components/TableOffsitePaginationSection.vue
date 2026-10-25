@@ -3,7 +3,7 @@
 
   import { Table } from '@/components';
   import Card from '@/components/card/ExampleCard.vue';
-  import { useAppLocale } from '@/composables';
+  import { useI18n } from 'vue-i18n';
 
   import { TABLE_PAGINATION } from '../constants/constants';
   import { useTablePagination } from '../composables/useTablePagination';
@@ -15,7 +15,7 @@
     role: string;
   }
 
-  const { t } = useAppLocale();
+  const { t } = useI18n();
 
   const columns: ColumnDef<User, unknown>[] = [
     {

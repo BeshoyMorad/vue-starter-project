@@ -2,7 +2,7 @@
   import { Button, Dialog, ConfirmDialog, FormDialog, Field } from '@/components';
   import Codeblock from '@/components/codeblock/codeblock.vue';
   import { DIALOG_VARIANTS } from '../constants/constants';
-  import { useAppLocale } from '@/composables';
+  import { useI18n } from 'vue-i18n';
   import { ref } from 'vue';
   const isOpen = ref(false);
   const name = ref('');
@@ -21,7 +21,7 @@
     name.value = '';
     email.value = '';
   };
-  const { t } = useAppLocale();
+  const { t } = useI18n();
 </script>
 
 <template>

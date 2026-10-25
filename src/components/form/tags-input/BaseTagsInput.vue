@@ -32,7 +32,7 @@
 </script>
 
 <template>
-  <UITagsInput v-model="modelValue" v-bind="$attrs" :disabled="disabled" :data-testid="testId">
+  <UITagsInput v-model="modelValue" v-bind="$attrs" :disabled="disabled" :data-test-id="testId">
     <template v-for="item in modelValue" :key="item">
       <slot name="tag" :value="item">
         <TagsInputItem :value="item" :class="tagClass">

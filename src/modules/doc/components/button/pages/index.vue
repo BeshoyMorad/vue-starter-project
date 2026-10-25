@@ -3,11 +3,11 @@
   import Codeblock from '@/components/codeblock/codeblock.vue';
   import { BUTTON_IMPORT_CODE, BUTTON_VARIANTS, BUTTON_OUTLINE } from '../constants/constants';
   import Card from '@/components/card/ExampleCard.vue';
-  import { useAppLocale } from '@/composables';
+  import { useI18n } from 'vue-i18n';
   import { ref } from 'vue';
 
   type ButtonVariant = (typeof BUTTON_VARIANTS)[number]['variant'];
-  const { t } = useAppLocale();
+  const { t } = useI18n();
   const isOutline = ref(true);
   const selectedVariant = ref<ButtonVariant>(BUTTON_VARIANTS[0].variant);
   const getButtonCode = (outline: boolean, label: string, variant?: string) => {

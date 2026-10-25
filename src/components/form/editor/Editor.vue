@@ -1,13 +1,6 @@
 <script setup lang="ts">
-  import { useVModel } from '@vueuse/core';
-  import {
-    FormField,
-    FormItem,
-    FormLabel,
-    FormControl,
-    FormDescription,
-    FormMessage,
-  } from '@/components/ui/form';
+  import { computed, useAttrs } from 'vue';
+  import { FieldShell, useFieldModel } from '@/components/form/shared';
   import BaseEditor from './BaseEditor.vue';
   import type { EditorProps } from './types';
 
@@ -36,65 +29,38 @@
     (e: 'focus', event: Event): void;
   }>();
 
-  const modelValue = useVModel(props, 'modelValue', emits, {
-    passive: true,
-    defaultValue: props.defaultValue,
-  });
+  const modelValue = useFieldModel(props, emits);
+  const attrs = useAttrs();
+  const attrId = computed(() => (typeof attrs.id === 'string' ? attrs.id : undefined));
 </script>
 
 <template>
-  <template v-if="name">
-    <FormField v-slot="{ componentField, errorMessage }" :name="name">
-      <FormItem :class="containerClass">
-        <div v-if="label || $slots['label-action']" class="flex items-center justify-between">
-          <FormLabel v-if="label">{{ label }}</FormLabel>
-          <slot name="label-action" />
-        </div>
+  <FieldShell
+    :id="attrId"
+    :name="name"
+    :label="label"
+    :description="description"
+    :container-class="containerClass"
+  >
+    <template v-if="$slots['label-action']" #label-action>
+      <slot name="label-action" />
+    </template>
 
-        <FormControl>
-          <BaseEditor
-            v-bind="{ ...$attrs, ...componentField }"
-            :test-id="testId"
-            :placeholder="placeholder"
-            :disabled="disabled"
-            :readonly="readonly"
-            :min-height="minHeight"
-            :max-height="maxHeight"
-            :invalid="!!errorMessage"
-            :class="props.class"
-            @focus="(e: Event) => emits('focus', e)"
-          />
-        </FormControl>
-
-        <FormDescription v-if="description">{{ description }}</FormDescription>
-
-        <FormMessage />
-      </FormItem>
-    </FormField>
-  </template>
-
-  <template v-else>
-    <div :class="containerClass">
-      <div v-if="label || $slots['label-action']" class="mb-2 flex items-center justify-between">
-        <label v-if="label" class="text-foreground text-sm font-medium">{{ label }}</label>
-        <slot name="label-action" />
-      </div>
-
+    <template #default="{ componentField, errorMessage: fieldError }">
       <BaseEditor
         v-model="modelValue"
-        v-bind="$attrs"
-        :test-id="testId"
-        :placeholder="placeholder"
-        :disabled="disabled"
-        :readonly="readonly"
-        :min-height="minHeight"
-        :max-height="maxHeight"
+        v-bind="{ ...$attrs, ...componentField }"
         :class="props.class"
+        :disabled="disabled"
+        :invalid="!!fieldError"
+        :max-height="maxHeight"
+        :min-height="minHeight"
+        :placeholder="placeholder"
+        :readonly="readonly"
+        :test-id="testId"
         @blur="(e: Event) => emits('blur', e)"
         @focus="(e: Event) => emits('focus', e)"
       />
-
-      <p v-if="description" class="text-foreground-caption mt-1.5 text-xs">{{ description }}</p>
-    </div>
-  </template>
+    </template>
+  </FieldShell>
 </template>

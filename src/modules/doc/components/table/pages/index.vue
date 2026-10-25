@@ -1,5 +1,5 @@
 <script setup lang="ts">
-  import { useAppLocale } from '@/composables';
+  import { useI18n } from 'vue-i18n';
 
   import TableImportSection from '../components/TableImportSection.vue';
   import TableDefinitionSection from '../components/TableDefinitionSection.vue';
@@ -9,7 +9,7 @@
   import TableEventsSection from '../components/TableEventsSection.vue';
   import TableMetaStructure from '../components/TableMetaStructure.vue';
 
-  const { t } = useAppLocale();
+  const { t } = useI18n();
 </script>
 
 <template>

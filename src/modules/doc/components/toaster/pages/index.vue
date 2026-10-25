@@ -86,6 +86,7 @@
         >
           <template #preview>
             <Button
+              test-id="toaster-success-button"
               variant="success"
               class="rounded-md border px-4 py-2 text-sm font-medium"
               @click="success(TOASTER_DOC.success.body)"
@@ -108,6 +109,7 @@
         >
           <template #preview>
             <Button
+              test-id="toaster-error-button"
               variant="danger"
               class="rounded-md border px-4 py-2 text-sm font-medium"
               @click="error(TOASTER_DOC.error.body)"

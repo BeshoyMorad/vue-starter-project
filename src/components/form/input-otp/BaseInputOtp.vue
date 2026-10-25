@@ -54,7 +54,7 @@
     :inputmode="integerOnly ? 'numeric' : undefined"
     :maxlength="length"
     :pattern="otpPattern"
-    :test-id="testId"
+    :data-test-id="testId"
   >
     <InputOTPGroup>
       <InputOTPSlot

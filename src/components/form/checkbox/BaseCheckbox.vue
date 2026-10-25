@@ -1,5 +1,6 @@
 <script setup lang="ts">
-  import { computed, useAttrs, useId, useSlots } from 'vue';
+  import { useFieldId } from '@/components/form/shared';
+  import { computed, useAttrs, useSlots } from 'vue';
   import { Checkbox } from '@/components/ui/checkbox';
   import { cva } from 'class-variance-authority';
   import { cn } from '@/utils';
@@ -50,11 +51,7 @@
     return attrs['aria-invalid'] === 'true' || attrs['aria-invalid'] === true;
   });
 
-  const resolvedId = computed(() => {
-    if (props.id) return props.id;
-    if (typeof attrs.id === 'string') return attrs.id;
-    return useId();
-  });
+  const resolvedId = useFieldId(props);
 </script>
 
 <template>
@@ -67,7 +64,7 @@
       :disabled="disabled || readonly"
       :shape="shape"
       :size="size"
-      :test-id="testId"
+      :data-test-id="testId"
     />
 
     <label

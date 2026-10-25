@@ -1,14 +1,7 @@
 <script setup lang="ts">
-  import { useVModel } from '@vueuse/core';
+  import { computed, useAttrs } from 'vue';
+  import { FieldShell, useFieldModel } from '@/components/form/shared';
   import { Textarea as UITextarea } from '@/components/ui/textarea';
-  import {
-    FormField,
-    FormItem,
-    FormLabel,
-    FormControl,
-    FormDescription,
-    FormMessage,
-  } from '@/components/ui/form';
   import type { TextareaProps } from './types';
 
   defineOptions({
@@ -28,30 +21,29 @@
     (e: 'update:modelValue', value: string | number): void;
   }>();
 
-  const modelValue = useVModel(props, 'modelValue', emits, {
-    passive: true,
-    defaultValue: props.defaultValue,
-  });
+  const modelValue = useFieldModel(props, emits);
+  const attrs = useAttrs();
+  const attrId = computed(() => (typeof attrs.id === 'string' ? attrs.id : undefined));
 </script>
 
 <template>
-  <template v-if="name">
-    <FormField v-slot="{ componentField }" :name="name">
-      <FormItem :class="containerClass">
-        <FormLabel v-if="label">{{ label }}</FormLabel>
+  <FieldShell
+    :id="attrId"
+    :name="name"
+    :label="label"
+    :description="description"
+    :container-class="containerClass"
+  >
+    <template v-if="$slots['label-action']" #label-action>
+      <slot name="label-action" />
+    </template>
 
-        <FormControl>
-          <UITextarea v-bind="{ ...$attrs, ...componentField }" :test-id="testId" />
-        </FormControl>
-
-        <FormDescription v-if="description">{{ description }}</FormDescription>
-
-        <FormMessage />
-      </FormItem>
-    </FormField>
-  </template>
-
-  <template v-else>
-    <UITextarea v-model="modelValue" v-bind="$attrs" :class="containerClass" :test-id="testId" />
-  </template>
+    <template #default="{ componentField }">
+      <UITextarea
+        v-model="modelValue"
+        v-bind="{ ...$attrs, ...componentField }"
+        :data-test-id="testId"
+      />
+    </template>
+  </FieldShell>
 </template>

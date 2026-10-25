@@ -16,7 +16,7 @@
     paginationType: 'offset',
     limit: 2,
     queryOptions: {
-      queryFn: ({ pageParam }) => {
+      queryFn: ({ pageParam }: { pageParam: number }) => {
         return getMockOffsetUsers({
           page: pageParam,
           limit: 2,

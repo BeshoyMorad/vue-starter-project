@@ -1,3 +1,4 @@
+import type { HTMLAttributes } from 'vue';
 import type { BaseFormFieldProps, FormFieldValidationProps } from '@/components/form/types';
 
 export interface BaseTextareaProps extends BaseFormFieldProps {
@@ -12,7 +13,7 @@ export interface TextAreaWithMediaProps extends BaseFormFieldProps {
   mediaName: string;
   placeholder?: string;
   submitLabel?: string;
-  containerClass?: string;
+  containerClass?: HTMLAttributes['class'];
   loading?: boolean;
   disabled?: boolean;
   bordered?: boolean;

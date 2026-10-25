@@ -1,15 +1,8 @@
 <script setup lang="ts">
-  import { useVModel } from '@vueuse/core';
-  import {
-    FormField,
-    FormItem,
-    FormLabel,
-    FormControl,
-    FormDescription,
-    FormMessage,
-  } from '@/components/ui/form';
-  import type { TagsInputProps } from './types';
+  import { computed, useAttrs } from 'vue';
+  import { FieldShell, useFieldModel, useBaseSlots } from '@/components/form/shared';
   import BaseTagsInput from './BaseTagsInput.vue';
+  import type { TagsInputProps } from './types';
 
   defineOptions({
     inheritAttrs: false,
@@ -31,55 +24,37 @@
     (e: 'update:modelValue', value: string[]): void;
   }>();
 
-  const modelValue = useVModel(props, 'modelValue', emits, {
-    passive: true,
-    defaultValue: props.defaultValue,
-  });
+  const modelValue = useFieldModel(props, emits);
+  const attrs = useAttrs();
+  const attrId = computed(() => (typeof attrs.id === 'string' ? attrs.id : undefined));
+  const baseSlots = useBaseSlots();
 </script>
 
 <template>
-  <template v-if="name">
-    <FormField v-slot="{ value, handleChange, errorMessage }" v-model="modelValue" :name="name">
-      <FormItem :class="containerClass">
-        <FormLabel v-if="label">{{ label }}</FormLabel>
+  <FieldShell
+    :id="attrId"
+    :name="name"
+    :label="label"
+    :description="description"
+    :container-class="containerClass"
+  >
+    <template v-if="$slots['label-action']" #label-action>
+      <slot name="label-action" />
+    </template>
 
-        <FormControl>
-          <BaseTagsInput
-            v-bind="$attrs"
-            :model-value="value"
-            :disabled="disabled"
-            :aria-invalid="!!errorMessage"
-            :test-id="testId"
-            :tag-class="tagClass"
-            :placeholder="placeholder"
-            @update:model-value="handleChange"
-          >
-            <template v-if="$slots.tag" #tag="{ value: tagValue }">
-              <slot name="tag" :value="tagValue" />
-            </template>
-          </BaseTagsInput>
-        </FormControl>
-
-        <FormDescription v-if="description">{{ description }}</FormDescription>
-
-        <FormMessage />
-      </FormItem>
-    </FormField>
-  </template>
-
-  <template v-else>
-    <BaseTagsInput
-      v-model="modelValue"
-      v-bind="$attrs"
-      :class="containerClass"
-      :disabled="disabled"
-      :test-id="testId"
-      :tag-class="tagClass"
-      :placeholder="placeholder"
-    >
-      <template v-if="$slots.tag" #tag="{ value }">
-        <slot name="tag" :value="value" />
-      </template>
-    </BaseTagsInput>
-  </template>
+    <template #default="{ componentField }">
+      <BaseTagsInput
+        v-model="modelValue"
+        v-bind="{ ...$attrs, ...componentField }"
+        :disabled="disabled"
+        :placeholder="placeholder"
+        :tag-class="tagClass"
+        :test-id="testId"
+      >
+        <template v-for="slotName in baseSlots" :key="slotName" #[slotName]="slotProps">
+          <slot :name="slotName" v-bind="slotProps ?? {}" />
+        </template>
+      </BaseTagsInput>
+    </template>
+  </FieldShell>
 </template>

@@ -91,7 +91,8 @@
         <div class="flex items-center gap-2">
           <Button
             test-id="virtual-fit-tab"
-            :variant="activeTab === 'virtual-fit' ? 'default' : 'outline'"
+            :variant="'default'"
+            :outline="activeTab !== 'virtual-fit'"
             size="sm"
             @click="activeTab = 'virtual-fit'"
           >
@@ -99,7 +100,8 @@
           </Button>
           <Button
             test-id="virtual-fixed-tab"
-            :variant="activeTab === 'virtual-fixed' ? 'default' : 'outline'"
+            :variant="'default'"
+            :outline="activeTab !== 'virtual-fixed'"
             size="sm"
             @click="activeTab = 'virtual-fixed'"
           >
@@ -107,7 +109,8 @@
           </Button>
           <Button
             test-id="normal-tab"
-            :variant="activeTab === 'normal' ? 'default' : 'outline'"
+            :variant="'default'"
+            :outline="activeTab !== 'normal'"
             size="sm"
             @click="activeTab = 'normal'"
           >

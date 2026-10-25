@@ -10,14 +10,8 @@
 >
   import { Combobox as UICombobox } from '@/components/ui/combobox';
   import type { AcceptableValue } from 'reka-ui';
-  import {
-    FormField,
-    FormItem,
-    FormLabel,
-    FormControl,
-    FormDescription,
-    FormMessage,
-  } from '@/components/ui/form';
+  import { computed, useAttrs } from 'vue';
+  import { FieldShell, useBaseSlots } from '@/components/form/shared';
   import type { SelectProps } from './types';
 
   defineOptions({
@@ -44,75 +38,48 @@
   });
 
   const modelValue = defineModel<IsMultiple extends true ? Value[] : Value>();
+  const baseSlots = useBaseSlots();
+  const attrs = useAttrs();
+  const attrId = computed(() => (typeof attrs.id === 'string' ? attrs.id : undefined));
 </script>
 
 <template>
-  <template v-if="name">
-    <FormField v-slot="{ value, handleChange, errorMessage }" v-model="modelValue" :name="name">
-      <FormItem :class="containerClass">
-        <FormLabel v-if="label">{{ label }}</FormLabel>
+  <FieldShell
+    :id="attrId"
+    :name="name"
+    :label="label"
+    :description="description"
+    :container-class="containerClass"
+  >
+    <template v-if="$slots['label-action']" #label-action>
+      <slot name="label-action" />
+    </template>
 
-        <FormControl>
-          <UICombobox
-            :aria-invalid="!!errorMessage"
-            :options="options"
-            :option-label="optionLabel"
-            :option-value="optionValue"
-            :placeholder="placeholder"
-            :search-placeholder="searchPlaceholder"
-            :size="size"
-            :multiple="multiple"
-            :disabled="disabled"
-            :readonly="readonly"
-            :show-clear="showClear"
-            :searchable="searchable"
-            :empty-message="emptyMessage"
-            :max-selected-labels="maxSelectedLabels"
-            :selected-items-label="selectedItemsLabel"
-            :loading="loading"
-            :test-id="testId"
-            v-bind="$attrs"
-            :model-value="value"
-            @update:model-value="handleChange"
-          >
-            <template v-for="(_, slotName) in $slots" #[slotName]="slotProps">
-              <slot :name="slotName" v-bind="slotProps || {}" />
-            </template>
-          </UICombobox>
-        </FormControl>
-
-        <FormDescription v-if="description">{{ description }}</FormDescription>
-
-        <FormMessage />
-      </FormItem>
-    </FormField>
-  </template>
-
-  <template v-else>
-    <UICombobox
-      v-model="modelValue"
-      v-bind="$attrs"
-      :class="containerClass"
-      :options="options"
-      :option-label="optionLabel"
-      :option-value="optionValue"
-      :placeholder="placeholder"
-      :search-placeholder="searchPlaceholder"
-      :size="size"
-      :multiple="multiple"
-      :disabled="disabled"
-      :readonly="readonly"
-      :show-clear="showClear"
-      :searchable="searchable"
-      :empty-message="emptyMessage"
-      :max-selected-labels="maxSelectedLabels"
-      :selected-items-label="selectedItemsLabel"
-      :loading="loading"
-      :test-id="testId"
-    >
-      <template v-for="(_, slotName) in $slots" #[slotName]="slotProps">
-        <slot :name="slotName" v-bind="slotProps || {}" />
-      </template>
-    </UICombobox>
-  </template>
+    <template #default="{ componentField }">
+      <UICombobox
+        v-model="modelValue"
+        v-bind="{ ...$attrs, ...componentField }"
+        :options="options"
+        :option-label="optionLabel"
+        :option-value="optionValue"
+        :placeholder="placeholder"
+        :search-placeholder="searchPlaceholder"
+        :size="size"
+        :multiple="multiple"
+        :disabled="disabled"
+        :readonly="readonly"
+        :show-clear="showClear"
+        :searchable="searchable"
+        :empty-message="emptyMessage"
+        :max-selected-labels="maxSelectedLabels"
+        :selected-items-label="selectedItemsLabel"
+        :loading="loading"
+        :test-id="testId"
+      >
+        <template v-for="slotName in baseSlots" :key="slotName" #[slotName]="slotProps">
+          <slot :name="slotName" v-bind="slotProps ?? {}" />
+        </template>
+      </UICombobox>
+    </template>
+  </FieldShell>
 </template>

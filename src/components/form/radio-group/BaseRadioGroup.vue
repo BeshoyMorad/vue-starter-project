@@ -1,5 +1,6 @@
 <script setup lang="ts">
-  import { computed, useAttrs, useId } from 'vue';
+  import { useFieldId } from '@/components/form/shared';
+  import { computed, useAttrs } from 'vue';
   import { useVModel } from '@vueuse/core';
   import { radioGroupVariants } from './index';
   import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
@@ -30,11 +31,7 @@
 
   const attrs = useAttrs();
 
-  const resolvedId = computed(() => {
-    if (props.id) return props.id;
-    if (typeof attrs.id === 'string') return attrs.id;
-    return useId();
-  });
+  const resolvedId = useFieldId(props);
 
   const isInvalid = computed(() => {
     return attrs['aria-invalid'] === 'true' || attrs['aria-invalid'] === true;
@@ -68,7 +65,7 @@
         :id="`${resolvedId}-${option.value}`"
         :aria-invalid="isInvalid || undefined"
         :disabled="disabled || option.disabled"
-        :test-id="`${testId}-${option.value}`"
+        :data-test-id="`${testId}-${option.value}`"
         :value="option.value"
       />
       <label

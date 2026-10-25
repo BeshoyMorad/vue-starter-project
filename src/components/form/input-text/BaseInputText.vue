@@ -50,6 +50,7 @@
     <Input
       v-model="modelValue"
       v-bind="$attrs"
+      :data-test-id="testId"
       :class="
         cn('w-full', {
           'pl-10':

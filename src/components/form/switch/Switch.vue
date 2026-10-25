@@ -1,12 +1,5 @@
 <script setup lang="ts">
-  import { useVModel } from '@vueuse/core';
-  import {
-    FormField,
-    FormItem,
-    FormControl,
-    FormDescription,
-    FormMessage,
-  } from '@/components/ui/form';
+  import { FieldShell, useBaseSlots, useFieldModel } from '@/components/form/shared';
   import type { SwitchProps } from './types';
   import BaseSwitch from './BaseSwitch.vue';
 
@@ -31,47 +24,32 @@
     (e: 'update:modelValue', value: boolean): void;
   }>();
 
-  const modelValue = useVModel(props, 'modelValue', emits, {
-    passive: true,
-    defaultValue: props.defaultValue ?? false,
-  });
+  const modelValue = useFieldModel(props, emits, false);
+  const baseSlots = useBaseSlots();
 </script>
 
 <template>
-  <template v-if="name">
-    <FormField v-slot="{ componentField, errorMessage }" :name="name">
-      <FormItem :class="containerClass">
-        <FormControl>
-          <BaseSwitch
-            :id="id"
-            :aria-invalid="!!errorMessage"
-            :disabled="disabled"
-            :label="label"
-            :readonly="readonly"
-            :size="size"
-            :test-id="testId"
-            v-bind="componentField"
-          />
-        </FormControl>
-
-        <FormDescription v-if="description">{{ description }}</FormDescription>
-
-        <FormMessage />
-      </FormItem>
-    </FormField>
-  </template>
-
-  <template v-else>
-    <BaseSwitch
-      :id="id"
-      v-model="modelValue"
-      v-bind="$attrs"
-      :class="containerClass"
-      :disabled="disabled"
-      :label="label"
-      :readonly="readonly"
-      :size="size"
-      :test-id="testId"
-    />
-  </template>
+  <FieldShell
+    :id="id"
+    label-mode="none"
+    :name="name"
+    :description="description"
+    :container-class="containerClass"
+  >
+    <template #default="{ componentField }">
+      <BaseSwitch
+        v-model="modelValue"
+        v-bind="{ ...$attrs, ...componentField }"
+        :disabled="disabled"
+        :label="label"
+        :readonly="readonly"
+        :size="size"
+        :test-id="testId"
+      >
+        <template v-for="slotName in baseSlots" :key="slotName" #[slotName]="slotProps">
+          <slot :name="slotName" v-bind="slotProps ?? {}" />
+        </template>
+      </BaseSwitch>
+    </template>
+  </FieldShell>
 </template>

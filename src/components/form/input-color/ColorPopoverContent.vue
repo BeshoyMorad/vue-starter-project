@@ -72,7 +72,7 @@
           v-for="presetColor in presets"
           :key="presetColor"
           type="button"
-          :data-testid="`${testId}-preset-${presetColor}`"
+          :data-test-id="`${testId}-preset-${presetColor}`"
           class="group focus:ring-primary-500 relative flex size-7 cursor-pointer items-center justify-center rounded-md border border-neutral-300 shadow-2xs transition-transform hover:scale-110 focus:ring-2 focus:outline-none dark:border-neutral-700"
           :style="{ backgroundColor: presetColor }"
           :title="presetColor"
@@ -95,7 +95,7 @@
       <div class="flex items-center justify-between">
         <button
           type="button"
-          :data-testid="`${testId}-picker-btn`"
+          :data-test-id="`${testId}-picker-btn`"
           class="text-text-secondary hover:text-text-default flex items-center gap-1.5 text-[11px] font-medium tracking-wider uppercase transition-colors"
           @click="isPickerExpanded = !isPickerExpanded"
         >
@@ -110,7 +110,7 @@
         <button
           v-if="showEyeDropper"
           type="button"
-          :data-testid="`${testId}-eyedropper-btn`"
+          :data-test-id="`${testId}-eyedropper-btn`"
           class="text-text-secondary hover:text-text-default flex items-center gap-1 rounded-md px-1.5 py-0.5 text-[11px] font-medium transition-colors hover:bg-neutral-100 dark:hover:bg-neutral-800"
           title="Pick from Screen"
           @click="emit('openEyeDropper')"

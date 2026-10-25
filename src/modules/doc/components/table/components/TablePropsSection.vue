@@ -1,10 +1,10 @@
 <script setup lang="ts">
   import { Table } from '@/components';
 
-  import { useAppLocale } from '@/composables';
+  import { useI18n } from 'vue-i18n';
   import { TABLE_PROPS } from '../constants/constants';
 
-  const { t } = useAppLocale();
+  const { t } = useI18n();
 
   const propsColumns = [
     {

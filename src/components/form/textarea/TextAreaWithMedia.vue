@@ -5,13 +5,16 @@
   import { error } from '@/utils/toast';
   import {
     DEFAULT_ALLOWED_FILE_TYPES,
-    EXTENSION_TO_ICON,
-    DEFAULT_FILE_ICON,
     isImageMimeType,
-    isImageExtension,
-    getFileExtension,
     formatFileSize,
   } from '@/constants/file-upload';
+  import {
+    validateFile,
+    iconForFile,
+    previewSrc,
+    displayName,
+    useObjectUrls,
+  } from '@/components/form/shared';
   import { computed, ref, watch } from 'vue';
   import { createMediaValueList } from '@/composables';
   import { Button, Field, Icon, Tooltip } from '@/components';
@@ -31,17 +34,18 @@
   const MAX_FILES = 5;
   const MAX_SIZE_MB = 10;
 
-  const { handleChange, value, errorMessage } = useField<MediaValue[]>(props.mediaName);
+  const { handleChange, value, errorMessage } = useField<MediaValue[]>(() => props.mediaName);
 
   const fileInputRef = ref<HTMLInputElement | null>(null);
 
   const localFiles = ref<MediaValue[]>(createMediaValueList([]));
+  const objectUrls = useObjectUrls();
 
   // Sync form field state to localFiles
   watch(
     () => value.value,
     (newVal) => {
-      localFiles.value = newVal ? [...newVal] : createMediaValueList([]);
+      localFiles.value = newVal ? newVal.map(objectUrls.adopt) : createMediaValueList([]);
     },
     { immediate: true, deep: true }
   );
@@ -54,50 +58,10 @@
 
   const acceptAttribute = computed(() => DEFAULT_ALLOWED_FILE_TYPES.join(','));
 
-  const isAtMax = computed(() => (MAX_FILES ? visibleFiles.value.length >= MAX_FILES : false));
+  const isAtMax = computed(() => visibleFiles.value.length >= MAX_FILES);
 
-  const iconForFile = (mediaVal: MediaValue): string => {
-    const name = mediaVal.file?.name || mediaVal.fileName || mediaVal.initialUrl || '';
-    const ext = getFileExtension(name);
-    return EXTENSION_TO_ICON[ext] || DEFAULT_FILE_ICON;
-  };
-
-  const isImagePreview = (mediaVal: MediaValue): boolean => {
-    if (mediaVal.file) return isImageMimeType(mediaVal.file.type);
-    const name = mediaVal.fileName || mediaVal.initialUrl || '';
-    return isImageExtension(name);
-  };
-
-  const previewSrc = (mediaVal: MediaValue): string | null => {
-    if (mediaVal.tempUrl) return mediaVal.tempUrl;
-    if (mediaVal.initialUrl && isImagePreview(mediaVal)) return mediaVal.initialUrl;
-    return null;
-  };
-
-  const displayName = (mediaVal: MediaValue): string => {
-    if (mediaVal.file) return mediaVal.file.name;
-    if (mediaVal.fileName) return mediaVal.fileName;
-    if (mediaVal.initialUrl) return mediaVal.initialUrl.split('/').pop() || mediaVal.initialUrl;
-    return 'File';
-  };
-
-  const validateFile = (file: File): string | null => {
-    const invalidNamePattern = /[%<>:"'|?*\\/#&+]/;
-    if (invalidNamePattern.test(file.name)) {
-      return 'File name contains invalid characters. Avoid characters like %, <, >, :, ", |, ?, *, \\, /, #, &, +.';
-    }
-
-    const maxSize = MAX_SIZE_MB * 1024 * 1024;
-    if (file.size > maxSize) {
-      return `File "${file.name}" exceeds the ${MAX_SIZE_MB}MB limit.`;
-    }
-
-    if (!(DEFAULT_ALLOWED_FILE_TYPES as string[]).includes(file.type)) {
-      return `File "${file.name}" has an invalid file type.`;
-    }
-
-    return null;
-  };
+  const validate = (file: File) =>
+    validateFile(file, { maxSizeMb: MAX_SIZE_MB, allowedTypes: DEFAULT_ALLOWED_FILE_TYPES });
 
   // Handlers
   const triggerFileInput = () => {
@@ -110,7 +74,7 @@
     const selectedFiles = Array.from(target.files || []);
     if (!selectedFiles.length) return;
 
-    const remainingSlots = MAX_FILES ? MAX_FILES - visibleFiles.value.length : selectedFiles.length;
+    const remainingSlots = MAX_FILES - visibleFiles.value.length;
 
     if (remainingSlots <= 0) {
       error(`You can only upload up to ${MAX_FILES} files.`);
@@ -125,7 +89,7 @@
 
     const newItems: MediaValue[] = [];
     for (const file of filesToProcess) {
-      const validationError = validateFile(file);
+      const validationError = validate(file);
       if (validationError) {
         error(validationError);
         continue;
@@ -133,7 +97,7 @@
 
       newItems.push({
         file,
-        tempUrl: isImageMimeType(file.type) ? URL.createObjectURL(file) : '',
+        tempUrl: isImageMimeType(file.type) ? objectUrls.create(file) : '',
         mediaId: null,
         initialUrl: null,
         isChanged: true,
@@ -158,7 +122,7 @@
     if (!item) return;
 
     if (item.tempUrl) {
-      URL.revokeObjectURL(item.tempUrl);
+      objectUrls.revoke(item.tempUrl);
     }
 
     const updated = [...localFiles.value];
@@ -246,7 +210,7 @@
     >
       <div
         v-for="{ mediaVal, index } in visibleFiles"
-        :key="`${index}-${mediaVal.fileName || mediaVal.initialUrl}`"
+        :key="mediaVal.tempUrl || `${mediaVal.initialUrl}-${index}`"
         :data-test-id="`${testId}-item-${index}`"
         :class="
           cn(

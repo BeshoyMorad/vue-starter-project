@@ -91,6 +91,7 @@
 
 <template>
   <div
+    v-bind="$attrs"
     :data-test-id="testId"
     :class="
       cn(

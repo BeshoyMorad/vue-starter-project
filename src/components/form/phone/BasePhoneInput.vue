@@ -58,7 +58,12 @@
   watch(
     () => props.modelValue,
     (val) => {
-      if (!val || val === fullPhone.value) return;
+      if (!val) {
+        // Parent reset/cleared the value: clear the visible number too.
+        if (localNumber.value) localNumber.value = '';
+        return;
+      }
+      if (val === fullPhone.value) return;
       const match = allCountries
         .slice()
         .sort((a, b) => b.dialCode.length - a.dialCode.length) // longest prefix first
@@ -205,7 +210,7 @@
     <input
       v-model="localNumber"
       type="tel"
-      inputmode="numeric"
+      inputmode="tel"
       :placeholder="placeholder"
       :disabled="disabled"
       :data-test-id="testId"

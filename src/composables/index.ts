@@ -9,10 +9,8 @@ export {
   useFormMedia,
   createMediaValue,
   createMediaValueList,
-  extractMediaPayload,
   serializeMediaValues,
 } from './useFormMedia';
-export type { ExtractMediaPayloadOptions } from './useFormMedia';
 export { useMultiStepForm } from './useMultiStepForm';
 export type { UseMultiStepFormReturn } from './useMultiStepForm';
 export { useAuthRedirect } from './useAuthRedirect';

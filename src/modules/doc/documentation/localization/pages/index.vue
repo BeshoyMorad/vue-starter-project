@@ -16,6 +16,7 @@
     LOCALIZATION_DATE_CODE,
     LOCALIZATION_USAGE_CODE,
     LOCALIZATION_PROJECT_STRUCTURE,
+    LOCALIZATION_ADD_NAMESPACE_CODE,
   } from '../constants/constants';
 
   const { t, d, n, locale } = useI18n();
@@ -67,6 +68,14 @@
       :title="LOCALIZATION_DOM.structure.title"
       :description="LOCALIZATION_DOM.structure.description"
       :structure="LOCALIZATION_PROJECT_STRUCTURE"
+      :how-to-use="LOCALIZATION_DOM.structure.howToUse"
+      :code-arr="[
+        {
+          code: LOCALIZATION_ADD_NAMESPACE_CODE,
+          header: 'Add a namespace',
+        },
+      ]"
+      :show-preview="false"
     />
     <!-- Implementation Guide -->
     <Card

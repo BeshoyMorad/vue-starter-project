@@ -65,7 +65,9 @@ export const LOCALIZATION_DOM = {
   structure: {
     title: 'Structure',
     description:
-      'Localization-related configuration, messages, and locale utilities are kept in a centralized structure so developers can easily find and extend them.',
+      'All UI copy lives in src/locales/{locale}/{namespace}.json. The filename is the key prefix. TypeScript in this folder is wiring only (loader, config, formats, types).',
+    howToUse:
+      'Add matching en and ar JSON files for every namespace, with no extra wrapper object. Register the namespace on MessageSchema in messages.ts. Do not colocate locale files next to components.',
   },
 } as const;
 
@@ -210,19 +212,36 @@ const relativeTime = dayjs()
   .locale(locale.value)
   .fromNow();`;
 
-export const LOCALIZATION_PROJECT_STRUCTURE = `📁 src/
-├── 📁 locales/
-│     ├── 📄 config.ts
-│     ├── 📄 en.ts
-│     ├── 📄 ar.ts
-│     ├── 📄 formats.ts
-│     ├── 📄 utils.ts
-│     ├── 📄 index.ts
-│     └── 📄 schema.d.ts
-│
-└─ 📁 modules/
-      └── 📁 feature/
-          └──📁 locales/
-               ├── 📄 en.ts
-               └── 📄 ar.ts
+export const LOCALIZATION_PROJECT_STRUCTURE = `📁 src/locales/
+├── 📁 en/
+│     ├── 📄 common.json
+│     ├── 📄 nav.json
+│     ├── 📄 demo.json
+│     └── 📄 …
+├── 📁 ar/
+│     ├── 📄 common.json
+│     └── 📄 …
+├── 📄 messages.ts
+├── 📄 config.ts
+├── 📄 formats.ts
+├── 📄 utils.ts
+├── 📄 index.ts
+└── 📄 schema.d.ts
 `;
+
+export const LOCALIZATION_ADD_NAMESPACE_CODE = `// src/locales/en/errors.json  (and ar/errors.json)
+{
+  "title": "Access Denied"
+}
+
+// src/locales/messages.ts — add the namespace to MessageSchema
+import type errors from './en/errors.json';
+
+export interface MessageSchema {
+  // ...existing namespaces
+  errors: typeof errors;
+}
+
+// In a component
+const { t } = useI18n();
+t('errors.title');`;

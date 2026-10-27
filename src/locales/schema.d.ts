@@ -1,7 +1,6 @@
-import type en from './en';
+import type { MessageSchema } from './messages';
 import type { datetimeFormats, numberFormats } from './index';
 
-type MessageSchema = typeof en;
 type DateTimeSchema = Record<keyof (typeof datetimeFormats)['en'], Intl.DateTimeFormatOptions>;
 type NumberSchema = Record<keyof (typeof numberFormats)['en'], Intl.NumberFormatOptions>;
 

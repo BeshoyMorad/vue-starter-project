@@ -2,7 +2,7 @@ import { createI18n } from 'vue-i18n';
 import { DEFAULT_LOCALE, FALLBACK_LOCALE, type LocaleCode } from './config';
 import { datetimeFormats, numberFormats } from './formats';
 import { getStoredLocale } from './utils';
-import enMessages from './en';
+import { enMessages, loadLocaleFileMessages } from './messages';
 
 export * from './config';
 export * from './formats';
@@ -19,15 +19,13 @@ export const i18n = createI18n({
 });
 
 /**
- * Loads the Arabic messages chunk on demand. English is bundled with the app.
+ * Loads a locale message chunk on demand. English is bundled with the app.
  */
 export async function loadLocaleMessages(locale: LocaleCode): Promise<void> {
   if (i18n.global.availableLocales.includes(locale)) return;
 
-  if (locale === 'ar') {
-    const messages = await import('./ar');
-    i18n.global.setLocaleMessage('ar', messages.default);
-  }
+  const messages = await loadLocaleFileMessages(locale);
+  i18n.global.setLocaleMessage(locale, messages);
 }
 
 export default i18n;

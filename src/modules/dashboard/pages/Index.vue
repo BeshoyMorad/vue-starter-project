@@ -124,6 +124,7 @@
 <template>
   <div class="space-y-4">
     <div class="flex items-center gap-3">
+      {{ $t('common.back') }}
       <Button test-id="" outline @click="toggleDark()">Toggle Dark Mode</Button>
       <RouterLink
         :to="{ name: paths.dashboard.multiStepForm }"

@@ -6,25 +6,37 @@ import * as yup from 'yup';
 const { t } = i18n.global;
 const PASSWORD_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^A-Za-z0-9]).{8,}$/;
 
-function withField(fieldName: string | undefined, withFieldKey: string, plainKey: string) {
-  return () => (fieldName ? t(withFieldKey, { field: fieldName }) : t(plainKey));
-}
-
 export function percentageSchema(fieldName?: string) {
   return yup
     .number()
-    .typeError(withField(fieldName, 'yup.methods.number', 'yup.methods.numberPlain'))
-    .required(withField(fieldName, 'yup.methods.required', 'yup.methods.requiredPlain'))
-    .min(0, withField(fieldName, 'yup.methods.positive', 'yup.methods.positivePlain'))
-    .max(100, withField(fieldName, 'yup.methods.maxPercent', 'yup.methods.maxPercentPlain'));
+    .typeError(() =>
+      fieldName ? t('yup.methods.number', { field: fieldName }) : t('yup.methods.numberPlain')
+    )
+    .required(() =>
+      fieldName ? t('yup.methods.required', { field: fieldName }) : t('yup.methods.requiredPlain')
+    )
+    .min(0, () =>
+      fieldName ? t('yup.methods.positive', { field: fieldName }) : t('yup.methods.positivePlain')
+    )
+    .max(100, () =>
+      fieldName
+        ? t('yup.methods.maxPercent', { field: fieldName })
+        : t('yup.methods.maxPercentPlain')
+    );
 }
 
 export function positiveNumberSchema(fieldName?: string) {
   return yup
     .number()
-    .typeError(withField(fieldName, 'yup.methods.number', 'yup.methods.numberPlain'))
-    .required(withField(fieldName, 'yup.methods.required', 'yup.methods.requiredPlain'))
-    .min(0, withField(fieldName, 'yup.methods.positive', 'yup.methods.positivePlain'));
+    .typeError(() =>
+      fieldName ? t('yup.methods.number', { field: fieldName }) : t('yup.methods.numberPlain')
+    )
+    .required(() =>
+      fieldName ? t('yup.methods.required', { field: fieldName }) : t('yup.methods.requiredPlain')
+    )
+    .min(0, () =>
+      fieldName ? t('yup.methods.positive', { field: fieldName }) : t('yup.methods.positivePlain')
+    );
 }
 
 export function phoneSchema(fieldName: string, message?: string) {

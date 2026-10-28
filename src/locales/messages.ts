@@ -29,11 +29,6 @@ const localeFileLoaders = import.meta.glob<LocaleJsonModule>('./*/*.json', {
   import: 'default',
 });
 
-const enFiles = import.meta.glob<LocaleJsonModule>('./en/*.json', {
-  eager: true,
-  import: 'default',
-});
-
 function namespaceFromPath(path: string, locale: LocaleCode): string {
   const prefix = `./${locale}/`;
   if (!path.startsWith(prefix) || !path.endsWith('.json')) {
@@ -52,8 +47,6 @@ function mergeLocaleFiles(
   ) as unknown as MessageSchema;
 }
 
-export const enMessages = mergeLocaleFiles(enFiles, 'en');
-
 export async function loadLocaleFileMessages(locale: LocaleCode): Promise<MessageSchema> {
   const prefix = `./${locale}/`;
   const matched = Object.entries(localeFileLoaders).filter(([path]) => path.startsWith(prefix));
@@ -62,11 +55,9 @@ export async function loadLocaleFileMessages(locale: LocaleCode): Promise<Messag
     throw new Error(`[i18n] No message files found for locale "${locale}"`);
   }
 
-  const entries = await Promise.all(
-    matched.map(async ([path, loader]) => {
-      return [namespaceFromPath(path, locale), await loader()] as const;
-    })
+  const files = Object.fromEntries(
+    await Promise.all(matched.map(async ([path, loader]) => [path, await loader()] as const))
   );
 
-  return Object.fromEntries(entries) as unknown as MessageSchema;
+  return mergeLocaleFiles(files, locale);
 }

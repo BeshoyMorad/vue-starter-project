@@ -18,12 +18,13 @@
   import { Form } from 'vee-validate';
   import { toTypedSchema } from '@vee-validate/yup';
   import * as yup from 'yup';
-  import { phoneSchema } from '@/lib/yup';
-  import { useDarkTheme, useFormMedia, extractMediaPayload } from '@/composables';
+  import { useDarkTheme, useFormMedia } from '@/composables';
+
   import { info, success } from '@/utils/toast';
   import { ref } from 'vue';
   import type { MediaValue } from '@/types/media';
   import { paths } from '@/router/paths';
+  import { phoneSchema } from '@/lib/yup';
 
   /* prettier-ignore */
   const columns: ColumnDef<{ id: number; name: string; createdAt: Date }, unknown>[] = [
@@ -100,7 +101,7 @@
     })
   );
 
-  const { uploadFormMedia } = useFormMedia();
+  const { uploadFormMedia, extractMediaPayload } = useFormMedia();
   const directMedia = ref<MediaValue | null>(null);
   const directMediaCropped = ref<MediaValue | null>(null);
   const directTags = ref<string[]>(['vue', 'starter']);

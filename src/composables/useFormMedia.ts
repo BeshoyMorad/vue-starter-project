@@ -93,43 +93,6 @@ function walkMediaValues(
   }
 }
 
-export interface ExtractMediaPayloadOptions {
-  usePayloadItems?: boolean;
-}
-
-/**
- * Extracts lists for mediaIdsToAdd and mediaUrlsToRemove for the API payload.
- * Works for both single MediaValue fields and MediaValue[] (multi file) fields.
- */
-export function extractMediaPayload(
-  values: object,
-  options?: ExtractMediaPayloadOptions
-): MediaPayload {
-  const usePayloadItems = options?.usePayloadItems ?? false;
-  const mediaIdsToAdd: (MediaPayloadItem | string)[] = [];
-  const mediaUrlsToRemove: string[] = [];
-
-  walkMediaValues(values, (mediaVal, key) => {
-    if (mediaVal.isChanged) {
-      if (mediaVal.mediaId) {
-        if (usePayloadItems) {
-          mediaIdsToAdd.push({ id: mediaVal.mediaId, key });
-        } else {
-          mediaIdsToAdd.push(mediaVal.mediaId);
-        }
-      }
-      if (mediaVal.wasRemoved && mediaVal.initialUrl) {
-        mediaUrlsToRemove.push(mediaVal.initialUrl);
-      }
-    }
-  });
-
-  return {
-    mediaIdsToAdd: mediaIdsToAdd as MediaPayloadItem[] | string[],
-    mediaUrlsToRemove,
-  };
-}
-
 /**
  * Serializes all MediaValue properties in the values object into string (URL/ID)
  * or null values, preparing it for simple API payloads.
@@ -161,6 +124,7 @@ export function serializeMediaValues(values: Record<string, unknown>): Record<st
  * Prevents redundant uploads, tracks deletions, and formats payloads.
  * Works for both single MediaValue fields and MediaValue[] (multi file) fields.
  */
+// eslint-disable-next-line max-lines-per-function
 export function useFormMedia() {
   const { mutateAsync: uploadImageMut } = useUploadImage();
   const isUploading = ref(false);
@@ -206,8 +170,44 @@ export function useFormMedia() {
     }
   };
 
+  /**
+   * Extracts lists for mediaIdsToAdd and mediaUrlsToRemove for the API payload.
+   * Works for both single MediaValue fields and MediaValue[] (multi file) fields.
+   */
+  function extractMediaPayload(
+    values: object,
+    options?: {
+      usePayloadItems?: boolean;
+    }
+  ): MediaPayload {
+    const usePayloadItems = options?.usePayloadItems ?? false;
+    const mediaIdsToAdd: (MediaPayloadItem | string)[] = [];
+    const mediaUrlsToRemove: string[] = [];
+
+    walkMediaValues(values, (mediaVal, key) => {
+      if (mediaVal.isChanged) {
+        if (mediaVal.mediaId) {
+          if (usePayloadItems) {
+            mediaIdsToAdd.push({ id: mediaVal.mediaId, key });
+          } else {
+            mediaIdsToAdd.push(mediaVal.mediaId);
+          }
+        }
+        if (mediaVal.wasRemoved && mediaVal.initialUrl) {
+          mediaUrlsToRemove.push(mediaVal.initialUrl);
+        }
+      }
+    });
+
+    return {
+      mediaIdsToAdd: mediaIdsToAdd as MediaPayloadItem[] | string[],
+      mediaUrlsToRemove,
+    };
+  }
+
   return {
     isUploading,
     uploadFormMedia,
+    extractMediaPayload,
   };
 }

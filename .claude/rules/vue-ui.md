@@ -16,7 +16,7 @@ paths:
 - `useDataTable` / `useDataInfiniteScroll` / `useVirtualScroll` paired with `Table`, `InfiniteScrollTable`, `TablePagination` from `components/data-table/`.
 
 ## Forms
-- Validation schemas from `utils/yupSchemas.ts`.
+- Validation schemas from `lib/yup` (`phoneSchema`, `passwordSchema`, and the other methods). Call `setupYupLocale()` once at startup.
 - Wizards: `useMultiStepForm` + `MultiStepForm.vue` + `StepIndicator.vue`.
 - Uploads: `useUploadImage`, `useFormMedia` with `FileUpload` / `ImageUpload`.
 

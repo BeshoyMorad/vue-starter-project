@@ -1,0 +1,15 @@
+---
+description: Vue i18n locale file layout and key conventions
+globs: src/locales/**,**/*.vue
+alwaysApply: false
+---
+
+# i18n (vue-i18n)
+
+- Messages are JSON only, in `src/locales/{locale}/{namespace}.json`. Filename is the key prefix: `en/common.json` → `t('common.save')`.
+- Supported locales: `en`, `ar`. Add both files for every namespace. The stored locale (or the site default) is loaded at bootstrap; other locales are lazy-loaded.
+- Do not put `locales/` next to components or modules. Do not store messages in `.ts`. Do not use SFC `<i18n>` blocks for app copy.
+- JSON has no extra wrapper. `common.json` is `{ "save": "Save" }`, not `{ "common": { "save": "Save" } }`.
+- `t()` / `$t()` only. Hard-coded UI strings belong in a JSON file first.
+- After adding a namespace file, add it to `MessageSchema` in `src/locales/messages.ts`.
+- i18n Ally: `.vscode/settings.json` (`{locale}/{namespace}.json`, `namespace: true`). Do not change folder shape without updating that config.

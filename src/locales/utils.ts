@@ -9,7 +9,7 @@ import {
 } from './config';
 
 /**
- * Gets the stored language preference, then the browser language, or returns the default locale.
+ * Returns the stored language preference, then the browser language, or the site default.
  */
 export function getStoredLocale(): LocaleCode {
   try {

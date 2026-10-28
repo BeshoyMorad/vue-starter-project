@@ -18,12 +18,13 @@
   import { Form } from 'vee-validate';
   import { toTypedSchema } from '@vee-validate/yup';
   import * as yup from 'yup';
-  import { phoneSchema } from '@/utils/yupSchemas';
   import { useDarkTheme, useFormMedia } from '@/composables';
+
   import { info, success } from '@/utils/toast';
   import { ref } from 'vue';
   import type { MediaValue } from '@/types/media';
   import { paths } from '@/router/paths';
+  import { phoneSchema } from '@/lib/yup';
 
   /* prettier-ignore */
   const columns: ColumnDef<{ id: number; name: string; createdAt: Date }, unknown>[] = [
@@ -124,6 +125,7 @@
 <template>
   <div class="space-y-4">
     <div class="flex items-center gap-3">
+      {{ $t('common.back') }}
       <Button test-id="" outline @click="toggleDark()">Toggle Dark Mode</Button>
       <RouterLink
         :to="{ name: paths.dashboard.multiStepForm }"

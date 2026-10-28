@@ -4,6 +4,9 @@ import vue from '@vitejs/plugin-vue';
 import tailwindcss from '@tailwindcss/vite';
 
 const getManualChunks = (id: string): string | undefined => {
+  const localeMatch = id.match(/[/\\]locales[/\\](en|ar)[/\\]/);
+  if (localeMatch) return `locale-${localeMatch[1]}`;
+
   if (!id.includes('node_modules')) return;
 
   if (

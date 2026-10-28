@@ -1,0 +1,18 @@
+{
+  "save": "Save",
+  "cancel": "Cancel",
+  "delete": "Delete",
+  "edit": "Edit",
+  "search": "Search...",
+  "loading": "Loading...",
+  "submit": "Submit",
+  "confirm": "Confirm",
+  "back": "Back",
+  "next": "Next",
+  "language": "Language",
+  "selectLanguage": "Select language",
+  "activeLanguage": "Current Language",
+  "ltr": "Left-to-Right",
+  "rtl": "Right-to-Left",
+  "direction": "Direction"
+}

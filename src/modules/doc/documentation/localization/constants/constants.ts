@@ -69,6 +69,22 @@ export const LOCALIZATION_DOM = {
     howToUse:
       'Add matching en and ar JSON files for every namespace, with no extra wrapper object. Register the namespace on MessageSchema in messages.ts. Do not colocate locale files next to components.',
   },
+
+  validation: {
+    title: 'Yup Validation',
+    description:
+      'Yup error messages are translated through vue-i18n. setupYupLocale() maps built-in Yup keys to src/locales/{locale}/yup.json. Custom helpers in lib/yup/methods.ts call t() when validation runs, so a locale switch updates errors immediately.',
+    howToUse:
+      'Do not hardcode error strings on .required(), .email(), or .min(). Omit them so Yup uses yup.json, and set .label() so {path} is a readable field name. Recreate the schema with computed() if labels should follow the active locale. Use passwordSchema() and similar helpers for rules that already go through t().',
+  },
+
+  queryCache: {
+    title: 'Query cache per locale',
+    description:
+      'The shared QueryClient prefixes the active locale onto every query hash. Each language keeps its own cached API response. Switching away and back reuses that cache instead of sending another backend request, while the entry is still within staleTime (1 minute).',
+    howToUse:
+      'Keep using QUERY_KEYS as usual. Do not add locale to individual keys. Locale scoping is handled globally by queryKeyHashFn in src/lib/query-client.ts, so repeated language switches do not refetch the same locale.',
+  },
 } as const;
 
 export const LOCALIZATION_USAGE_CODE = {
@@ -217,9 +233,11 @@ export const LOCALIZATION_PROJECT_STRUCTURE = `📁 src/locales/
 │     ├── 📄 common.json
 │     ├── 📄 nav.json
 │     ├── 📄 demo.json
+│     ├── 📄 yup.json
 │     └── 📄 …
 ├── 📁 ar/
 │     ├── 📄 common.json
+│     ├── 📄 yup.json
 │     └── 📄 …
 ├── 📄 messages.ts
 ├── 📄 config.ts
@@ -228,6 +246,120 @@ export const LOCALIZATION_PROJECT_STRUCTURE = `📁 src/locales/
 ├── 📄 index.ts
 └── 📄 schema.d.ts
 `;
+
+export const LOCALIZATION_YUP_CODE = {
+  steps: [
+    {
+      header: 'Step 1 - Bootstrap',
+      code: `import { setupYupLocale } from '@/lib/yup';
+
+setupYupLocale();
+
+// Maps Yup's built-in messages to vue-i18n.
+// Each message is resolved when validation
+// runs, so a locale switch applies immediately.`,
+    },
+    {
+      header: 'Step 2 - Messages',
+      code: `// src/locales/en/yup.json  (and ar/yup.json)
+{
+  "mixed": {
+    "required": "{path} is required"
+  },
+  "string": {
+    "email": "{path} must be a valid email",
+    "min": "{path} must be at least {min} characters"
+  },
+  "methods": {
+    "required": "{field} is required",
+    "password": "Password must be at least 8 characters..."
+  }
+}`,
+    },
+    {
+      header: 'Step 3 - Schema',
+      code: `import * as yup from 'yup';
+import { toTypedSchema } from '@vee-validate/yup';
+import { passwordSchema } from '@/lib/yup';
+
+const validationSchema = computed(() =>
+  toTypedSchema(
+    yup.object({
+      email: yup
+        .string()
+        .label(t('demo.validation.email'))
+        .required()
+        .email(),
+      username: yup
+        .string()
+        .label(t('demo.validation.username'))
+        .required()
+        .min(3),
+      password: passwordSchema(
+        t('demo.validation.password'),
+      ),
+    }),
+  ),
+);`,
+    },
+    {
+      header: 'Step 4 - Form',
+      code: `<Form :validation-schema="validationSchema">
+  <Field.Text
+    :label="t('demo.validation.email')"
+    name="email"
+  />
+  <Field.Text
+    :label="t('demo.validation.username')"
+    name="username"
+  />
+  <Field.Password
+    :label="t('demo.validation.password')"
+    name="password"
+  />
+  <Button type="submit">
+    {{ t('common.submit') }}
+  </Button>
+</Form>`,
+    },
+  ],
+} as const;
+
+export const LOCALIZATION_QUERY_CACHE_CODE = {
+  steps: [
+    {
+      header: 'src/lib/query-client.ts',
+      code: `import i18n from '@/locales';
+import { QueryClient, hashKey } from '@tanstack/vue-query';
+
+export const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      staleTime: 1000 * 60, // 1 minute
+      queryKeyHashFn: (queryKey) =>
+        \`\${hashKey([i18n.global.locale.value, ...queryKey])}\`,
+    },
+  },
+});`,
+    },
+    {
+      header: 'Usage',
+      code: `import { useQuery } from '@tanstack/vue-query';
+import { QUERY_KEYS } from '@/lib/query-keys';
+
+// Locale is not part of QUERY_KEYS.
+// queryKeyHashFn caches this response per locale.
+return useQuery({
+  queryKey: QUERY_KEYS.users.list(),
+  queryFn: fetchUsers,
+});
+
+// EN → fetch once
+// AR → fetch once
+// EN again → cached, no backend request`,
+    },
+  ],
+} as const;
 
 export const LOCALIZATION_ADD_NAMESPACE_CODE = `// src/locales/en/errors.json  (and ar/errors.json)
 {

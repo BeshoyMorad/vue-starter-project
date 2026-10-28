@@ -15,14 +15,14 @@ import i18n, { bootstrapI18n, loadLocaleMessages } from './locales';
 import { setupLocaleSync } from './locales/utils';
 import { setupYupLocale } from '@/lib/yup';
 
-setupYupLocale();
-
 dayjs.extend(duration);
 dayjs.extend(relativeTime);
 
 async function bootstrap(): Promise<void> {
   await bootstrapI18n();
   setupLocaleSync(i18n, loadLocaleMessages);
+
+  setupYupLocale();
 
   const app = createApp(App);
 

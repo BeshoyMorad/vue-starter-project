@@ -33,5 +33,24 @@
     "step1Title": "1. In Script (Composition API)",
     "step2Title": "2. In Template",
     "step3Title": "3. Switching Language Programmatically"
+  },
+  "validation": {
+    "email": "Email",
+    "emailPlaceholder": "Enter your email",
+    "username": "Username",
+    "usernamePlaceholder": "At least 3 characters",
+    "password": "Password",
+    "passwordPlaceholder": "8+ chars, mixed case, number, symbol",
+    "hint": "Submit empty or invalid values to see Yup errors. Switch language to watch the messages update.",
+    "success": "Form is valid. Yup messages resolved from the active locale."
+  },
+  "queryCache": {
+    "hint": "Switch language more than once. The first visit to each locale fetches once; returning to it uses the cached response.",
+    "requests": "Backend requests",
+    "status": "Status",
+    "fetching": "Fetching",
+    "cached": "Cached",
+    "locale": "Active locale",
+    "payload": "Cached payload locale"
   }
 }

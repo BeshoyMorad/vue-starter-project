@@ -17,7 +17,11 @@
     LOCALIZATION_USAGE_CODE,
     LOCALIZATION_PROJECT_STRUCTURE,
     LOCALIZATION_ADD_NAMESPACE_CODE,
+    LOCALIZATION_YUP_CODE,
+    LOCALIZATION_QUERY_CACHE_CODE,
   } from '../constants/constants';
+  import YupValidationDemo from '../components/YupValidationDemo.vue';
+  import LocaleQueryCacheDemo from '../components/LocaleQueryCacheDemo.vue';
 
   const { t, d, n, locale } = useI18n();
 
@@ -291,6 +295,30 @@
         </template>
       </Card>
     </section>
+
+    <!-- Yup Validation -->
+    <Card
+      :title="LOCALIZATION_DOM.validation.title"
+      :description="LOCALIZATION_DOM.validation.description"
+      :how-to-use="LOCALIZATION_DOM.validation.howToUse"
+      :code-arr="LOCALIZATION_YUP_CODE.steps"
+    >
+      <template #preview>
+        <YupValidationDemo />
+      </template>
+    </Card>
+
+    <!-- Query cache per locale -->
+    <Card
+      :title="LOCALIZATION_DOM.queryCache.title"
+      :description="LOCALIZATION_DOM.queryCache.description"
+      :how-to-use="LOCALIZATION_DOM.queryCache.howToUse"
+      :code-arr="LOCALIZATION_QUERY_CACHE_CODE.steps"
+    >
+      <template #preview>
+        <LocaleQueryCacheDemo />
+      </template>
+    </Card>
   </div>
 </template>
 ```

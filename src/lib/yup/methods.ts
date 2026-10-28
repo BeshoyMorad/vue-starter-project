@@ -1,6 +1,9 @@
 import type { MediaValue } from '@/types/media';
+import i18n from '@/locales';
 import parsePhoneNumberFromString from 'libphonenumber-js';
 import * as yup from 'yup';
+
+const { t } = i18n.global;
 const PASSWORD_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^A-Za-z0-9]).{8,}$/;
 
 function withField(fieldName: string | undefined, withFieldKey: string, plainKey: string) {

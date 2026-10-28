@@ -8,6 +8,7 @@ import type button from './en/button.json';
 import type tooltip from './en/tooltip.json';
 import type dialog from './en/dialog.json';
 import type table from './en/table.json';
+import type yup from './en/yup.json';
 
 /** Typed English message tree. Keep in sync with `src/locales/en/*.json`. */
 export interface MessageSchema {
@@ -19,15 +20,16 @@ export interface MessageSchema {
   tooltip: typeof tooltip;
   dialog: typeof dialog;
   table: typeof table;
+  yup: typeof yup;
 }
 
 type LocaleJsonModule = Record<string, unknown>;
 
-const localeFileLoaders = import.meta.glob<LocaleJsonModule>('./src/locales/*/*.json', {
+const localeFileLoaders = import.meta.glob<LocaleJsonModule>('./*/*.json', {
   import: 'default',
 });
 
-const enFiles = import.meta.glob<LocaleJsonModule>('./src/locales/en/*.json', {
+const enFiles = import.meta.glob<LocaleJsonModule>('./en/*.json', {
   eager: true,
   import: 'default',
 });

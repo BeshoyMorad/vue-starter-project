@@ -13,6 +13,9 @@ import { error as toastError } from '@/utils/toast';
 
 import i18n, { loadLocaleMessages } from './locales';
 import { setupLocaleSync } from './locales/utils';
+import { setupYupLocale } from '@/lib/yup';
+
+setupYupLocale();
 
 dayjs.extend(duration);
 dayjs.extend(relativeTime);

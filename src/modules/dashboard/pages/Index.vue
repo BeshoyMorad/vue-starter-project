@@ -18,7 +18,7 @@
   import { Form } from 'vee-validate';
   import { toTypedSchema } from '@vee-validate/yup';
   import * as yup from 'yup';
-  import { phoneSchema } from '@/utils/yupSchemas';
+  import { phoneSchema } from '@/lib/yup';
   import { useDarkTheme, useFormMedia, extractMediaPayload } from '@/composables';
   import { info, success } from '@/utils/toast';
   import { ref } from 'vue';

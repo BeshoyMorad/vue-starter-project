@@ -24,7 +24,7 @@ Before creating any component, composable, or util, search for an existing one (
 ## Where things live (don't search for these, use them)
 
 - Query keys: `lib/query-keys.ts` · Endpoints: `lib/api/endpoints.ts` (`apiRoute()`) · Test IDs: `lib/test-ids.ts`
-- Validation: `utils/yupSchemas.ts` · Errors: `utils/apiError.ts` · Toasts: `toast.ts`
+- Validation: `lib/yup/` (`setupYupLocale`, methods) · Errors: `utils/apiError.ts` · Toasts: `toast.ts`
 - Formatters: `formatter.ts`, `formatText.ts`, `formatStatus.ts` · Class merge: `cn()`
 - Translations: `src/locales/{locale}/{namespace}.json` · i18n wiring: `src/locales/`
 

@@ -1,0 +1,69 @@
+{
+  "mixed": {
+    "default": "{path} غير صالح",
+    "required": "{path} حقل مطلوب",
+    "defined": "يجب تحديد {path}",
+    "notNull": "لا يمكن أن يكون {path} فارغاً",
+    "oneOf": "يجب أن يكون {path} إحدى القيم التالية: {values}",
+    "notOneOf": "يجب ألا يكون {path} إحدى القيم التالية: {values}",
+    "notType": "يجب أن يكون {path} من نوع {type}"
+  },
+  "string": {
+    "length": "يجب أن يكون {path} بطول {length} حرفاً بالضبط",
+    "min": "يجب أن يكون {path} {min} أحرف على الأقل",
+    "max": "يجب ألا يزيد {path} عن {max} حرفاً",
+    "matches": "يجب أن يطابق {path} الصيغة المطلوبة",
+    "email": "يجب أن يكون {path} بريداً إلكترونياً صالحاً",
+    "url": "يجب أن يكون {path} رابطاً صالحاً",
+    "uuid": "يجب أن يكون {path} معرف UUID صالحاً",
+    "datetime": "يجب أن يكون {path} تاريخاً ووقتاً صالحين",
+    "datetime_offset": "يجب أن يتضمن {path} إزاحة زمنية صالحة",
+    "datetime_precision": "يجب أن تكون دقة {path} الزمنية {precision}",
+    "trim": "يجب ألا يحتوي {path} على مسافات في البداية أو النهاية",
+    "lowercase": "يجب أن يكون {path} بأحرف صغيرة",
+    "uppercase": "يجب أن يكون {path} بأحرف كبيرة"
+  },
+  "number": {
+    "min": "يجب أن يكون {path} أكبر من أو يساوي {min}",
+    "max": "يجب أن يكون {path} أصغر من أو يساوي {max}",
+    "lessThan": "يجب أن يكون {path} أقل من {less}",
+    "moreThan": "يجب أن يكون {path} أكبر من {more}",
+    "positive": "يجب أن يكون {path} رقماً موجباً",
+    "negative": "يجب أن يكون {path} رقماً سالباً",
+    "integer": "يجب أن يكون {path} عدداً صحيحاً"
+  },
+  "date": {
+    "min": "يجب أن يكون {path} بعد {min}",
+    "max": "يجب أن يكون {path} قبل {max}"
+  },
+  "boolean": {
+    "isValue": "يجب أن يكون {path} {value}"
+  },
+  "object": {
+    "noUnknown": "يحتوي {path} على حقول غير معروفة: {unknown}",
+    "exact": "يجب أن يحتوي {path} على الحقول التالية فقط: {properties}"
+  },
+  "array": {
+    "length": "يجب أن يحتوي {path} على {length} عناصر",
+    "min": "يجب أن يحتوي {path} على {min} عناصر على الأقل",
+    "max": "يجب ألا يزيد {path} عن {max} عناصر"
+  },
+  "tuple": {
+    "notType": "يجب أن يكون {path} من النوع المتوقع"
+  },
+  "methods": {
+    "number": "يجب أن يكون {field} رقماً",
+    "numberPlain": "يجب أن يكون رقماً",
+    "required": "{field} مطلوب",
+    "requiredPlain": "مطلوب",
+    "positive": "يجب أن يكون {field} موجباً",
+    "positivePlain": "يجب أن يكون موجباً",
+    "maxPercent": "الحد الأقصى لـ {field} هو 100%",
+    "maxPercentPlain": "الحد الأقصى 100%",
+    "phone": "يرجى إدخال رقم هاتف صالح",
+    "passwordLabel": "كلمة المرور",
+    "password": "يجب أن تتكون كلمة المرور من 8 أحرف على الأقل، وتتضمن حرفاً كبيراً وحرفاً صغيراً ورقماً ورمزاً خاصاً",
+    "mediaRequired": "الصورة مطلوبة",
+    "mediaInvalid": "وسائط غير صالحة"
+  }
+}

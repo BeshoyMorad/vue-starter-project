@@ -1,27 +1,8 @@
 import type { LocaleCode } from './config';
 
-import type common from './en/common.json';
-import type nav from './en/nav.json';
-import type demo from './en/demo.json';
-import type auth from './en/auth.json';
-import type button from './en/button.json';
-import type tooltip from './en/tooltip.json';
-import type dialog from './en/dialog.json';
-import type table from './en/table.json';
-import type yup from './en/yup.json';
+import type { MessageSchema } from './messages.generated';
 
-/** Typed English message tree. Keep in sync with `src/locales/en/*.json`. */
-export interface MessageSchema {
-  common: typeof common;
-  nav: typeof nav;
-  demo: typeof demo;
-  auth: typeof auth;
-  button: typeof button;
-  tooltip: typeof tooltip;
-  dialog: typeof dialog;
-  table: typeof table;
-  yup: typeof yup;
-}
+export type { MessageSchema };
 
 type LocaleJsonModule = Record<string, unknown>;
 

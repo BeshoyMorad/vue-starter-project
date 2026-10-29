@@ -1,7 +1,8 @@
 import { fileURLToPath, URL } from 'node:url';
-import { defineConfig } from 'vite';
+import { defineConfig, type Plugin } from 'vite';
 import vue from '@vitejs/plugin-vue';
 import tailwindcss from '@tailwindcss/vite';
+import { generateLocaleTypes } from './scripts/generate-locale-types.ts';
 
 const getManualChunks = (id: string): string | undefined => {
   const localeMatch = id.match(/[/\\]locales[/\\](en|ar)[/\\]/);
@@ -35,6 +36,20 @@ const getManualChunks = (id: string): string | undefined => {
   }
 };
 
+/** Keeps `MessageSchema` in sync as English locale files are added or removed. */
+const localeTypesPlugin = (): Plugin => ({
+  name: 'locale-types',
+  buildStart() {
+    generateLocaleTypes();
+  },
+  configureServer(server) {
+    const sync = (file: string) => {
+      if (/[/\\]locales[/\\]en[/\\][^/\\]+\.json$/.test(file)) generateLocaleTypes();
+    };
+    server.watcher.on('add', sync).on('unlink', sync);
+  },
+});
+
 export default defineConfig(() => {
   // const env = loadEnv(mode, process.cwd(), '');
 
@@ -66,7 +81,7 @@ export default defineConfig(() => {
       },
     },
 
-    plugins: [vue(), tailwindcss()],
+    plugins: [localeTypesPlugin(), vue(), tailwindcss()],
 
     resolve: {
       alias: {

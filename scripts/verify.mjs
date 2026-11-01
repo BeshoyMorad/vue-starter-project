@@ -27,9 +27,9 @@ const runCommand = (name, command) => {
 console.log(`\n${colors.bold}${colors.yellow}🚀 Starting Project Verification...${colors.reset}\n`);
 
 const steps = [
-  { name: 'Prettier Formatting', cmd: 'npm run format' },
-  { name: 'ESLint Code Linting', cmd: 'npm run lint:fix' },
-  { name: 'TypeScript Type Checking', cmd: 'npm run type-check' },
+  { name: 'Prettier Formatting', cmd: 'pnpm run format' },
+  { name: 'ESLint Code Linting', cmd: 'pnpm run lint:fix' },
+  { name: 'TypeScript Type Checking', cmd: 'pnpm run type-check' },
 ];
 
 let allPassed = true;

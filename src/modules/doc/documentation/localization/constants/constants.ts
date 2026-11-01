@@ -83,7 +83,7 @@ export const LOCALIZATION_DOM = {
     description:
       'The shared QueryClient prefixes the active locale onto every query hash. Each language keeps its own cached API response. Switching away and back reuses that cache instead of sending another backend request, while the entry is still within staleTime (1 minute).',
     howToUse:
-      'Keep using QUERY_KEYS as usual. Do not add locale to individual keys. Locale scoping is handled globally by queryKeyHashFn in src/lib/query-client.ts, so repeated language switches do not refetch the same locale.',
+      'Keep using QUERY_KEYS as usual. Do not add locale to individual keys. Locale scoping is bound at bootstrap via setupQueryClientLocale in src/main.ts, so repeated language switches do not refetch the same locale.',
   },
 } as const;
 
@@ -329,18 +329,25 @@ export const LOCALIZATION_QUERY_CACHE_CODE = {
   steps: [
     {
       header: 'src/lib/query-client.ts',
-      code: `import i18n from '@/locales';
-import { QueryClient, hashKey } from '@tanstack/vue-query';
+      code: `import { QueryClient, hashKey } from '@tanstack/vue-query';
 
-export const queryClient = new QueryClient({
-  defaultOptions: {
-    queries: {
-      staleTime: 1000 * 60, // 1 minute
-      queryKeyHashFn: (queryKey) =>
-        \`\${hashKey([i18n.global.locale.value, ...queryKey])}\`,
+export function createQueryClient(getLocale?: () => string) {
+  return new QueryClient({
+    defaultOptions: {
+      queries: {
+        staleTime: 1000 * 60, // 1 minute
+        ...(getLocale && {
+          queryKeyHashFn: (queryKey) =>
+            \`\${hashKey([getLocale(), ...queryKey])}\`,
+        }),
+      },
     },
-  },
-});`,
+  });
+}`,
+    },
+    {
+      header: 'src/main.ts',
+      code: `setupQueryClientLocale(() => i18n.global.locale.value);`,
     },
     {
       header: 'Usage',

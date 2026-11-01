@@ -2,7 +2,7 @@ import { createApp } from 'vue';
 import { createPinia } from 'pinia';
 import piniaPluginPersistedstate from 'pinia-plugin-persistedstate';
 import { VueQueryPlugin } from '@tanstack/vue-query';
-import { queryClient } from '@/lib/query-client';
+import { queryClient, setupQueryClientLocale } from '@/lib/query-client';
 import './css/index.css';
 import router from './router/index.ts';
 import dayjs from 'dayjs';
@@ -22,6 +22,7 @@ async function bootstrap(): Promise<void> {
   await bootstrapI18n();
   setupLocaleSync(i18n, loadLocaleMessages);
 
+  setupQueryClientLocale(() => i18n.global.locale.value);
   setupYupLocale();
 
   const app = createApp(App);

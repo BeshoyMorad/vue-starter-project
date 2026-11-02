@@ -2,7 +2,7 @@ import * as yup from 'yup';
 
 // 1. Define the schema matching your expected variables
 const envSchema = yup.object({
-  VITE_API_BASE_URL: yup.string().required(),
+  VITE_API_BASE_URL: yup.string().url().required(),
   VITE_APP_ENV: yup.string().oneOf(['development', 'production', 'staging']).default('development'),
   VITE_ENABLE_DEVTOOLS: yup
     .boolean()

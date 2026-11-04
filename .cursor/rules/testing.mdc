@@ -1,0 +1,7 @@
+---
+description: Testing (Vitest). Mirrors .claude/rules/testing.md
+globs: **/*.spec.ts, **/tests/**, **/vitest.config.ts
+alwaysApply: false
+---
+
+Read and follow [testing.md](mdc:.claude/rules/testing.md). It is the single source for this rule; do not copy it here.

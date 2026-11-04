@@ -1,0 +1,8 @@
+description = "Review the current branch diff against the repo architecture rules"
+prompt = """
+Follow the skill below exactly. Optional argument: base branch or PR number.
+
+Arguments: {{args}}
+
+@{.claude/skills/fe-review/SKILL.md}
+"""

@@ -1,0 +1,8 @@
+description = "Add or change user-facing text in en and ar"
+prompt = """
+Follow the skill below exactly. Argument: the text and where it is used.
+
+Arguments: {{args}}
+
+@{.claude/skills/add-translation/SKILL.md}
+"""

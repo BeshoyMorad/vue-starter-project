@@ -1,0 +1,7 @@
+---
+description: Forms and validation. Mirrors .claude/rules/forms-and-validation.md
+globs: **/schemas/**/*.ts, **/*.vue, src/components/form/**
+alwaysApply: false
+---
+
+Read and follow [forms-and-validation.md](mdc:.claude/rules/forms-and-validation.md). It is the single source for this rule; do not copy it here.

@@ -1,0 +1,38 @@
+# Project command rules. Project .codex/ must be trusted for these to load.
+# decision: "prompt" asks before running, "forbidden" blocks. Most restrictive match wins.
+
+prefix_rule(
+    pattern = ["git", "push"],
+    decision = "prompt",
+    justification = "Pushing is outward-facing. Confirm with the user first.",
+    match = ["git push origin main"],
+)
+
+prefix_rule(
+    pattern = ["git", "push", ["--force", "-f", "--force-with-lease"]],
+    decision = "forbidden",
+    justification = "Force push is not allowed. Ask the user.",
+    match = ["git push --force origin main"],
+)
+
+prefix_rule(
+    pattern = ["git", "reset", "--hard"],
+    decision = "forbidden",
+    justification = "Discards uncommitted work. Ask the user.",
+    match = ["git reset --hard HEAD~1"],
+)
+
+prefix_rule(
+    pattern = ["git", "clean"],
+    decision = "prompt",
+    justification = "Deletes untracked files.",
+    match = ["git clean -fd"],
+)
+
+prefix_rule(
+    pattern = ["pnpm", ["add", "remove", "install", "update", "up"]],
+    decision = "prompt",
+    justification = "Changes dependencies and the lockfile. Report it to the user.",
+    match = ["pnpm add axios", "pnpm install"],
+    not_match = ["pnpm lint", "pnpm type-check"],
+)

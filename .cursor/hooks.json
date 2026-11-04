@@ -1,0 +1,31 @@
+{
+  "version": 1,
+  "hooks": {
+    "beforeShellExecution": [
+      {
+        "command": ".cursor/hooks/cursor-hook.sh shell",
+        "timeout": 10
+      }
+    ],
+    "preToolUse": [
+      {
+        "matcher": "Write|Delete",
+        "command": ".cursor/hooks/cursor-hook.sh pre-write",
+        "timeout": 10
+      }
+    ],
+    "afterFileEdit": [
+      {
+        "command": ".cursor/hooks/cursor-hook.sh format",
+        "timeout": 30
+      }
+    ],
+    "postToolUse": [
+      {
+        "matcher": "Write",
+        "command": ".cursor/hooks/cursor-hook.sh post-write",
+        "timeout": 120
+      }
+    ]
+  }
+}

@@ -1,0 +1,7 @@
+---
+description: Routing. Mirrors .claude/rules/routing.md
+globs: src/router/**, src/modules/**/*.routes.ts, src/modules/**/*.paths.ts
+alwaysApply: false
+---
+
+Read and follow [routing.md](mdc:.claude/rules/routing.md). It is the single source for this rule; do not copy it here.

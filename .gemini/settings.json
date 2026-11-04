@@ -1,0 +1,44 @@
+{
+  "context": {
+    "fileName": ["AGENTS.md"]
+  },
+  "hooks": {
+    "BeforeTool": [
+      {
+        "matcher": "write_file|replace",
+        "hooks": [
+          {
+            "type": "command",
+            "name": "protect-files",
+            "command": "$GEMINI_PROJECT_DIR/.claude/hooks/protect-files.sh",
+            "timeout": 120000
+          }
+        ]
+      },
+      {
+        "matcher": "run_shell_command",
+        "hooks": [
+          {
+            "type": "command",
+            "name": "guard-bash",
+            "command": "$GEMINI_PROJECT_DIR/.claude/hooks/guard-bash.sh",
+            "timeout": 120000
+          }
+        ]
+      }
+    ],
+    "AfterTool": [
+      {
+        "matcher": "write_file|replace",
+        "hooks": [
+          {
+            "type": "command",
+            "name": "post-edit",
+            "command": "$GEMINI_PROJECT_DIR/.gemini/hooks/after-edit.sh",
+            "timeout": 120000
+          }
+        ]
+      }
+    ]
+  }
+}

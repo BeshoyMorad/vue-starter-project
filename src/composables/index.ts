@@ -1,5 +1,4 @@
 export { useDarkTheme } from './useDarkTheme';
-export { useCan } from './useCan';
 export { useDataTable } from './useDataTable';
 export { useDataInfiniteScroll } from './useDataInfiniteScroll';
 export * from './types';

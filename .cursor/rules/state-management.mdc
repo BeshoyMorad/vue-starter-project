@@ -1,0 +1,7 @@
+---
+description: State management. Mirrors .claude/rules/state-management.md
+globs: src/stores/**, **/stores/**, src/composables/**
+alwaysApply: false
+---
+
+Read and follow [state-management.md](mdc:.claude/rules/state-management.md). It is the single source for this rule; do not copy it here.

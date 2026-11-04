@@ -1,0 +1,7 @@
+---
+description: Module structure. Mirrors .claude/rules/module-structure.md
+globs: src/modules/**
+alwaysApply: false
+---
+
+Read and follow [module-structure.md](mdc:.claude/rules/module-structure.md). It is the single source for this rule; do not copy it here.

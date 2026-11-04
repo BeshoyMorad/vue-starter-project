@@ -1,0 +1,8 @@
+description = "Add a new API call end to end (route, query key, service, composable)"
+prompt = """
+Follow the skill below exactly. Argument: what the call does.
+
+Arguments: {{args}}
+
+@{.claude/skills/add-endpoint/SKILL.md}
+"""

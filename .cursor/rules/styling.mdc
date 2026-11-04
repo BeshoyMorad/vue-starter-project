@@ -1,0 +1,7 @@
+---
+description: Styling & design tokens. Mirrors .claude/rules/styling.md
+globs: src/css/**, **/*.vue
+alwaysApply: false
+---
+
+Read and follow [styling.md](mdc:.claude/rules/styling.md). It is the single source for this rule; do not copy it here.

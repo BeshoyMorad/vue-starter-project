@@ -1,0 +1,7 @@
+---
+description: Permissions. Mirrors .claude/rules/permissions.md
+globs: src/stores/permissions.ts, src/composables/useCan.ts, src/router/guards/**, **/*.vue
+alwaysApply: false
+---
+
+Read and follow [permissions.md](mdc:.claude/rules/permissions.md). It is the single source for this rule; do not copy it here.

@@ -1,0 +1,7 @@
+---
+description: TypeScript and lint limits (enforced by ESLint). Mirrors .claude/rules/typescript.md
+globs: **/*.ts, **/*.vue
+alwaysApply: false
+---
+
+Read and follow [typescript.md](mdc:.claude/rules/typescript.md). It is the single source for this rule; do not copy it here.

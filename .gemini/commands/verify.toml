@@ -1,0 +1,8 @@
+description = "Run the narrowest lint, typecheck, and test that prove a change works"
+prompt = """
+Follow the skill below exactly. 
+
+Arguments: {{args}}
+
+@{.claude/skills/verify/SKILL.md}
+"""

@@ -1,0 +1,9 @@
+# Cursor already ignores .gitignore entries, lockfiles, .env*, node_modules and binaries by default.
+# Mirrors the read-deny list in .claude/settings.json. Note: terminal and MCP tools can still reach these files.
+dist/
+.nuxt/
+.output/
+.turbo/
+coverage/
+*.min.js
+graphify-out/cache/

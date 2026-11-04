@@ -1,0 +1,6 @@
+---
+description: Project conventions. Mirrors .claude/rules/project-conventions.md
+alwaysApply: true
+---
+
+Read and follow [project-conventions.md](mdc:.claude/rules/project-conventions.md). It is the single source for this rule; do not copy it here.

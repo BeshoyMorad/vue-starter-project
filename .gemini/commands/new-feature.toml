@@ -1,0 +1,8 @@
+description = "Scaffold a new feature module"
+prompt = """
+Follow the skill below exactly. Argument: the feature name and what it does.
+
+Arguments: {{args}}
+
+@{.claude/skills/new-feature/SKILL.md}
+"""

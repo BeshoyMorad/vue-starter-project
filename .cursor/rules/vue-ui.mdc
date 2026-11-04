@@ -1,0 +1,7 @@
+---
+description: Vue components & UI. Mirrors .claude/rules/vue-ui.md
+globs: **/*.vue
+alwaysApply: false
+---
+
+Read and follow [vue-ui.md](mdc:.claude/rules/vue-ui.md). It is the single source for this rule; do not copy it here.

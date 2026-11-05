@@ -1,24 +1,24 @@
 import { ref } from 'vue';
 
-export function useModal(initialState: boolean = false) {
+export function useDialog(initialState: boolean = false) {
   const isOpen = ref(initialState);
 
-  const openModal = () => {
+  const openDialog = () => {
     isOpen.value = true;
   };
 
-  const closeModal = () => {
+  const closeDialog = () => {
     isOpen.value = false;
   };
 
-  const toggleModal = () => {
+  const toggleDialog = () => {
     isOpen.value = !isOpen.value;
   };
 
   return {
     isOpen,
-    openModal,
-    closeModal,
-    toggleModal,
+    openDialog,
+    closeDialog,
+    toggleDialog,
   };
 }

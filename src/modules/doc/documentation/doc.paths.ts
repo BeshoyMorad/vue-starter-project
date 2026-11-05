@@ -6,4 +6,10 @@ export const documentationPaths = {
   envConfig: 'Environment-configuration',
   localization: 'localization',
   charts: 'Charts',
+  utils: 'Utils',
+  apiContract: 'API-contract',
+  services: 'Services',
+  formWorkflow: 'Form-workflow',
+  fileUploads: 'File-uploads',
+  rulesAndSkills: 'Rules-and-skills',
 };

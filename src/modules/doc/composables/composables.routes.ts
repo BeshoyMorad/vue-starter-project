@@ -54,6 +54,51 @@ export const composablesRoutes = [
           sidebar: true,
         },
       },
+      {
+        path: 'use-data-table-guide',
+        name: composablesPaths.dataTableGuide,
+        component: () => import('@/modules/doc/composables/useDataTableGuide/pages/index.vue'),
+        meta: {
+          title: 'useDataTable Deep Dive',
+          sidebar: true,
+        },
+      },
+      {
+        path: 'use-upload-image-guide',
+        name: composablesPaths.uploadImageGuide,
+        component: () => import('@/modules/doc/composables/useUploadImageGuide/pages/index.vue'),
+        meta: {
+          title: 'useUploadImage Deep Dive',
+          sidebar: true,
+        },
+      },
+      {
+        path: 'use-form-media',
+        name: composablesPaths.formMedia,
+        component: () => import('@/modules/doc/composables/useFormMedia/pages/index.vue'),
+        meta: {
+          title: 'useFormMedia',
+          sidebar: true,
+        },
+      },
+      {
+        path: 'use-table-state',
+        name: composablesPaths.tableState,
+        component: () => import('@/modules/doc/composables/useTableState/pages/index.vue'),
+        meta: {
+          title: 'useTableState',
+          sidebar: true,
+        },
+      },
+      {
+        path: 'app-composables',
+        name: composablesPaths.appComposables,
+        component: () => import('@/modules/doc/composables/appComposables/pages/index.vue'),
+        meta: {
+          title: 'App Composables',
+          sidebar: true,
+        },
+      },
     ],
   },
 ] as RouteRecordRaw[];

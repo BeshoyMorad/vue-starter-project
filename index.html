@@ -6,15 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>vue-starter-project</title>
 
-    <script>
-      (() => {
-        // DON'T FORGET TO UPDATE THIS KEY IN src/constants/theme.ts
-        const theme = localStorage.getItem('vue-starter-theme');
-        if (theme === 'dark' || theme === 'light') {
-          document.documentElement.setAttribute('data-theme', theme);
-        }
-      })();
-    </script>
+    <script src="/theme-init.js"></script>
   </head>
 
   <body>

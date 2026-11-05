@@ -53,6 +53,7 @@
     "clsx": "^2.1.1",
     "dayjs": "^1.11.21",
     "eslint-config-prettier": "^10.1.8",
+    "helmet": "^8.3.0",
     "libphonenumber-js": "^1.13.7",
     "pinia": "^3.0.4",
     "pinia-plugin-persistedstate": "^4.7.1",

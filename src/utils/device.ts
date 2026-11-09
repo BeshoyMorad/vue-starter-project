@@ -3,6 +3,8 @@ import { useLocalStorage } from '@vueuse/core';
 const DEVICE_ID_STORAGE_KEY = 'device_id';
 
 export function getDeviceId(): string {
+  if (typeof window === 'undefined') return 'ssr-device';
+
   const deviceId = useLocalStorage(DEVICE_ID_STORAGE_KEY, '');
 
   if (!deviceId.value) {

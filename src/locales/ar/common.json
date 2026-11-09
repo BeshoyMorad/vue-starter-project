@@ -9,6 +9,8 @@
   "confirm": "تأكيد",
   "back": "رجوع",
   "next": "التالي",
+  "previous": "السابق",
+  "rowsPerPage": "عدد الصفوف في الصفحة:",
   "language": "اللغة",
   "selectLanguage": "اختر اللغة",
   "activeLanguage": "اللغة الحالية",

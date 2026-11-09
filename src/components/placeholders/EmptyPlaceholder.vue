@@ -15,9 +15,9 @@
       darkMode?: boolean;
     }>(),
     {
-      icon: '',
+      icon: 'hugeicons--search-remove',
       iconClass: '',
-      image: 'no-search-results.png',
+      image: '',
       imageClass: '',
       title: 'No Data Found',
       description: 'There’s nothing to display here.',
@@ -29,9 +29,9 @@
 <template>
   <div :class="cn('flex flex-1 flex-col items-center justify-center gap-6 py-8', $attrs.class)">
     <slot name="icon">
-      <Icon v-if="icon" :icon="icon" :class="cn('text-foreground size-32', iconClass)" />
+      <Image v-if="image" :src="getImagePath(image)" :class="cn('size-36', imageClass)" />
 
-      <Image v-else-if="image" :src="getImagePath(image)" :class="cn('size-36', imageClass)" />
+      <Icon v-else-if="icon" :icon="icon" :class="cn('text-foreground size-32', iconClass)" />
     </slot>
 
     <slot>

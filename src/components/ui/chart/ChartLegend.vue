@@ -31,7 +31,7 @@
 
   function onLegendItemClick(d: BulletLegendItemInterface, i: number) {
     emits('legendItemClick', d, i);
-    const isBulletActive = !props.items[i].inactive;
+    const isBulletActive = !props.items[i]?.inactive;
     const isFilterApplied = props.items.some((i) => i.inactive);
     if (isFilterApplied && isBulletActive) {
       // reset filter

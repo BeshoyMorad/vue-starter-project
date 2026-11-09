@@ -147,19 +147,19 @@
           <slot name="empty">
             <EmptyPlaceholder
               v-if="isSearchEmpty"
-              image="no-search-results.png"
+              icon="hugeicons--search-remove"
               title="No Results Found"
               description="No data matches your current search."
             />
 
             <EmptyPlaceholder
               v-else-if="isFilteredEmpty"
-              image="no-search-results.png"
+              icon="hugeicons--search-remove"
               title="No Results Found"
               description="No data matches your current filters."
             />
 
-            <EmptyPlaceholder v-else image="no-search-results.png" />
+            <EmptyPlaceholder v-else icon="hugeicons--search-remove" />
           </slot>
         </TableCell>
       </UITableRow>

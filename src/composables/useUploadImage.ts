@@ -54,14 +54,16 @@ export function useUploadImage() {
       // 2. Upload files in parallel to the presigned URLs
       // Note: We use a fresh axios instance to prevent our global interceptors from attaching
       // authentication headers or overwriting the Content-Type, which would cause S3 to reject the request.
-      const uploadPromises = files.map((file, index) =>
-        axios.put(presignedUrls[index], file, {
+      const uploadPromises = files.map((file, index) => {
+        const url = presignedUrls[index];
+        if (!url) throw new Error('Presigned URL is missing');
+        return axios.put(url, file, {
           headers: {
             'Content-Type': file.type,
           },
           maxBodyLength: Infinity,
-        })
-      );
+        });
+      });
 
       await Promise.all(uploadPromises);
 

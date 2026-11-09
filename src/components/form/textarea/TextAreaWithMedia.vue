@@ -3,11 +3,8 @@
   import { useField } from 'vee-validate';
   import type { MediaValue } from '@/types/media';
   import { error } from '@/utils/toast';
-  import {
-    DEFAULT_ALLOWED_FILE_TYPES,
-    isImageMimeType,
-    formatFileSize,
-  } from '@/constants/file-upload';
+  import { DEFAULT_ALLOWED_FILE_TYPES, isImageMimeType } from '@/constants/file-upload';
+  import { formatFileSize } from '@/utils/formatter';
   import {
     validateFile,
     iconForFile,

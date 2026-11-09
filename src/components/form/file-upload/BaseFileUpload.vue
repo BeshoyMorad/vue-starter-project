@@ -15,8 +15,8 @@
     DEFAULT_ALLOWED_FILE_TYPES,
     MIME_TO_EXTENSION,
     isImageMimeType,
-    formatFileSize,
   } from '@/constants/file-upload';
+  import { formatFileSize } from '@/utils/formatter';
   import { createMediaValueList } from '@/composables';
   import type { BaseFileUploadProps } from './types';
 

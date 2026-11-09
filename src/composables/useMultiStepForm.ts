@@ -191,7 +191,9 @@ function resolveInitialStepState(
 
   let activeStep = 0;
   for (let i = 0; i < persistedStep; i++) {
-    const isStepValid = steps[i].schema.isValidSync(values);
+    const step = steps[i];
+    if (!step) break;
+    const isStepValid = step.schema.isValidSync(values);
     if (!isStepValid) {
       return { initialStep: i, initialCompleted: completed };
     }
@@ -238,7 +240,8 @@ function findFirstStepWithError(
 ): number {
   const errorFields = new Set(Object.keys(errors).filter((k) => Boolean(errors[k])));
   for (let i = 0; i < options.steps.length; i++) {
-    if (options.steps[i].fields.some((f) => errorFields.has(f))) return i;
+    const step = options.steps[i];
+    if (step && step.fields.some((f) => errorFields.has(f))) return i;
   }
   return fallback;
 }
@@ -257,7 +260,9 @@ async function validateAndNavigateToStep(
   const totalSteps = steps.length;
   if (targetStep >= 0 && targetStep < totalSteps) {
     for (let i = 0; i < targetStep; i++) {
-      const isValid = await validateStepFields(form, steps[i].fields);
+      const step = steps[i];
+      if (!step) continue;
+      const isValid = await validateStepFields(form, step.fields);
       if (!isValid) {
         const nextCompleted = new Set(completedSteps.value);
         for (let j = i; j < totalSteps; j++) nextCompleted.delete(j);
@@ -287,7 +292,9 @@ function createNavigation(
   const { steps } = options;
 
   const next = async (): Promise<boolean> => {
-    const isValid = await validateStepFields(form, steps[currentStep.value].fields);
+    const currentStepDef = steps[currentStep.value];
+    if (!currentStepDef) return false;
+    const isValid = await validateStepFields(form, currentStepDef.fields);
     if (!isValid) return false;
     completedSteps.value = new Set([...completedSteps.value, currentStep.value]);
     if (!isLastStep.value) currentStep.value++;
@@ -306,7 +313,7 @@ function createNavigation(
     onSubmit: (values: GenericObject) => void | Promise<void>
   ): Promise<boolean> => {
     const validations = await Promise.all(
-      steps.map((_, i) => validateStepFields(form, steps[i].fields))
+      steps.map((step) => validateStepFields(form, step.fields))
     );
 
     if (!validations.every(Boolean)) {

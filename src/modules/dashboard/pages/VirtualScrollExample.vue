@@ -52,8 +52,8 @@
           id,
           name: `User ${id} (Sample Data Item)`,
           email: `user.${id}@company.com`,
-          role: roles[id % roles.length],
-          avatarColor: colors[id % colors.length],
+          role: roles[id % roles.length] ?? '',
+          avatarColor: colors[id % colors.length] ?? '',
         });
       }
 

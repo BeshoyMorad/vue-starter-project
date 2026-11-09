@@ -9,6 +9,8 @@
   "confirm": "Confirm",
   "back": "Back",
   "next": "Next",
+  "previous": "Previous",
+  "rowsPerPage": "Rows per page:",
   "language": "Language",
   "selectLanguage": "Select language",
   "activeLanguage": "Current Language",

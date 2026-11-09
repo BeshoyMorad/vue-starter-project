@@ -237,14 +237,14 @@ export function formatSubscriptZeros(
   const str = num.toFixed(18).replace(/0+$/, '');
   const match = str.match(/^0\.(0{4,})([1-9]\d*)$/);
 
-  if (match) {
+  if (match && match[1]) {
     const zeroCount = match[1].length;
 
     // Round to (zeroCount + maxDigits) decimal places
     const roundedStr = num.toFixed(zeroCount + maxDigits).replace(/0+$/, '');
     const roundedMatch = roundedStr.match(/^0\.(0{4,})([1-9]\d*)$/);
 
-    if (roundedMatch) {
+    if (roundedMatch && roundedMatch[1] && roundedMatch[2]) {
       const newZeroCount = roundedMatch[1].length;
       const remainingDigits = roundedMatch[2];
       if (html) {
@@ -258,7 +258,7 @@ export function formatSubscriptZeros(
   // Fallback for normal decimals (e.g. 0.00123)
   if (str.includes('.')) {
     const parts = str.split('.');
-    if (parts[1].length > maxDigits) {
+    if (parts[1] && parts[1].length > maxDigits) {
       return num.toFixed(maxDigits).replace(/0+$/, '');
     }
   }
@@ -281,11 +281,12 @@ export function toPlainDecimalString(val: string | number | null | undefined): s
   if (!/[eE]/.test(str)) return str;
 
   const [mantissa, exponentStr] = str.split(/[eE]/);
+  if (!mantissa || exponentStr === undefined) return str;
   const exponent = Number(exponentStr);
   const isNegative = mantissa.startsWith('-');
   const absMantissa = isNegative ? mantissa.slice(1) : mantissa;
 
-  const [integerPart, decimalPart = ''] = absMantissa.split('.');
+  const [integerPart = '', decimalPart = ''] = absMantissa.split('.');
   const digits = integerPart + decimalPart;
 
   let result: string;

@@ -25,7 +25,7 @@
     {
       title: 'Failed to load data',
       description: 'An error occurred while fetching the data. Please try again.',
-      image: 'something-went-wrong.png',
+      image: 'internal-server-error.png',
       imageClass: '',
       buttonLabel: 'Retry',
       buttonVariant: 'default',

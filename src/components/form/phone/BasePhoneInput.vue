@@ -2,7 +2,7 @@
   import { ref, computed, watch, nextTick } from 'vue';
   import { type CountryCode } from 'libphonenumber-js';
   import { cn } from '@/utils';
-  import { allCountries } from '@/utils/countries';
+  import { allCountries, type CountryOption } from '@/utils/countries';
   import { inputVariants } from '@/components/ui/input';
   import { Popover } from '@/components/ui/popover';
   import { Icon } from '@/components';
@@ -40,8 +40,15 @@
     return allCountries.filter((c) => c.name.toLowerCase().includes(q) || c.dialCode.includes(q));
   });
 
+  const defaultCountryFallback: CountryOption = allCountries[0] ?? {
+    name: 'United States',
+    code: 'US',
+    dialCode: '+1',
+    flag: '🇺🇸',
+  };
+
   const selectedCountryData = computed(
-    () => allCountries.find((c) => c.code === selectedCountry.value) ?? allCountries[0]
+    () => allCountries.find((c) => c.code === selectedCountry.value) ?? defaultCountryFallback
   );
 
   // ─── Emitted value: full E.164 "{dialCode}{localNumber}" ──────────────────────

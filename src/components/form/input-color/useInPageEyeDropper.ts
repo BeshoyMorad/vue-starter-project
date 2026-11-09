@@ -26,7 +26,7 @@ function cssColorToHex(color: string): string | null {
     ctx.clearRect(0, 0, 1, 1);
     ctx.fillStyle = color;
     ctx.fillRect(0, 0, 1, 1);
-    const [r, g, b, a] = ctx.getImageData(0, 0, 1, 1).data;
+    const [r = 0, g = 0, b = 0, a = 0] = ctx.getImageData(0, 0, 1, 1).data;
     if (a === 0) return null;
     return `#${[r, g, b].map((n) => n.toString(16).padStart(2, '0')).join('')}`.toLowerCase();
   } catch {

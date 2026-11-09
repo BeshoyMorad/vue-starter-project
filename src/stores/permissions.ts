@@ -4,7 +4,7 @@ import { computed } from 'vue';
 
 function parseDotNotation(permStr: string): [string, string] {
   const parts = permStr.split('.');
-  return [parts[0], parts.slice(1).join('.')];
+  return [parts[0] ?? '', parts.slice(1).join('.')];
 }
 
 function hasPermission(

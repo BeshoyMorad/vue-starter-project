@@ -92,9 +92,9 @@ export const DEFAULT_FILE_ICON = 'hugeicons--file-02';
 export const isImageMimeType = (type: string): boolean => type.startsWith('image/');
 
 export const getFileExtension = (nameOrUrl: string): string => {
-  const clean = nameOrUrl.split(/[?#]/)[0];
+  const clean = nameOrUrl.split(/[?#]/)[0] ?? '';
   const parts = clean.split('.');
-  return parts.length > 1 ? parts[parts.length - 1].toLowerCase() : '';
+  return (parts.length > 1 ? (parts[parts.length - 1] ?? '') : '').toLowerCase();
 };
 
 export const IMAGE_EXTENSIONS = new Set(
@@ -103,9 +103,3 @@ export const IMAGE_EXTENSIONS = new Set(
 
 export const isImageExtension = (nameOrUrl: string): boolean =>
   IMAGE_EXTENSIONS.has(getFileExtension(nameOrUrl));
-
-export const formatFileSize = (bytes: number): string => {
-  if (bytes < 1024) return `${bytes} B`;
-  if (bytes < 1024 * 1024) return `${(bytes / 1024).toFixed(1)} KB`;
-  return `${(bytes / (1024 * 1024)).toFixed(1)} MB`;
-};

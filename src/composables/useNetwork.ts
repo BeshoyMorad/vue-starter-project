@@ -5,18 +5,21 @@ import { warn } from '@/utils/toast';
 
 const OFFLINE_REDIRECT_KEY = 'offline_redirect_url';
 
-export const isOnline = ref(navigator.onLine);
+export const isOnline = ref(typeof navigator !== 'undefined' ? navigator.onLine : true);
+
+const hasSessionStorage = typeof sessionStorage !== 'undefined';
 
 const getRedirectPath = (): string | null => {
   const route = router.currentRoute.value;
   const queryRedirect = route.query.redirect as string;
   if (queryRedirect) return queryRedirect;
 
-  return sessionStorage.getItem(OFFLINE_REDIRECT_KEY);
+  return hasSessionStorage ? sessionStorage.getItem(OFFLINE_REDIRECT_KEY) : null;
 };
 
 const saveRedirectPath = (path: string) => {
   if (
+    hasSessionStorage &&
     path &&
     !path.includes('/no-internet') &&
     !path.includes('/access-denied') &&
@@ -27,7 +30,7 @@ const saveRedirectPath = (path: string) => {
 };
 
 const clearRedirectPath = () => {
-  sessionStorage.removeItem(OFFLINE_REDIRECT_KEY);
+  if (hasSessionStorage) sessionStorage.removeItem(OFFLINE_REDIRECT_KEY);
 };
 
 export const handleOffline = (redirectPath?: string | Event) => {

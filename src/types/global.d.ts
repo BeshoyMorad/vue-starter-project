@@ -2,6 +2,12 @@ import type { RowData } from '@tanstack/vue-table';
 
 export {};
 
+// API contract: the single place that describes the backend envelope (`ApiResponse`, `ApiErrorResponse`,
+// `Meta`, `CursorMeta` and the paginated responses). Types and mocks use these everywhere; never
+// redeclare them locally and never add an adapter layer that maps another shape onto them. When a
+// project's backend differs, edit the interfaces below once, then run `pnpm type-check` and fix
+// every error it reports.
+
 declare global {
   export type Prettify<T> = T & { [K in keyof T]: T[K] };
 

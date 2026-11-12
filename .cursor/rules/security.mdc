@@ -1,0 +1,7 @@
+---
+description: Security. Mirrors .claude/rules/security.md
+globs: **/*.vue, **/*.ts
+alwaysApply: false
+---
+
+Read and follow [security.md](mdc:.claude/rules/security.md). It is the single source for this rule; do not copy it here.

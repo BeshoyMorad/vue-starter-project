@@ -18,6 +18,11 @@ paths:
   Reuse the inferred type. Do not hand-write a second copy of the shape.
 - Reusable rules come from `@/lib/yup`: `phoneSchema`, `passwordSchema`, `positiveNumberSchema`, `percentageSchema`, `requiredMediaSchema`, `optionalMediaSchema`. `setupYupLocale()` runs once in `main.ts`, so messages come from the `yup` locale namespace. Add new messages to `src/locales/{en,ar}/yup.json`.
 - Field components come from `@/components/form` (for example `Field.Text`, `Field.Password`, `Field.Select`). Match the wiring of the nearby form in the same module.
+- Bind submitted fields by `name` (`<Field.Text name="email" label="..." />`): `useForm` then owns the value and renders the error. Pass the label, hint and `required` through the field's props; no custom `<label>`, hint text or manual error rendering.
+- `v-model` is allowed in two cases:
+  - Search and filter inputs that are not part of the submitted form (for example bound to the table state `search`). They have no `name`.
+  - A form field whose value the component must read or change: dependent fields, live preview, auto-filling another field, sections shown by the value. If you only need to read a named field, prefer `useFieldValue('name')` / `values` from `useForm`.
+  Everywhere else use `name`. A field with `v-model` and no `name` is invisible to `useForm`: it is not validated or submitted.
 - Server errors go to fields with `applyApiErrorToForm(error, ctx.setErrors, '<field>')` from `@/utils/apiError`, as `useLoginMutation` does.
-- Uploads use `useFormMedia` and `useUploadImage` from `@/composables`. Pass `MediaValue` through `extractMediaPayload`.
+- Images and files: follow the uploads rule (`.claude/rules/uploads.md`).
 - Multi-step forms use `useMultiStepForm` with `MultiStepForm.vue` and `StepIndicator.vue` from `@/components/form`.

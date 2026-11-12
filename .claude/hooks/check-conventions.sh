@@ -27,6 +27,15 @@ base=$(basename "$file")
 scan "Wrong test attribute: use :data-test-id with a value from TEST_IDS" 'data-test[=[:space:]]'
 scan "Raw hex color: use a token from the css token file" '(bg|text|border|fill|stroke|ring|from|to|via)-\[#[0-9a-fA-F]{3,8}\]'
 
+# Security, accessibility and type safety
+scan "v-html: only with sanitized content (see the security rule)" 'v-html|\.innerHTML[[:space:]]*='
+scan "target=_blank without rel=\"noopener noreferrer\"" 'target=["'"'"']_blank["'"'"']' 'rel='
+scan "Click handler on a non-interactive element: use <button> or <a href>" '<(div|span|li|td|p)[[:space:]][^>]*@click'
+scan "Type suppression: fix the type, or use @ts-expect-error with a reason" '@ts-(ignore|nocheck)'
+[[ ! "$file" =~ /components/form/ ]] &&
+  scan "Own file input/upload: use Field.ImageUpload / Field.FileUpload with useFormMedia (uploads rule)" 'type=["'"'"']file["'"'"']|new FormData\('
+scan "Local copy of the API envelope: use the global ApiResponse / Meta contract (api-contract rule)" '(interface|type)[[:space:]]+[A-Za-z]*(PaginationMeta|PageInfo|ApiResponse)\b' '/types/global\.d\.ts'
+
 # Parent-relative imports (eslint warns too)
 scan "Parent-relative import: use the @/ alias" "from ['\"]\.\./"
 

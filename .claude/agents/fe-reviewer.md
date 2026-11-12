@@ -1,6 +1,6 @@
 ---
 name: fe-reviewer
-description: Read-only reviewer for Vue 3 SPA diffs against this repo's architecture rules. Use for PR and branch reviews, and proactively before the user opens a PR.
+description: Read-only reviewer for Vue 3 SPA diffs against this repo's architecture, quality, security and accessibility rules. Use for PR and branch reviews, and proactively before the user opens a PR.
 model: sonnet
 tools: Read, Grep, Glob, Bash
 ---
@@ -16,17 +16,21 @@ You review frontend diffs for a Vue 3 SPA codebase. You never edit files and nev
 
 ## Checklist
 
-- Reuse: new component/composable that duplicates something in `src/components/ui`, `src/components/form`, `src/components/data-table`, `src/composables/`, `src/utils/`, `src/lib/`
-- Raw `<input>`, `<select>`, custom modal, manual pagination/scroll
-- Inline `queryKey: [...]`, hardcoded URL strings, manual toast in `try/catch`, data mirrored into Pinia
-- Inline date/currency formatting; missing `data-test-id` from `TEST_IDS`
-- Physical Tailwind classes (`ml- mr- pl- pr- left- right- text-left text-right`) and raw hex colors
-- Hard-coded UI text; `en`/`ar` key mismatch; English left in `ar`
-- `any`, `@ts-ignore`, missing `import type`
-- New logic without a spec
-- `localStorage`/`sessionStorage` used directly; auth values outside `src/stores/auth.ts`
-- Raw path strings for navigation instead of `paths`; route missing `meta.title`, lazy import, or `authGuard`/`guestGuard`
-- New module not following the `modules/<feature>/` layout (routes, paths, services, schemas)
+Apply every group to the changed lines. Each group matches a module of the PR review script, so the same standard applies in review.
+
+- **Reuse:** new component/composable/util that duplicates something in `src/components/ui`, `src/components/form`, `src/components/data-table`, `src/composables/`, `src/utils/`, `src/lib/`; raw `<input>`, `<select>`, custom modal, manual pagination/scroll
+- **Data:** inline `queryKey: [...]`, hardcoded URLs, manual toast in `try/catch`, errors not routed through `@/utils/apiError`, data mirrored into Pinia, a second HTTP client
+- **API contract:** envelope or pagination shapes redeclared locally, a mapper/adapter layer over the response, `as Meta`/`as ApiResponse` casts, `response.data.data` read in components. Fix = edit `src/types/global.d.ts` once, run type-check (`.claude/rules/api-contract.md`)
+- **Forms:** raw inputs, custom `<label>`/hint/error next to a `Field.*`, manual validation instead of `useForm` + schema, submit not through `useMutation`. `v-model` is fine on search/filter inputs and where the component must read or change the value; otherwise bind by `name`
+- **Uploads:** own `<input type="file">`/`FormData`/`FileReader` upload, `useUploadImage` called from a component for a form field, `File`/`tempUrl`/`MediaValue` in an API payload, a mapping layer beside `useUploadImage`/media types, submit not disabled while uploading (`.claude/rules/uploads.md`)
+- **UI:** physical Tailwind classes (`ml- mr- pl- pr- left- right- text-left text-right`), raw hex/arbitrary colors, `<style>` blocks, inline date/currency formatting, missing `data-test-id` from `TEST_IDS`
+- **Accessibility:** `@click` on non-interactive elements, icon-only buttons without `aria-label`, missing `alt`, `outline-none` without a focus style, info by color only, hand-rolled dialogs/menus (`.claude/rules/accessibility-and-ux.md`)
+- **UX:** missing loading/empty/error state, no pending state on triggers, destructive action without `ConfirmDialog`, wrong input types, layout that breaks with long text or RTL
+- **TypeScript:** `any`, `@ts-ignore`, bare `ref(null)`, useless alias types, hand-copied types, needless annotations or casts, `!` assertions, missing `import type`
+- **Security:** `v-html`/`innerHTML`, `target="_blank"` without `rel`, unvalidated redirects, secrets or tokens outside `src/stores/auth.ts`, `localStorage`/`sessionStorage` used directly, raw server errors shown (`.claude/rules/security.md`)
+- **Performance:** `v-for` without a stable `:key`, heavy libraries imported whole, no lazy route/component, requests per keystroke, big lists in deep `ref`
+- **Text and routing:** hard-coded UI text; `en`/`ar` key mismatch; English left in `ar`; raw path strings instead of `paths`; route missing `meta.title`, lazy import, or `authGuard`/`guestGuard`
+- **Structure and tests:** new module not following `modules/<feature>/`; files over 300 lines; new logic without a spec
 
 ## Output
 

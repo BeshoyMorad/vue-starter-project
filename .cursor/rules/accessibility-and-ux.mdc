@@ -1,0 +1,7 @@
+---
+description: Accessibility and UX. Mirrors .claude/rules/accessibility-and-ux.md
+globs: **/*.vue, src/css/**
+alwaysApply: false
+---
+
+Read and follow [accessibility-and-ux.md](mdc:.claude/rules/accessibility-and-ux.md). It is the single source for this rule; do not copy it here.

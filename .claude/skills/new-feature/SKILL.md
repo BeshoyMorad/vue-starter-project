@@ -13,7 +13,8 @@ Look at `src/modules/auth/` (services, schemas, composables) and `src/modules/st
 4. **Page.** Wrap content in `PageWrapper` (`title`, `subtitle`, header buttons in `actions`). Lists use `Table`/`InfiniteScrollTable` with `useDataTable`/`useDataInfiniteScroll`. Forms follow the forms rule (vee-validate + Yup, `Field.*`, `applyApiErrorToForm`).
 5. **Text.** Use the `add-translation` skill for every string (en and ar).
 6. **Test ids.** Add keys to `src/lib/test-ids.ts` and bind `:data-test-id` on interactive elements.
-7. **Permissions.** Gate buttons with `can('resource.action')` and the route with a guard.
-8. **Tests.** Add specs for composables, services, and schemas. Then run the `verify` skill.
+7. **Quality bar.** Every async view has loading, empty and error states; native elements, labels and alt text (`.claude/rules/accessibility-and-ux.md`); images and files through `Field.*Upload` + `useFormMedia` (`.claude/rules/uploads.md`).
+8. **Permissions.** Gate buttons with `can('resource.action')` and the route with a guard.
+9. **Tests.** Add specs for composables, services, and schemas. Then run the `verify` skill.
 
 Do not add anything to `src/modules/doc/`.

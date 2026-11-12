@@ -1,0 +1,7 @@
+---
+description: Images and files. Mirrors .claude/rules/uploads.md
+globs: **/*.vue, src/composables/**, src/components/form/**, **/schemas/**/*.ts
+alwaysApply: false
+---
+
+Read and follow [uploads.md](mdc:.claude/rules/uploads.md). It is the single source for this rule; do not copy it here.

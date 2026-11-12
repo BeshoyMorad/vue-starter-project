@@ -11,6 +11,7 @@ paths:
 
 - All HTTP goes through the shared `api` instance from `@/lib/api/client` (auth header, device-id, 401/403/500 handling). Do not create another Axios instance.
 - Build URLs only with `apiRoute('name')` from `@/lib/api/endpoints`. Add new route names to the `routes` object in that file first. No hardcoded `/api/...` strings.
+- Type responses with the global contract (`ApiResponse<T>`, `OffsetPaginatedResponse<T>`, ...) and follow `.claude/rules/api-contract.md`. Never redeclare the envelope or add a mapping layer.
 - Services are small `async` functions in `modules/<feature>/services/index.ts` that return typed payloads. `queryFn` and mapping belong in services or composables, not in components.
 - Server state uses TanStack Vue Query: `useQuery`, `useMutation`, `useInfiniteQuery`.
 - Query keys come from the `QUERY_KEYS` registry in `src/lib/query-keys.ts`, for example `QUERY_KEYS.starter.profile()`. Add new keys there before using them. Never inline arrays like `queryKey: ['users', id]`.

@@ -1,0 +1,7 @@
+---
+description: API contract: ApiResponse, Meta and friends. Mirrors .claude/rules/api-contract.md
+globs: src/types/**, **/services/**/*.ts, **/composables/**/*.ts, **/*.vue, tests/**
+alwaysApply: false
+---
+
+Read and follow [api-contract.md](mdc:.claude/rules/api-contract.md). It is the single source for this rule; do not copy it here.

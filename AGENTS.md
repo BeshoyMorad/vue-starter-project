@@ -39,12 +39,18 @@ Before creating any component, composable, or util, search for an existing one (
 - **No hard-coded UI strings.** Every label goes in `en` and `ar` JSON, used through `t()`.
 - **Registries, not literals.** Query keys from `QUERY_KEYS`, URLs from `apiRoute()`, test ids from `TEST_IDS` (`data-test-id`), colors from the token file, route names from `paths`.
 - **Server state in Vue Query, client state in Pinia.** Never copy API data into a store. No manual `try/catch` toasts.
+- **One API contract.** Response types come from `src/types/global.d.ts` (`ApiResponse`, `Meta`, ...). A different backend means editing that file and fixing type-check, never a mapping layer.
+- **One upload pipeline.** Forms use `Field.ImageUpload` / `Field.FileUpload` + `useFormMedia`; only `useUploadImage` talks to the backend for uploads.
+- **Accessible and safe by default.** Native elements, labels and alt text, visible focus, loading/empty/error states, no `v-html` without sanitizing.
+- **Forms bind by `name`.** `v-model` only for search/filter inputs and where the component must read or change the value.
 - **Strict TypeScript.** No `any`, `interface` over `type`, `import type`, `@/` alias instead of `../`. Files under 300 lines.
 
 ## Path-scoped rules
 
 Detailed rules live in `.claude/rules/`. Claude Code and Cursor (through the stubs in `.cursor/rules/`) load them by path automatically. Every other tool: before you edit files matching a glob below, read that rule file.
 
+- `.claude/rules/accessibility-and-ux.md`: `**/*.vue`, `src/css/**`
+- `.claude/rules/api-contract.md`: `src/types/**`, `**/services/**/*.ts`, `**/composables/**/*.ts`, `**/*.vue`, `tests/**`
 - `.claude/rules/data-fetching.md`: `**/services/**/*.ts`, `**/composables/**/*.ts`, `**/api/**/*.ts`, `**/*.vue`, `src/lib/query-keys.ts`
 - `.claude/rules/forms-and-validation.md`: `**/schemas/**/*.ts`, `**/*.vue`, `src/components/form/**`
 - `.claude/rules/graphify.md`: always relevant
@@ -53,10 +59,12 @@ Detailed rules live in `.claude/rules/`. Claude Code and Cursor (through the stu
 - `.claude/rules/permissions.md`: `src/stores/permissions.ts`, `src/composables/useCan.ts`, `src/router/guards/**`, `**/*.vue`
 - `.claude/rules/project-conventions.md`: always relevant
 - `.claude/rules/routing.md`: `src/router/**`, `src/modules/**/*.routes.ts`, `src/modules/**/*.paths.ts`
+- `.claude/rules/security.md`: `**/*.vue`, `**/*.ts`
 - `.claude/rules/state-management.md`: `src/stores/**`, `**/stores/**`, `src/composables/**`
 - `.claude/rules/styling.md`: `src/css/**`, `**/*.vue`
 - `.claude/rules/testing.md`: `**/*.spec.ts`, `**/tests/**`, `**/vitest.config.ts`
 - `.claude/rules/typescript.md`: `**/*.ts`, `**/*.vue`
+- `.claude/rules/uploads.md`: `**/*.vue`, `src/composables/**`, `src/components/form/**`, `**/schemas/**/*.ts`
 - `.claude/rules/vue-ui.md`: `**/*.vue`
 
 ## Automated checks

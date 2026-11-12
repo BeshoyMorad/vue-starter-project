@@ -9,7 +9,7 @@ Follow the existing pattern of a nearby module. Do not create a second HTTP clie
 
 1. **Route.** Add a named route to the `routes` object in `src/lib/api/endpoints.ts`. Call it only through `apiRoute('name')`.
 2. **Query key.** Add a factory to `QUERY_KEYS` in `src/lib/query-keys.ts` (`all`, `list`, `details(id)` as the existing groups do).
-3. **Types.** Add request and response types in ``src/modules/<feature>/types.ts``. Use `interface`, not `type`.
+3. **Types.** Add request and response payload types in ``src/modules/<feature>/types.ts`` (`interface`). Type the call with the global contract (`ApiResponse<T>`, `OffsetPaginatedResponse<T>`); never redeclare the envelope. If the backend envelope differs, edit `src/types/global.d.ts` and fix type-check (`.claude/rules/api-contract.md`). File uploads follow `.claude/rules/uploads.md`, not a new endpoint helper.
 4. **Service.** Add a small `async` function in ``src/modules/<feature>/services/index.ts``. It uses the shared `api` instance from `@/lib/api/client` and returns a typed payload. No toasts, no `try/catch`: the client handles errors.
 5. **Composable.** Wrap it in ``src/modules/<feature>/composables/`` with `useQuery`, `useMutation`, or `useInfiniteQuery`.
    - Lists and tables: use `useDataTable` or `useDataInfiniteScroll` instead of writing pagination.
